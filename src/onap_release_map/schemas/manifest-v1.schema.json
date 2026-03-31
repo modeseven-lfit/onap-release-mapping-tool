@@ -84,7 +84,7 @@
     },
     "helm_components": {
       "type": "array",
-      "description": "All top-level Helm chart components",
+      "description": "All Helm chart components parsed from the OOM umbrella and its sub-charts",
       "items": { "$ref": "#/definitions/HelmComponent" }
     },
     "provenance": {
@@ -224,14 +224,14 @@
       "properties": {
         "name": {
           "type": "string",
-          "description": "Chart name in the umbrella (e.g. policy)"
+          "description": "Chart name from the umbrella dependency or a nested sub-chart (e.g. policy, policy-api)"
         },
         "version": {
           "type": ["string", "null"],
           "description": "Chart version constraint"
         },
         "enabled_by_default": {
-          "type": "boolean"
+          "type": ["boolean", "null"]
         },
         "condition_key": {
           "type": ["string", "null"],

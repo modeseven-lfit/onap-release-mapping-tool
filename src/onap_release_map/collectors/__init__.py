@@ -54,7 +54,7 @@ class BaseCollector(abc.ABC):
         try:
             result = self.collect(**kwargs)
         except Exception as exc:
-            self._logger.error("Collector %s failed: %s", self.name, exc)
+            self._logger.exception("Collector %s failed: %s", self.name, exc)
             errors.append(str(exc))
             result = CollectorResult()
 

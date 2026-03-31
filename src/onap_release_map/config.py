@@ -66,8 +66,14 @@ def load_config(config_path: Path | None = None) -> dict[str, Any]:
     if config_path is not None:
         if config_path.exists():
             user_config = safe_load_yaml(config_path)
-            config = _deep_merge(config, user_config)
-            logger.info("Loaded configuration from %s", config_path)
+            if isinstance(user_config, dict) and user_config:
+                config = _deep_merge(config, user_config)
+                logger.info("Loaded configuration from %s", config_path)
+            else:
+                logger.warning(
+                    "Config file %s is empty or could not be parsed; using defaults",
+                    config_path,
+                )
         else:
             logger.warning("Config file not found: %s", config_path)
 

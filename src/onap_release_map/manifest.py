@@ -41,6 +41,7 @@ class ManifestBuilder:
         self.tool_version = tool_version
         self.onap_release = onap_release
         self.deterministic = deterministic
+        self._timestamp = datetime.now(tz=timezone.utc)
         self._results: list[CollectorResult] = []
         self._data_sources: list[DataSource] = []
 
@@ -78,7 +79,7 @@ class ManifestBuilder:
             total_helm_components=len(helm_components),
             repositories_by_category=dict(sorted(category_counts.items())),
             repositories_by_confidence=dict(sorted(confidence_counts.items())),
-            collectors_used=sorted(collectors_used),
+            collectors_used=sorted(set(collectors_used)),
         )
 
         provenance = ManifestProvenance(
@@ -86,10 +87,10 @@ class ManifestBuilder:
             collectors_executed=executions,
         )
 
-        generated_at = datetime.now(tz=timezone.utc).isoformat()
         if self.deterministic:
-            # Use a fixed timestamp format for reproducibility
-            generated_at = datetime.now(tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+            generated_at = self._timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
+        else:
+            generated_at = self._timestamp.isoformat()
 
         return ReleaseManifest(
             schema_version="1.0.0",
@@ -163,7 +164,7 @@ class ManifestBuilder:
                             existing.helm_charts.append(chart)
                     if existing.gerrit_project is None:
                         existing.gerrit_project = img.gerrit_project
-        return sorted(image_map.values(), key=lambda i: i.image)
+        return sorted(image_map.values(), key=lambda i: (i.image, i.tag))
 
     def _merge_helm_components(self) -> list[HelmComponent]:
         """Merge Helm components from all collectors."""

@@ -49,11 +49,16 @@ onap-release-map discover --oom-path ./oom
 | Command    | Description                                        |
 | ---------- | -------------------------------------------------- |
 | `discover` | Parse OOM charts and generate the release manifest |
-| `diff`     | Compare two manifests and report differences       |
-| `validate` | Validate Docker images exist in the Nexus registry |
-| `export`   | Convert a manifest to CSV, YAML, or Markdown       |
 | `schema`   | Print the JSON Schema for the manifest format      |
 | `version`  | Print version information                          |
+
+Future phases will add these commands:
+
+| Command    | Description                                        |
+| ---------- | -------------------------------------------------- |
+| `diff`     | Compare two manifests and report differences       |
+| `verify`   | Check Docker image existence in the Nexus registry |
+| `export`   | Convert a manifest to CSV, YAML, or Markdown       |
 
 <!-- markdownlint-enable MD013 -->
 

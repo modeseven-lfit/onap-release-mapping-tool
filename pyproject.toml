@@ -12,7 +12,7 @@ description = "ONAP release component mapping tool - generates definitive manife
 authors = [
     { name = "Matthew Watkins", email = "93649628+ModeSevenIndustrialSolutions@users.noreply.github.com" },
 ]
-license = "Apache-2.0"
+license = { text = "Apache-2.0" }
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
@@ -69,6 +69,7 @@ source = "vcs"
 # Optional: control local version scheme (omit commit hash/local segment for reproducible builds)
 [tool.hatch.version.raw-options]
 local_scheme = "no-local-version"
+fallback_version = "0.0.0"
 
 # Generate a file at build time with the resolved version (importable as onap_release_map._version.__version__)
 [tool.hatch.build.hooks.vcs]

@@ -18,7 +18,8 @@ inputs:
     required: false
     default: "./output"
   output-format:
-    description: "Output format: json, yaml, csv, md, all"
+    # yamllint disable-line rule:line-length
+    description: "Output format: json, yaml, all (non-json values are treated as all)"
     required: false
     default: "json"
   mapping-file:
@@ -44,6 +45,7 @@ runs:
   using: "composite"
   steps:
     - name: "Set up Python"
+      # yamllint disable-line rule:line-length
       uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
       with:
         python-version: "${{ inputs.python-version }}"
@@ -52,44 +54,49 @@ runs:
       shell: bash
       run: |
         # Install onap-release-map
-        pip install --quiet "${{ github.action_path }}"
+        # When used as a GitHub Action the checkout has no .git directory,
+        # so hatch-vcs cannot resolve the version dynamically.  The
+        # fallback-version configured in pyproject.toml handles this case.
+        python -m pip install --quiet "${{ github.action_path }}"
 
     - name: "Run onap-release-map discover"
       id: run-tool
       shell: bash
+      # yamllint disable rule:line-length
       run: |
         # Run onap-release-map discover
-        ARGS="discover --oom-path ${{ inputs.oom-path }}"
-        ARGS="$ARGS --output-dir ${{ inputs.output-dir }}"
-        ARGS="$ARGS --output-format ${{ inputs.output-format }}"
-        ARGS="$ARGS --release-name ${{ inputs.release-name }}"
-
-        if [ -n "${{ inputs.mapping-file }}" ]; then
-          ARGS="$ARGS --mapping-file ${{ inputs.mapping-file }}"
+        # Always include JSON so outputs can be parsed
+        FORMAT="${{ inputs.output-format }}"
+        if [ "$FORMAT" != "json" ] && [ "$FORMAT" != "all" ]; then
+          FORMAT="all"
         fi
 
-        onap-release-map $ARGS
+        ARGS=(discover)
+        ARGS+=(--oom-path "${{ inputs.oom-path }}")
+        ARGS+=(--output-dir "${{ inputs.output-dir }}")
+        ARGS+=(--output-format "$FORMAT")
+        ARGS+=(--release-name "${{ inputs.release-name }}")
 
-        # Set outputs
+        if [ -n "${{ inputs.mapping-file }}" ]; then
+          ARGS+=(--mapping-file "${{ inputs.mapping-file }}")
+        fi
+
+        onap-release-map "${ARGS[@]}"
+
+        # Set outputs from the JSON manifest
         MANIFEST="${{ inputs.output-dir }}/manifest.json"
         if [ -f "$MANIFEST" ]; then
           echo "manifest_path=$MANIFEST" >> "$GITHUB_OUTPUT"
-          REPO_COUNT=$(python3 -c "
-        import json
-        m = json.load(open('$MANIFEST'))
-        print(m.get('summary', {}).get('total_repositories', 0))
-        ")
-          IMAGE_COUNT=$(python3 -c "
-        import json
-        m = json.load(open('$MANIFEST'))
-        print(m.get('summary', {}).get('total_docker_images', 0))
-        ")
+          REPO_COUNT=$(python3 -c "import json; m = json.load(open('$MANIFEST')); print(m.get('summary', {}).get('total_repositories', 0))")
+          IMAGE_COUNT=$(python3 -c "import json; m = json.load(open('$MANIFEST')); print(m.get('summary', {}).get('total_docker_images', 0))")
           echo "repository_count=$REPO_COUNT" >> "$GITHUB_OUTPUT"
           echo "image_count=$IMAGE_COUNT" >> "$GITHUB_OUTPUT"
         fi
+      # yamllint enable rule:line-length
 
     - name: "Summary"
       shell: bash
+      # yamllint disable rule:line-length
       run: |
         # Summary
         {
@@ -102,3 +109,4 @@ runs:
           echo "| Release | ${{ inputs.release-name }} |"
           echo "| Output | ${{ inputs.output-dir }} |"
         } >> "$GITHUB_STEP_SUMMARY"
+      # yamllint enable rule:line-length

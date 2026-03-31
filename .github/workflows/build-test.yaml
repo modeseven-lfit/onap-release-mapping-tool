@@ -19,11 +19,7 @@ on:
     branches:
       - main
       - master
-    paths:
-      - '**'
-      - '!.github/**'
-      - '!.*'
-      - '!tox.ini'
+
 
 concurrency:
   group: "${{ github.workflow }}-${{ github.ref }}"

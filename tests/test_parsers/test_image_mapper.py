@@ -20,14 +20,18 @@ class TestImageMapper:
     def test_org_onap_heuristic(self) -> None:
         """Test org.onap.* heuristic mapping."""
         mapper = ImageMapper()
-        result = mapper.map_image("onap/org.onap.dcaegen2.collectors.ves.vescollector")
-        assert result == "dcaegen2/collectors/ves"
+        # Use an image NOT in the explicit mapping table so the
+        # org.onap.* heuristic code path is actually exercised.
+        result = mapper.map_image("onap/org.onap.fake.project.submod")
+        assert result == "fake/project"
 
     def test_slash_passthrough(self) -> None:
         """Test slash-based image names map directly."""
         mapper = ImageMapper()
-        result = mapper.map_image("onap/portal-ng/bff")
-        assert result == "portal-ng/bff"
+        # Use an image NOT in the explicit mapping table so the
+        # slash-passthrough heuristic code path is actually exercised.
+        result = mapper.map_image("onap/fake-project/submodule")
+        assert result == "fake-project/submodule"
 
     def test_get_top_level_project(self) -> None:
         """Test top-level project extraction."""

@@ -2,8 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: 2025 The Linux Foundation
 
+# yamllint disable rule:line-length
+
 # Maps Docker image names (without registry prefix) to Gerrit project paths.
-# The tool applies heuristic rules first; this table provides explicit overrides.
+# The tool checks this table first; heuristic rules are used as a fallback for unmapped images.
 
 mappings:
   # AAI

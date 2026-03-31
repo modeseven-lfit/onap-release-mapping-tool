@@ -42,15 +42,20 @@ class TestHelmChartParser:
         assert images == []
 
     def test_excludes_argo_dir(self, sample_oom_path: Path) -> None:
-        """Test that argo directory is excluded."""
-        argo_dir = sample_oom_path / "kubernetes" / "argo"
+        """Test that argo directory is excluded from walking."""
+        # Place argo under a component's components/ path where it would be walked
+        argo_dir = sample_oom_path / "kubernetes" / "policy" / "components" / "argo"
         argo_dir.mkdir(parents=True)
         (argo_dir / "Chart.yaml").write_text(
             "apiVersion: v2\nname: argo\nversion: 1.0.0\n",
             encoding="utf-8",
         )
+        (argo_dir / "values.yaml").write_text(
+            "image: onap/argo-fake:1.0.0\n",
+            encoding="utf-8",
+        )
 
         parser = HelmChartParser(sample_oom_path)
-        components, _, _ = parser.parse_umbrella_chart()
-        component_names = [c["name"] for c in components]
-        assert "argo" not in component_names
+        _, images, _ = parser.parse_umbrella_chart()
+        image_names = [img["image"] for img in images]
+        assert "onap/argo-fake" not in image_names

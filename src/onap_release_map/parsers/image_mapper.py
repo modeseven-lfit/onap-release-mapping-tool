@@ -10,7 +10,7 @@ from importlib import resources
 from pathlib import Path
 from typing import Any
 
-from .yaml_utils import safe_load_yaml
+from .yaml_utils import safe_load_yaml, safe_load_yaml_string
 
 # Known top-level ONAP project prefixes used for dash-to-slash heuristic.
 _KNOWN_TOP_LEVEL_PROJECTS: frozenset[str] = frozenset(
@@ -33,6 +33,12 @@ _KNOWN_TOP_LEVEL_PROJECTS: frozenset[str] = frozenset(
         "usecase-ui",
         "vfc",
     }
+)
+
+# Precomputed longest-first ordering so _heuristic_dash() doesn't
+# re-sort on every call (e.g. prefers "portal-ng" over "portal").
+_KNOWN_PREFIXES_LONGEST_FIRST: tuple[str, ...] = tuple(
+    sorted(_KNOWN_TOP_LEVEL_PROJECTS, key=len, reverse=True)
 )
 
 
@@ -131,19 +137,17 @@ class ImageMapper:
     def _load_default_mappings(self) -> None:
         """Load the shipped ``image_repo_mapping.yaml`` from package data."""
         try:
-            data_dir = resources.files("onap_release_map").joinpath(
-                "data", "image_repo_mapping.yaml"
+            resource = (
+                resources.files("onap_release_map")
+                .joinpath("data")
+                .joinpath("image_repo_mapping.yaml")
             )
-            mapping_path = Path(str(data_dir))
-            if mapping_path.is_file():
-                self._merge_mappings(safe_load_yaml(mapping_path))
-                self._logger.debug(
-                    "Loaded %d default image mappings", len(self._mappings)
-                )
-            else:
-                self._logger.warning("Default mapping file not found: %s", mapping_path)
+            content = resource.read_text(encoding="utf-8")
+            data = safe_load_yaml_string(content)
+            self._merge_mappings(data)
+            self._logger.debug("Loaded %d default image mappings", len(self._mappings))
         except Exception:
-            self._logger.warning("Failed to load default image mappings", exc_info=True)
+            self._logger.warning("Could not load default image mappings", exc_info=True)
 
     def _load_override_mappings(self, path: Path) -> None:
         """Load and merge user-provided override mappings.
@@ -273,7 +277,7 @@ class ImageMapper:
             Gerrit project path or ``None``.
         """
         # Try each known prefix, longest-first to prefer portal-ng over portal
-        for prefix in sorted(_KNOWN_TOP_LEVEL_PROJECTS, key=len, reverse=True):
+        for prefix in _KNOWN_PREFIXES_LONGEST_FIRST:
             dash_prefix = prefix + "-"
             if name.startswith(dash_prefix):
                 remainder = name[len(dash_prefix) :]

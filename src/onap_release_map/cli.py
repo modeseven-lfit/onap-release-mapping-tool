@@ -15,7 +15,7 @@ from rich.console import Console
 from rich.logging import RichHandler
 from rich.table import Table
 
-from onap_release_map._version import __version__
+from onap_release_map import __version__
 from onap_release_map.collectors import registry
 from onap_release_map.collectors.oom import OOMCollector  # noqa: F401 - registers
 from onap_release_map.config import load_config
@@ -93,6 +93,9 @@ def discover(
             "--mapping-file",
             help="Custom image-to-repo mapping YAML override.",
             exists=True,
+            file_okay=True,
+            dir_okay=False,
+            readable=True,
             resolve_path=True,
         ),
     ] = None,
@@ -102,6 +105,9 @@ def discover(
             "--config",
             help="Path to YAML configuration file.",
             exists=True,
+            file_okay=True,
+            dir_okay=False,
+            readable=True,
             resolve_path=True,
         ),
     ] = None,
@@ -110,13 +116,17 @@ def discover(
         typer.Option(
             "--output-dir",
             help="Output directory for manifest files.",
+            file_okay=False,
+            dir_okay=True,
+            writable=True,
+            resolve_path=True,
         ),
     ] = Path("./output"),
     output_format: Annotated[
         str,
         typer.Option(
             "--output-format",
-            help="Output formats: json, yaml, csv, md, all.",
+            help="Output formats: json, yaml, all.",
         ),
     ] = "json",
     release_name: Annotated[
@@ -145,7 +155,17 @@ def discover(
 ) -> None:
     """Parse OOM charts and generate the release manifest."""
     _setup_logging(verbose)
-    load_config(config_file)
+    _config = load_config(config_file)  # loaded; CLI flags override
+
+    # Validate output format early
+    _valid_formats = {"json", "yaml", "all"}
+    if output_format not in _valid_formats:
+        err_console.print(
+            f"[red]Error:[/] unsupported format "
+            f"[bold]{output_format}[/]. "
+            f"Choose from: {', '.join(sorted(_valid_formats))}"
+        )
+        raise typer.Exit(code=1)
 
     console.print(
         f"[bold blue]onap-release-map[/] v{__version__}",
@@ -182,6 +202,16 @@ def discover(
 
     with console.status("[bold green]Parsing OOM Helm charts..."):
         result = oom_collector.timed_collect()
+
+    # Fail fast if the collector reported execution errors
+    if result.execution and result.execution.errors:
+        err_console.print(
+            "[red]Error:[/] OOM collection failed with the "
+            "following error(s):"
+        )
+        for err in result.execution.errors:
+            err_console.print(f"  - {err}")
+        raise typer.Exit(code=1)
 
     builder.add_result(result)
     builder.add_data_source(

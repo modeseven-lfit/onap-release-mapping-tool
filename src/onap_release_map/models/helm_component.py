@@ -33,7 +33,7 @@ class HelmComponent(BaseModel):
 
     name: str
     version: str | None = None
-    enabled_by_default: bool = False
+    enabled_by_default: bool | None = None
     condition_key: str | None = None
     sub_charts: list[str] = Field(default_factory=list)
     docker_images: list[str] = Field(default_factory=list)
