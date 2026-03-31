@@ -1,0 +1,163 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2025 The Linux Foundation
+
+# Maps Docker image names (without registry prefix) to Gerrit project paths.
+# The tool applies heuristic rules first; this table provides explicit overrides.
+
+mappings:
+  # AAI
+  onap/babel: aai/babel
+  onap/aai-graphadmin: aai/graphadmin
+  onap/aai-haproxy: aai/aai-common
+  onap/aai-resources: aai/resources
+  onap/aai-schema-service: aai/schema-service
+  onap/aai-traversal: aai/traversal
+  onap/model-loader: aai/model-loader
+  onap/sparky-be: aai/sparky-be
+
+  # CCSDK / CDS
+  onap/ccsdk-blueprintsprocessor: ccsdk/cds
+  onap/ccsdk-commandexecutor: ccsdk/cds
+  onap/ccsdk-py-executor: ccsdk/cds
+  onap/ccsdk-sdclistener: ccsdk/cds
+  onap/ccsdk-cds-ui-server: ccsdk/cds
+  onap/ccsdk-dgbuilder-image: ccsdk/distribution
+  onap/ccsdk-apps-ms-neng: ccsdk/apps
+  onap/ccsdk-oran-a1policymanagementservice: ccsdk/oran
+
+  # CPS
+  onap/cps-and-ncmp: cps
+  onap/cps-temporal: cps
+  onap/ncmp-dmi-plugin: cps/ncmp-dmi-plugin
+
+  # DCAEGEN2
+  onap/org.onap.dcaegen2.collectors.hv-ves.hv-collector-main: dcaegen2/collectors/hv-ves
+  onap/org.onap.dcaegen2.collectors.ves.vescollector: dcaegen2/collectors/ves
+  onap/org.onap.dcaegen2.deployments.dcae-services-policy-sync: dcaegen2/deployments
+  onap/org.onap.dcaegen2.deployments.healthcheck-container: dcaegen2/deployments
+  onap/org.onap.dcaegen2.platform.ves-openapi-manager: dcaegen2/platform/ves-openapi-manager
+  onap/org.onap.dcaegen2.services.datalakeadminui: dcaegen2/services
+  onap/org.onap.dcaegen2.services.datalake.exposure.service: dcaegen2/services
+  onap/org.onap.dcaegen2.services.datalakefeeder: dcaegen2/services
+  onap/org.onap.dcaegen2.services.prh.prh-app-server: dcaegen2/services/prh
+
+  # DMaaP
+  onap/dmaap/datarouter-prov-client: dmaap/datarouter
+
+  # Integration
+  onap/integration-java11: integration/docker/onap-java11
+
+  # Multicloud
+  onap/multicloud/framework: multicloud/framework
+  onap/multicloud/framework-artifactbroker: multicloud/framework
+  onap/multicloud/k8s: multicloud/k8s
+  onap/multicloud/openstack-fcaps: multicloud/openstack
+
+  # OOM
+  onap/oom/readiness: oom/readiness
+  onap/org.onap.oom.platform.cert-service.oom-certservice-api: oom/platform/cert-service
+  onap/org.onap.oom.platform.cert-service.oom-certservice-k8s-external-provider: oom/platform/cert-service
+  onap/org.onap.oom.platform.cert-service.oom-certservice-post-processor: oom/platform/cert-service
+
+  # Policy
+  onap/policy-apex-pdp: policy/apex-pdp
+  onap/policy-api: policy/api
+  onap/policy-pap: policy/pap
+  onap/policy-xacml-pdp: policy/xacml-pdp
+  onap/policy-pdpd-cl: policy/drools-pdp
+  onap/policy-opa-pdp: policy/opa-pdp
+  onap/policy-distribution: policy/distribution
+  onap/policy-db-migrator: policy/docker
+  onap/policy-clamp-ac-k8s-ppnt: policy/clamp
+  onap/policy-clamp-ac-http-ppnt: policy/clamp
+  onap/policy-clamp-ac-a1pms-ppnt: policy/clamp
+  onap/policy-clamp-ac-kserve-ppnt: policy/clamp
+  onap/policy-clamp-ac-pf-ppnt: policy/clamp
+  onap/policy-clamp-runtime-acm: policy/clamp
+
+  # Portal-NG
+  onap/portal-ng/bff: portal-ng/bff
+  onap/portal-ng/history: portal-ng/history
+  onap/portal-ng/preferences: portal-ng/preferences
+  onap/portal-ng/ui: portal-ng/ui
+
+  # SDC
+  onap/sdc-backend-all-plugins: sdc
+  onap/sdc-backend-init: sdc
+  onap/sdc-cassandra: sdc
+  onap/sdc-cassandra-init: sdc
+  onap/sdc-frontend: sdc
+  onap/sdc-onboard-backend: sdc
+  onap/sdc-onboard-cassandra-init: sdc
+  onap/sdc-workflow-backend: sdc/sdc-workflow-designer
+  onap/sdc-workflow-frontend: sdc/sdc-workflow-designer
+  onap/sdc-workflow-init: sdc/sdc-workflow-designer
+  onap/sdc-helm-validator: sdc/sdc-helm-validator
+
+  # SDNC
+  onap/sdnc-image: sdnc/oam
+  onap/sdnc-ansible-server-image: sdnc/oam
+  onap/sdnc-web-image: sdnc/oam
+  onap/sdnc-ueb-listener-image: sdnc/oam
+
+  # SO
+  onap/so/api-handler-infra: so
+  onap/so/bpmn-infra: so
+  onap/so/catalog-db-adapter: so
+  onap/so/openstack-adapter: so
+  onap/so/request-db-adapter: so
+  onap/so/sdc-controller: so
+  onap/so/sdnc-adapter: so
+  onap/so/so-admin-cockpit: so/so-admin-cockpit
+  onap/so/so-cnf-adapter: so
+  onap/so/so-cnfm-as-lcm: so
+  onap/so/so-etsi-nfvo-ns-lcm: so
+  onap/so/so-etsi-sol003-adapter: so/adapters/so-etsi-sol003-adapter
+  onap/so/so-etsi-sol005-adapter: so/adapters/so-etsi-sol005-adapter
+  onap/so/so-nssmf-adapter: so/adapters/so-nssmf-adapter
+  onap/so/so-oof-adapter: so/adapters/so-oof-adapter
+  onap/so/ve-vnfm-adapter: so
+
+  # Music
+  onap/music/prom: music/prom
+
+  # Testsuite
+  onap/testsuite: testsuite
+
+  # Usecase-UI
+  onap/usecase-ui: usecase-ui
+  onap/usecase-ui-server: usecase-ui/server
+  onap/usecase-ui-nlp: usecase-ui/nlp
+  onap/usecase-ui-intent-analysis: usecase-ui/intent-analysis
+  onap/usecase-ui-llm-adaptation: usecase-ui/llm-adaptation
+
+# Build-only dependencies (not producing Docker images)
+build_dependencies:
+  - oparent
+  - ccsdk/parent
+  - ccsdk/sli
+  - ccsdk/features
+  - policy/parent
+  - policy/common
+  - policy/models
+  - policy/drools-applications
+  - so/libs
+  - aai/aai-common
+  - aai/rest-client
+  - sdc/sdc-be-common
+  - sdc/sdc-distribution-client
+  - sdc/sdc-tosca
+  - sdnc/northbound
+
+# Infrastructure repositories
+infrastructure:
+  - ci-management
+  - integration
+  - integration/csit
+  - integration/xtesting
+  - demo
+  - doc
+  - relman
+  - oom
+  - vnfrqts/requirements

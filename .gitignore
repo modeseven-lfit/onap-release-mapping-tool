@@ -56,5 +56,15 @@ MANIFEST
 .conda*/
 .python-version
 
+# UV
+uv.lock
+
+# Auto-generated version file (hatch-vcs)
+src/onap_release_map/_version.py
+
+# Tool output
+output/
+coverage_html_report/
+
 # Node
 node_modules/*

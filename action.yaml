@@ -2,36 +2,103 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: 2025 The Linux Foundation
 
-# actions-template
-name: "🛠️ Actions Template"
-description: "Description of action"
-# Any relevant notes/observations can go here
+name: "ONAP Release Map"
+description: "Generate ONAP release component manifest from OOM Helm charts"
 
 inputs:
-  input:
-    description: "Description of input"
+  oom-path:
+    description: "Path to local OOM repository clone"
     required: true
+  release-name:
+    description: "ONAP release code name"
+    required: false
+    default: "Rabat"
+  output-dir:
+    description: "Output directory for manifest files"
+    required: false
+    default: "./output"
+  output-format:
+    description: "Output format: json, yaml, csv, md, all"
+    required: false
+    default: "json"
+  mapping-file:
+    description: "Custom image-to-repo mapping YAML override"
+    required: false
+  python-version:
+    description: "Python version to use"
+    required: false
+    default: "3.12"
 
 outputs:
-  output:
-    description: "Description of output"
-    value: ${{ steps.code.outputs.output }}
+  manifest-path:
+    description: "Path to the generated manifest JSON file"
+    value: ${{ steps.run-tool.outputs.manifest_path }}
+  repository-count:
+    description: "Number of repositories in the manifest"
+    value: ${{ steps.run-tool.outputs.repository_count }}
+  image-count:
+    description: "Number of Docker images in the manifest"
+    value: ${{ steps.run-tool.outputs.image_count }}
 
 runs:
   using: "composite"
   steps:
-    - name: "Friendly Name"
-      id: code
+    - name: "Set up Python"
+      uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
+      with:
+        python-version: "${{ inputs.python-version }}"
+
+    - name: "Install onap-release-map"
       shell: bash
       run: |
-        # Friendly Name
-        input="${{ inputs.input }}"
-        if [ -z "$input" ]; then
-          echo "Error: mandatory input was not set/configured ❌"
-          exit 1
+        # Install onap-release-map
+        pip install --quiet "${{ github.action_path }}"
+
+    - name: "Run onap-release-map discover"
+      id: run-tool
+      shell: bash
+      run: |
+        # Run onap-release-map discover
+        ARGS="discover --oom-path ${{ inputs.oom-path }}"
+        ARGS="$ARGS --output-dir ${{ inputs.output-dir }}"
+        ARGS="$ARGS --output-format ${{ inputs.output-format }}"
+        ARGS="$ARGS --release-name ${{ inputs.release-name }}"
+
+        if [ -n "${{ inputs.mapping-file }}" ]; then
+          ARGS="$ARGS --mapping-file ${{ inputs.mapping-file }}"
         fi
 
-        echo "output=$input" >> "$GITHUB_ENV"
-        echo "output=$input" >> "$GITHUB_OUTPUT"
-        echo "Action received: $input ✅"
-        echo "Action received: $input ✅" >> "$GITHUB_STEP_SUMMARY"
+        onap-release-map $ARGS
+
+        # Set outputs
+        MANIFEST="${{ inputs.output-dir }}/manifest.json"
+        if [ -f "$MANIFEST" ]; then
+          echo "manifest_path=$MANIFEST" >> "$GITHUB_OUTPUT"
+          REPO_COUNT=$(python3 -c "
+        import json
+        m = json.load(open('$MANIFEST'))
+        print(m.get('summary', {}).get('total_repositories', 0))
+        ")
+          IMAGE_COUNT=$(python3 -c "
+        import json
+        m = json.load(open('$MANIFEST'))
+        print(m.get('summary', {}).get('total_docker_images', 0))
+        ")
+          echo "repository_count=$REPO_COUNT" >> "$GITHUB_OUTPUT"
+          echo "image_count=$IMAGE_COUNT" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: "Summary"
+      shell: bash
+      run: |
+        # Summary
+        {
+          echo "## ONAP Release Map Results"
+          echo ""
+          echo "| Metric | Value |"
+          echo "| ------ | ----- |"
+          echo "| Repositories | ${{ steps.run-tool.outputs.repository_count }} |"
+          echo "| Docker Images | ${{ steps.run-tool.outputs.image_count }} |"
+          echo "| Release | ${{ inputs.release-name }} |"
+          echo "| Output | ${{ inputs.output-dir }} |"
+        } >> "$GITHUB_STEP_SUMMARY"

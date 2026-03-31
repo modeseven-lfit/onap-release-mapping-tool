@@ -1,0 +1,15 @@
+version = 1
+
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2025 The Linux Foundation
+
+[[annotations]]
+path = [
+    "tests/fixtures/**",
+    "*.lock",
+    "docs/*.png",
+    "**/__pycache__/**",
+    ".secrets.**"
+]
+SPDX-License-Identifier = "Apache-2.0"
+SPDX-FileCopyrightText = "2025 The Linux Foundation"

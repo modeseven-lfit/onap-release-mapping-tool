@@ -1,0 +1,216 @@
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2025 The Linux Foundation
+
+[build-system]
+requires = ["hatchling>=1.24", "hatch-vcs>=0.4"]
+build-backend = "hatchling.build"
+
+[project]
+name = "onap-release-map"
+dynamic = ["version"]
+description = "ONAP release component mapping tool - generates definitive manifests of Gerrit projects and Docker images in an ONAP release"
+authors = [
+    { name = "Matthew Watkins", email = "93649628+ModeSevenIndustrialSolutions@users.noreply.github.com" },
+]
+license = "Apache-2.0"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: Unix",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Topic :: Software Development",
+]
+dependencies = [
+  "typer>=0.21.0",
+  "rich>=14.0.0",
+  "pydantic>=2.10.0",
+  "httpx>=0.28.0",
+  "pyyaml>=6.0.0",
+  "jsonschema>=4.23.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/modeseven-lfit/onap-release-mapping-tool"
+Repository = "https://github.com/modeseven-lfit/onap-release-mapping-tool"
+Downloads = "https://github.com/modeseven-lfit/onap-release-mapping-tool/releases"
+"Bug Tracker" = "https://github.com/modeseven-lfit/onap-release-mapping-tool/issues"
+Documentation = "https://github.com/modeseven-lfit/onap-release-mapping-tool/tree/main/docs"
+"Source Code" = "https://github.com/modeseven-lfit/onap-release-mapping-tool"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-mock>=3.15.1",
+    "pytest-cov>=7.0.0",
+    "coverage[toml]>=7.13.1",
+    "respx>=0.22.0",
+    "mypy>=1.19.1",
+    "types-pyyaml>=6.0.12",
+]
+
+[project.scripts]
+onap-release-map = "onap_release_map.cli:app"
+
+# Hatch dynamic versioning from VCS (tags). Example: tag v0.2.3 -> version 0.2.3
+[tool.hatch.version]
+source = "vcs"
+
+# Optional: control local version scheme (omit commit hash/local segment for reproducible builds)
+[tool.hatch.version.raw-options]
+local_scheme = "no-local-version"
+
+# Generate a file at build time with the resolved version (importable as onap_release_map._version.__version__)
+[tool.hatch.build.hooks.vcs]
+version-file = "src/onap_release_map/_version.py"
+
+# Wheel build configuration (src layout)
+[tool.hatch.build.targets.wheel]
+packages = ["src/onap_release_map"]
+
+# sdists: include everything by default
+[tool.hatch.build.targets.sdist]
+include = ["src", "README.md", "LICENSE*", "pyproject.toml"]
+
+# Dependency group for uv (mirrors dev extra)
+[dependency-groups]
+dev = [
+  "pytest>=9.0.2",
+  "pytest-mock>=3.15.1",
+  "pytest-cov>=7.0.0",
+  "coverage[toml]>=7.13.1",
+  "respx>=0.22.0",
+  "mypy>=1.19.1",
+  "types-pyyaml>=6.0.12",
+]
+
+[tool.pytest.ini_options]
+testpaths = [
+  "tests/",
+]
+addopts = [
+  "-v",
+  "--tb=short",
+  "--cov=onap_release_map",
+  "--cov-report=html",
+]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+fail_under = 45
+skip_empty = true
+show_missing = true
+
+[tool.basedpyright]
+pythonVersion = "3.10"
+pythonPlatform = "All"
+typeCheckingMode = "standard"
+# Auto-generated version file uses deprecated typing imports for backwards compat
+exclude = ["src/onap_release_map/_version.py"]
+
+# --- Errors we want to catch and fix ---
+reportMissingTypeArgument = "warning"
+reportOptionalMemberAccess = "warning"
+reportCallIssue = "warning"
+reportAssignmentType = "warning"
+reportReturnType = "warning"
+reportGeneralTypeIssues = "warning"
+reportUninitializedInstanceVariable = "warning"
+
+# --- Intentional patterns we suppress ---
+# Third-party imports cannot be resolved in pre-commit.ci sandbox
+reportMissingImports = false
+# Typer uses Option() calls in parameter defaults by design
+reportCallInDefaultInitializer = false
+# Typer parameters are consumed by the framework, not the function body
+reportUnusedParameter = false
+# Test files legitimately access private members for testing
+reportPrivateUsage = false
+# Test files and CLI create values that are intentionally unused
+reportUnusedCallResult = false
+# Many third-party and dynamic types produce Any
+reportAny = false
+reportExplicitAny = false
+reportUnknownParameterType = false
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+reportUnknownLambdaType = false
+reportUnknownArgumentType = false
+# Missing type annotations are tracked separately (mypy)
+reportMissingParameterType = false
+# String concatenation in GraphQL queries and Rich output is intentional
+reportImplicitStringConcatenation = false
+# Class attributes in tests don't need annotations
+reportUnannotatedClassAttribute = false
+# Unused imports are handled by ruff (F401)
+reportUnusedImport = false
+# Unused functions are typically CLI helpers or test utilities
+reportUnusedFunction = false
+# Unused variables are handled by ruff (F841)
+reportUnusedVariable = false
+# Deprecated typing imports in auto-generated files
+reportDeprecated = false
+# Override decorators are not required
+reportImplicitOverride = false
+# isinstance checks used for runtime safety
+reportUnnecessaryIsInstance = false
+# Comparison checks used for runtime safety
+reportUnnecessaryComparison = false
+# Unreachable code used for defensive programming
+reportUnreachable = false
+# Missing type stubs for third-party packages
+reportMissingTypeStubs = false
+# Constant redefinition patterns (e.g. try/except fallback classes)
+reportConstantRedefinition = false
+# Attribute access issues in tests (mock objects)
+reportAttributeAccessIssue = false
+# Operator issues in tests (mock assertions)
+reportOperatorIssue = false
+# Index issues in tests (mock return values)
+reportIndexIssue = false
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[tool.ruff]
+target-version = "py310"
+line-length = 88
+# Auto-generated version file uses deprecated typing imports for backwards compat
+exclude = ["src/onap_release_map/_version.py"]
+
+[tool.ruff.lint]
+select = [
+  "E",
+  "W",
+  "F",
+  "I",
+  "B",
+  "C4",
+  "UP",
+]
+ignore = [
+  "E501",
+  "B008",
+  "C901",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/**/*" = ["S101", "D"]

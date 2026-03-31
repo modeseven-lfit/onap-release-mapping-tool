@@ -1,0 +1,42 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2025 The Linux Foundation
+
+# Default configuration for onap-release-map
+
+# ONAP Gerrit server
+gerrit:
+  url: "https://gerrit.onap.org/r"
+  timeout: 30
+  max_retries: 3
+
+# OOM repository
+oom:
+  default_branch: "master"
+  remote_url: "https://gerrit.onap.org/r/oom"
+  exclude_dirs:
+    - "argo"
+    - "archive"
+
+# Collectors to enable by default
+collectors:
+  - oom
+
+# Output settings
+output:
+  formats:
+    - json
+  deterministic: true
+  pretty_print: true
+  indent: 2
+
+# Nexus registry for validation
+nexus:
+  url: "https://nexus3.onap.org"
+  timeout: 10
+  concurrent_workers: 4
+
+# Logging
+logging:
+  level: "INFO"
+  format: "rich"
