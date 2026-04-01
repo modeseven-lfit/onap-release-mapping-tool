@@ -352,9 +352,7 @@ class HelmChartParser:
                 # (e.g. nexus3.onap.org:10001/onap/foo:1.2.3) must
                 # keep their explicit registry.
                 effective_registry: str | None = None
-                if global_registry and not image_val.startswith(
-                    "nexus3.onap.org"
-                ):
+                if global_registry and not image_val.startswith("nexus3.onap.org"):
                     effective_registry = global_registry
                 results.append(
                     self._build_image_record(

@@ -206,8 +206,7 @@ def discover(
     # Fail fast if the collector reported execution errors
     if result.execution and result.execution.errors:
         err_console.print(
-            "[red]Error:[/] OOM collection failed with the "
-            "following error(s):"
+            "[red]Error:[/] OOM collection failed with the following error(s):"
         )
         for err in result.execution.errors:
             err_console.print(f"  - {err}")
