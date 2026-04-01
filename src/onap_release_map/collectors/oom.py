@@ -29,11 +29,23 @@ class OOMCollector(BaseCollector):
         self,
         oom_path: Path | None = None,
         mapping_file: Path | None = None,
+        gerrit_url: str | None = None,
         **kwargs: object,
     ) -> None:
+        """Initialise the OOM collector.
+
+        Args:
+            oom_path: Path to the OOM repository checkout.
+            mapping_file: Optional path to a YAML file with additional
+                or overriding image-to-project mappings.
+            gerrit_url: Base URL of the Gerrit instance.  Defaults to
+                ``https://gerrit.onap.org/r``.
+            **kwargs: Passed through to :class:`BaseCollector`.
+        """
         super().__init__()
         self.oom_path = oom_path
         self.mapping_file = mapping_file
+        self._gerrit_url = (gerrit_url or "https://gerrit.onap.org/r").rstrip("/")
 
     def collect(self, **kwargs: object) -> CollectorResult:
         """Parse OOM charts and produce repositories, images, and components."""
@@ -146,7 +158,7 @@ class OOMCollector(BaseCollector):
                 repo_map[proj] = OnapRepository(
                     gerrit_project=proj,
                     top_level_project=top_level,
-                    gerrit_url=f"https://gerrit.onap.org/r/admin/repos/{quote(proj, safe='')}",
+                    gerrit_url=f"{self._gerrit_url}/admin/repos/{quote(proj, safe='')}",
                     confidence="high",
                     confidence_reasons=["Docker image referenced in OOM Helm charts"],
                     category="runtime",
@@ -164,7 +176,7 @@ class OOMCollector(BaseCollector):
             OnapRepository(
                 gerrit_project="oom",
                 top_level_project="oom",
-                gerrit_url=("https://gerrit.onap.org/r/admin/repos/oom"),
+                gerrit_url=f"{self._gerrit_url}/admin/repos/oom",
                 confidence="high",
                 confidence_reasons=["OOM is the deployment repository"],
                 category="infrastructure",
