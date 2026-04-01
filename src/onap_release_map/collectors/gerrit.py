@@ -98,9 +98,7 @@ class GerritCollector(BaseCollector):
                     repositories[project_name] = repo
 
         if not repositories and fetch_errors:
-            raise RuntimeError(
-                "Gerrit collection failed: " + "; ".join(fetch_errors)
-            )
+            raise RuntimeError("Gerrit collection failed: " + "; ".join(fetch_errors))
 
         sorted_repos = sorted(repositories.values(), key=lambda r: r.gerrit_project)
         self._logger.info(
@@ -211,10 +209,7 @@ class GerritCollector(BaseCollector):
                 self._logger.error("Failed to parse Gerrit response: %s", exc)
                 return {}
 
-        msg = (
-            f"All {self._max_retries} attempts to fetch "
-            f"{url} failed: {last_exc}"
-        )
+        msg = f"All {self._max_retries} attempts to fetch {url} failed: {last_exc}"
         self._logger.error(msg)
         raise RuntimeError(msg)
 

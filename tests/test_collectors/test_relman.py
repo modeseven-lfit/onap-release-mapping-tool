@@ -144,9 +144,7 @@ class TestRelmanCollector:
 
         assert len(result.repositories) == 1
         repo = result.repositories[0]
-        assert repo.gerrit_url.startswith(
-            "https://gerrit.onap.org/r/admin/repos/"
-        )
+        assert repo.gerrit_url.startswith("https://gerrit.onap.org/r/admin/repos/")
 
     def test_relman_timed_collect(self, tmp_path: Path) -> None:
         """Test timed_collect populates execution metadata."""

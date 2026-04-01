@@ -225,8 +225,7 @@ class JJBCollector(BaseCollector):
             top_level = gerrit_project.split("/")[0]
 
             gerrit_url = (
-                f"{gerrit_base_url}/admin/repos/"
-                f"{quote(gerrit_project, safe='')}"
+                f"{gerrit_base_url}/admin/repos/{quote(gerrit_project, safe='')}"
             )
 
             repo = OnapRepository(

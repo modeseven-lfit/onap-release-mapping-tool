@@ -239,8 +239,7 @@ def discover(
     # Validate that required paths are provided for enabled collectors
     if "oom" in enabled and oom_path is None:
         err_console.print(
-            "[red]Error:[/] --oom-path is required "
-            "when the oom collector is enabled"
+            "[red]Error:[/] --oom-path is required when the oom collector is enabled"
         )
         raise typer.Exit(code=1)
     if "relman" in enabled and repos_yaml is None:

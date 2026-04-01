@@ -179,9 +179,7 @@ class RelmanCollector(BaseCollector):
         else:
             category = "runtime"
 
-        gerrit_url = (
-            f"{self._gerrit_url}/admin/repos/{quote(gerrit_project, safe='')}"
-        )
+        gerrit_url = f"{self._gerrit_url}/admin/repos/{quote(gerrit_project, safe='')}"
 
         return OnapRepository(
             gerrit_project=gerrit_project,
