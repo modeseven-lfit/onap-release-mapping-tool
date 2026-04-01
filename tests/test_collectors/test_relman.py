@@ -123,6 +123,7 @@ class TestRelmanCollector:
 
         assert len(result.repositories) == 1
         repo = result.repositories[0]
+        assert repo.gerrit_url is not None
         assert repo.gerrit_url.startswith(
             "https://custom-gerrit.example.com/r/admin/repos/"
         )
@@ -144,6 +145,7 @@ class TestRelmanCollector:
 
         assert len(result.repositories) == 1
         repo = result.repositories[0]
+        assert repo.gerrit_url is not None
         assert repo.gerrit_url.startswith("https://gerrit.onap.org/r/admin/repos/")
 
     def test_relman_timed_collect(self, tmp_path: Path) -> None:

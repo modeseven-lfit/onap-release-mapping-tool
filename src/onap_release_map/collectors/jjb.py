@@ -221,6 +221,8 @@ class JJBCollector(BaseCollector):
         """
         repositories: list[OnapRepository] = []
 
+        # project_name is parsed but not yet used; retained for
+        # future enrichment (e.g. display names in manifests).
         for gerrit_project, _project_name in projects.items():
             top_level = gerrit_project.split("/")[0]
 

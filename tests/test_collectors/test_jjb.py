@@ -119,6 +119,7 @@ class TestJJBCollector:
 
         assert len(result.repositories) == 1
         repo = result.repositories[0]
+        assert repo.gerrit_url is not None
         assert repo.gerrit_url.startswith(custom_url)
         assert "gerrit.onap.org" not in repo.gerrit_url
 
@@ -133,6 +134,7 @@ class TestJJBCollector:
         result = collector.collect()
 
         assert len(result.repositories) == 1
+        assert result.repositories[0].gerrit_url is not None
         assert "gerrit.onap.org" in result.repositories[0].gerrit_url
 
     def test_jjb_registration(self) -> None:

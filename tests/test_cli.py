@@ -223,8 +223,8 @@ class TestDiscover:
         assert result.exit_code != 0
         assert "no collectors specified" in result.output
 
-    def test_discover_oom_missing_path(self, tmp_path: Path) -> None:
-        """Test that oom collector requires --oom-path."""
+    def test_discover_relman_without_oom_path(self, tmp_path: Path) -> None:
+        """Test that relman collector runs without --oom-path."""
         repos_yaml = tmp_path / "repos.yaml"
         repos_yaml.write_text(
             "policy:\n"
@@ -234,6 +234,7 @@ class TestDiscover:
             "    included_in: '[]'\n",
             encoding="utf-8",
         )
+        output_dir = tmp_path / "output"
         result = runner.invoke(
             app,
             [
@@ -242,10 +243,13 @@ class TestDiscover:
                 "relman",
                 "--repos-yaml",
                 str(repos_yaml),
+                "--output-dir",
+                str(output_dir),
             ],
         )
         assert result.exit_code == 0
         assert "Collectors: relman" in result.output
+        assert (output_dir / "manifest.json").exists()
 
     def test_discover_duplicate_collectors(
         self, sample_oom_path: Path, tmp_path: Path

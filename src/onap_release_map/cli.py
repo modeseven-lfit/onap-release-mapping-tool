@@ -196,7 +196,7 @@ def discover(
         ),
     ] = 0,
 ) -> None:
-    """Parse OOM charts and generate the release manifest."""
+    """Run selected collectors to build and output the release manifest."""
     _setup_logging(verbose)
     config = load_config(config_file)
 

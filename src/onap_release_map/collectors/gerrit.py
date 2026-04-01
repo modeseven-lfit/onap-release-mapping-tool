@@ -173,10 +173,16 @@ class GerritCollector(BaseCollector):
         retries on transient errors up to ``max_retries`` times.
 
         Args:
+            client: An ``httpx.Client`` instance for the request.
             url: Fully-qualified URL to fetch.
 
         Returns:
-            Parsed JSON as a dictionary, or an empty dict on failure.
+            Parsed JSON as a dictionary.
+
+        Raises:
+            RuntimeError: If all retry attempts fail due to HTTP or
+                network errors, or if the response cannot be decoded
+                as JSON.
         """
         last_exc: Exception | None = None
 
@@ -206,8 +212,9 @@ class GerritCollector(BaseCollector):
                 if attempt < self._max_retries:
                     time.sleep(1)
             except (json.JSONDecodeError, ValueError) as exc:
-                self._logger.error("Failed to parse Gerrit response: %s", exc)
-                return {}
+                msg = f"Failed to parse Gerrit response: {exc}"
+                self._logger.error(msg)
+                raise RuntimeError(msg) from exc
 
         msg = f"All {self._max_retries} attempts to fetch {url} failed: {last_exc}"
         self._logger.error(msg)
