@@ -291,6 +291,7 @@ def discover(
         "oom": {
             "oom_path": oom_path,
             "mapping_file": mapping_file,
+            "gerrit_url": gerrit_url or gerrit_cfg.get("url"),
         },
         "relman": {
             "repos_yaml_path": repos_yaml,

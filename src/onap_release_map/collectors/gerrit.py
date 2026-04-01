@@ -47,8 +47,18 @@ class GerritCollector(BaseCollector):
             timeout: HTTP request timeout in seconds.
             max_retries: Maximum number of retry attempts per request.
             **kwargs: Passed through to :class:`BaseCollector`.
+
+        Raises:
+            ValueError: If ``max_retries`` is less than 1 or
+                ``timeout`` is not positive.
         """
         super().__init__()
+        if max_retries < 1:
+            msg = f"max_retries must be >= 1, got {max_retries}"
+            raise ValueError(msg)
+        if timeout <= 0:
+            msg = f"timeout must be > 0, got {timeout}"
+            raise ValueError(msg)
         self._gerrit_url = (gerrit_url or "https://gerrit.onap.org/r").rstrip("/")
         self._timeout = timeout
         self._max_retries = max_retries
