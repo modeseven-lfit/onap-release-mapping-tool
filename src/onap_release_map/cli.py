@@ -17,7 +17,10 @@ from rich.table import Table
 
 from onap_release_map import __version__
 from onap_release_map.collectors import registry
-from onap_release_map.collectors.oom import OOMCollector  # noqa: F401 - registers
+from onap_release_map.collectors.gerrit import GerritCollector  # noqa: F401
+from onap_release_map.collectors.jjb import JJBCollector  # noqa: F401
+from onap_release_map.collectors.oom import OOMCollector  # noqa: F401
+from onap_release_map.collectors.relman import RelmanCollector  # noqa: F401
 from onap_release_map.config import load_config
 from onap_release_map.manifest import ManifestBuilder
 from onap_release_map.models import DataSource, OnapRelease
@@ -78,7 +81,7 @@ def main(
 @app.command()
 def discover(
     oom_path: Annotated[
-        Path,
+        Path | None,
         typer.Option(
             "--oom-path",
             help="Path to local OOM repository clone.",
@@ -86,7 +89,7 @@ def discover(
             file_okay=False,
             resolve_path=True,
         ),
-    ],
+    ] = None,
     mapping_file: Annotated[
         Path | None,
         typer.Option(
@@ -109,6 +112,46 @@ def discover(
             dir_okay=False,
             readable=True,
             resolve_path=True,
+        ),
+    ] = None,
+    collectors_opt: Annotated[
+        str,
+        typer.Option(
+            "--collectors",
+            help=(
+                "Comma-separated list of collectors to run. "
+                "Available: oom,relman,jjb,gerrit. "
+                "Default: oom."
+            ),
+        ),
+    ] = "oom",
+    repos_yaml: Annotated[
+        Path | None,
+        typer.Option(
+            "--repos-yaml",
+            help="Path to relman repos.yaml file.",
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            readable=True,
+            resolve_path=True,
+        ),
+    ] = None,
+    jjb_path: Annotated[
+        Path | None,
+        typer.Option(
+            "--jjb-path",
+            help="Path to ci-management jjb/ directory.",
+            exists=True,
+            file_okay=False,
+            resolve_path=True,
+        ),
+    ] = None,
+    gerrit_url: Annotated[
+        str | None,
+        typer.Option(
+            "--gerrit-url",
+            help="Gerrit REST API base URL.",
         ),
     ] = None,
     output_dir: Annotated[
@@ -155,7 +198,7 @@ def discover(
 ) -> None:
     """Parse OOM charts and generate the release manifest."""
     _setup_logging(verbose)
-    _config = load_config(config_file)  # loaded; CLI flags override
+    config = load_config(config_file)
 
     # Validate output format early
     _valid_formats = {"json", "yaml", "all"}
@@ -167,21 +210,70 @@ def discover(
         )
         raise typer.Exit(code=1)
 
+    # Parse collector list — deduplicate preserving first-seen order
+    raw_collectors = [c.strip() for c in collectors_opt.split(",") if c.strip()]
+    seen: set[str] = set()
+    enabled: list[str] = []
+    for name in raw_collectors:
+        if name not in seen:
+            enabled.append(name)
+            seen.add(name)
+
+    if not enabled:
+        err_console.print(
+            "[red]Error:[/] no collectors specified. "
+            "Use --collectors with a comma-separated list of collectors."
+        )
+        raise typer.Exit(code=1)
+
+    available = registry.list_names()
+    for name in enabled:
+        if name not in available:
+            err_console.print(
+                f"[red]Error:[/] unknown collector "
+                f"[bold]{name}[/]. "
+                f"Available: {', '.join(available)}"
+            )
+            raise typer.Exit(code=1)
+
+    # Validate that required paths are provided for enabled collectors
+    if "oom" in enabled and oom_path is None:
+        err_console.print(
+            "[red]Error:[/] --oom-path is required "
+            "when the oom collector is enabled"
+        )
+        raise typer.Exit(code=1)
+    if "relman" in enabled and repos_yaml is None:
+        err_console.print(
+            "[red]Error:[/] --repos-yaml is required "
+            "when the relman collector is enabled"
+        )
+        raise typer.Exit(code=1)
+    if "jjb" in enabled and jjb_path is None:
+        err_console.print(
+            "[red]Error:[/] --jjb-path is required when the jjb collector is enabled"
+        )
+        raise typer.Exit(code=1)
+
     console.print(
         f"[bold blue]onap-release-map[/] v{__version__}",
     )
+    if oom_path is not None:
+        console.print(
+            f"Analyzing OOM charts at: [green]{oom_path}[/]",
+        )
     console.print(
-        f"Analyzing OOM charts at: [green]{oom_path}[/]",
+        f"Collectors: [cyan]{', '.join(enabled)}[/]",
     )
 
     # Detect OOM chart version from Chart.yaml
-    chart_version = _detect_chart_version(oom_path)
+    chart_version = _detect_chart_version(oom_path) if oom_path else None
 
     onap_release = OnapRelease(
         name=release_name,
         oom_chart_version=chart_version or "unknown",
-        oom_branch=_detect_git_branch(oom_path),
-        oom_commit=_detect_git_commit(oom_path),
+        oom_branch=_detect_git_branch(oom_path) if oom_path else None,
+        oom_commit=_detect_git_commit(oom_path) if oom_path else None,
     )
 
     builder = ManifestBuilder(
@@ -190,37 +282,72 @@ def discover(
         deterministic=deterministic,
     )
 
-    # Run OOM collector
-    oom_collector = registry.create(
-        "oom",
-        oom_path=oom_path,
-        mapping_file=mapping_file,
-    )
-    if oom_collector is None:
-        err_console.print("[red]Error:[/] OOM collector not available")
-        raise typer.Exit(code=1)
+    # ----------------------------------------------------------
+    # Run each enabled collector
+    # ----------------------------------------------------------
+    _gerrit_raw = config.get("gerrit", {})
+    gerrit_cfg = _gerrit_raw if isinstance(_gerrit_raw, dict) else {}
 
-    with console.status("[bold green]Parsing OOM Helm charts..."):
-        result = oom_collector.timed_collect()
+    collector_configs: dict[str, dict[str, object]] = {
+        "oom": {
+            "oom_path": oom_path,
+            "mapping_file": mapping_file,
+        },
+        "relman": {
+            "repos_yaml_path": repos_yaml,
+            "gerrit_url": gerrit_url or gerrit_cfg.get("url"),
+        },
+        "jjb": {
+            "jjb_path": jjb_path,
+            "gerrit_url": gerrit_url or gerrit_cfg.get("url"),
+        },
+        "gerrit": {
+            "gerrit_url": gerrit_url or gerrit_cfg.get("url"),
+            "timeout": gerrit_cfg.get("timeout", 30),
+            "max_retries": gerrit_cfg.get("max_retries", 3),
+        },
+    }
 
-    # Fail fast if the collector reported execution errors
-    if result.execution and result.execution.errors:
-        err_console.print(
-            "[red]Error:[/] OOM collection failed with the following error(s):"
+    for collector_name in enabled:
+        kwargs = collector_configs.get(collector_name, {})
+        collector = registry.create(collector_name, **kwargs)
+        if collector is None:
+            err_console.print(
+                f"[red]Error:[/] {collector_name} collector not available"
+            )
+            raise typer.Exit(code=1)
+
+        status_msg = _collector_status_message(collector_name)
+        with console.status(f"[bold green]{status_msg}"):
+            result = collector.timed_collect()
+
+        # Report errors but only abort for the primary collector
+        if result.execution and result.execution.errors:
+            for err in result.execution.errors:
+                err_console.print(f"  [yellow]Warning ({collector_name}):[/] {err}")
+            if collector_name == "oom":
+                err_console.print("[red]Error:[/] OOM collection failed")
+                raise typer.Exit(code=1)
+            err_console.print(f"  [yellow]Continuing without {collector_name} data[/]")
+        else:
+            _items = 0
+            if result.execution:
+                _items = result.execution.items_collected
+            console.print(f"  [green]{collector_name}:[/] {_items} items collected")
+
+        builder.add_result(result)
+
+        # Record data source provenance
+        source = _make_data_source(
+            collector_name,
+            oom_path=oom_path,
+            oom_commit=onap_release.oom_commit,
+            repos_yaml=repos_yaml,
+            jjb_path=jjb_path,
+            gerrit_url=gerrit_url or gerrit_cfg.get("url"),
         )
-        for err in result.execution.errors:
-            err_console.print(f"  - {err}")
-        raise typer.Exit(code=1)
-
-    builder.add_result(result)
-    builder.add_data_source(
-        DataSource(
-            name="oom",
-            type="git",
-            url=str(oom_path),
-            commit=onap_release.oom_commit,
-        )
-    )
+        if source:
+            builder.add_data_source(source)
 
     manifest = builder.build()
 
@@ -281,6 +408,61 @@ def version() -> None:
     console.print(f"Python {sys.version}")
 
 
+# ------------------------------------------------------------------
+# Private helpers
+# ------------------------------------------------------------------
+
+
+def _collector_status_message(name: str) -> str:
+    """Return a human-readable status message for a collector."""
+    messages = {
+        "oom": "Parsing OOM Helm charts...",
+        "relman": "Loading relman repository data...",
+        "jjb": "Scanning JJB CI definitions...",
+        "gerrit": "Querying Gerrit REST API...",
+    }
+    return messages.get(name, f"Running {name} collector...")
+
+
+def _make_data_source(
+    collector_name: str,
+    *,
+    oom_path: Path | None = None,
+    oom_commit: str | None = None,
+    repos_yaml: Path | None = None,
+    jjb_path: Path | None = None,
+    gerrit_url: object = None,
+) -> DataSource | None:
+    """Build a provenance DataSource for a collector."""
+    if collector_name == "oom" and oom_path:
+        return DataSource(
+            name="oom",
+            type="git",
+            url=str(oom_path),
+            commit=oom_commit,
+        )
+    if collector_name == "relman" and repos_yaml:
+        return DataSource(
+            name="relman",
+            type="file",
+            url=str(repos_yaml),
+        )
+    if collector_name == "jjb" and jjb_path:
+        return DataSource(
+            name="jjb",
+            type="file",
+            url=str(jjb_path),
+        )
+    if collector_name == "gerrit":
+        url = str(gerrit_url) if gerrit_url else "https://gerrit.onap.org/r"
+        return DataSource(
+            name="gerrit",
+            type="api",
+            url=url,
+        )
+    return None
+
+
 def _print_summary(manifest: ReleaseManifest) -> None:
     """Print a Rich summary table of the manifest."""
     console.print()
@@ -294,9 +476,18 @@ def _print_summary(manifest: ReleaseManifest) -> None:
     table.add_column("Metric", style="cyan")
     table.add_column("Value", style="green", justify="right")
 
-    table.add_row("Repositories", str(manifest.summary.total_repositories))
-    table.add_row("Docker Images", str(manifest.summary.total_docker_images))
-    table.add_row("Helm Components", str(manifest.summary.total_helm_components))
+    table.add_row(
+        "Repositories",
+        str(manifest.summary.total_repositories),
+    )
+    table.add_row(
+        "Docker Images",
+        str(manifest.summary.total_docker_images),
+    )
+    table.add_row(
+        "Helm Components",
+        str(manifest.summary.total_helm_components),
+    )
 
     for cat, count in sorted(manifest.summary.repositories_by_category.items()):
         table.add_row(f"  Category: {cat}", str(count))

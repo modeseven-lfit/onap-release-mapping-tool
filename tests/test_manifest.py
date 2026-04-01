@@ -125,3 +125,263 @@ class TestManifestBuilder:
         assert repo.confidence == "high"
         assert "oom" in repo.discovered_by
         assert "gerrit" in repo.discovered_by
+
+    def test_merge_enriches_gerrit_state(self) -> None:
+        """Test that merging fills gerrit_state from another collector."""
+        builder = ManifestBuilder(
+            tool_version="0.1.0",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="1.0.0",
+            ),
+        )
+
+        r1 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="policy/api",
+                    top_level_project="policy",
+                    confidence="high",
+                    discovered_by=["oom"],
+                    gerrit_state=None,
+                ),
+            ],
+        )
+        r2 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="policy/api",
+                    top_level_project="policy",
+                    confidence="medium",
+                    discovered_by=["gerrit"],
+                    gerrit_state="ACTIVE",
+                ),
+            ],
+        )
+        builder.add_result(r1)
+        builder.add_result(r2)
+        manifest = builder.build()
+
+        repo = manifest.repositories[0]
+        assert repo.gerrit_state == "ACTIVE"
+        assert repo.confidence == "high"
+        assert "oom" in repo.discovered_by
+        assert "gerrit" in repo.discovered_by
+
+    def test_merge_enriches_maintained(self) -> None:
+        """Test that merging fills maintained from another collector."""
+        builder = ManifestBuilder(
+            tool_version="0.1.0",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="1.0.0",
+            ),
+        )
+
+        r1 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="aai/resources",
+                    top_level_project="aai",
+                    confidence="high",
+                    discovered_by=["oom"],
+                    maintained=None,
+                ),
+            ],
+        )
+        r2 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="aai/resources",
+                    top_level_project="aai",
+                    confidence="medium",
+                    discovered_by=["relman"],
+                    maintained=True,
+                ),
+            ],
+        )
+        builder.add_result(r1)
+        builder.add_result(r2)
+        manifest = builder.build()
+
+        repo = manifest.repositories[0]
+        assert repo.maintained is True
+
+    def test_merge_enriches_has_ci(self) -> None:
+        """Test that merging fills has_ci from another collector."""
+        builder = ManifestBuilder(
+            tool_version="0.1.0",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="1.0.0",
+            ),
+        )
+
+        r1 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="cps",
+                    top_level_project="cps",
+                    confidence="high",
+                    discovered_by=["oom"],
+                    has_ci=None,
+                ),
+            ],
+        )
+        r2 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="cps",
+                    top_level_project="cps",
+                    confidence="medium",
+                    discovered_by=["jjb"],
+                    has_ci=True,
+                ),
+            ],
+        )
+        builder.add_result(r1)
+        builder.add_result(r2)
+        manifest = builder.build()
+
+        repo = manifest.repositories[0]
+        assert repo.has_ci is True
+
+    def test_merge_confidence_reasons(self) -> None:
+        """Test that confidence_reasons are merged from collectors."""
+        builder = ManifestBuilder(
+            tool_version="0.1.0",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="1.0.0",
+            ),
+        )
+
+        r1 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="policy/api",
+                    top_level_project="policy",
+                    confidence="high",
+                    discovered_by=["oom"],
+                    confidence_reasons=[
+                        "Docker image referenced in OOM",
+                    ],
+                ),
+            ],
+        )
+        r2 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="policy/api",
+                    top_level_project="policy",
+                    confidence="medium",
+                    discovered_by=["gerrit"],
+                    confidence_reasons=[
+                        "Discovered via Gerrit REST API",
+                    ],
+                ),
+            ],
+        )
+        builder.add_result(r1)
+        builder.add_result(r2)
+        manifest = builder.build()
+
+        repo = manifest.repositories[0]
+        assert "Docker image referenced in OOM" in repo.confidence_reasons
+        assert "Discovered via Gerrit REST API" in repo.confidence_reasons
+
+    def test_collectors_used_in_summary(self) -> None:
+        """Test that collectors_used in summary reflects executions."""
+        from onap_release_map.models import CollectorExecution
+
+        builder = ManifestBuilder(
+            tool_version="0.1.0",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="1.0.0",
+            ),
+        )
+
+        r1 = CollectorResult(
+            repositories=[],
+            execution=CollectorExecution(
+                name="oom",
+                duration_seconds=1.0,
+                items_collected=10,
+                errors=[],
+            ),
+        )
+        r2 = CollectorResult(
+            repositories=[],
+            execution=CollectorExecution(
+                name="relman",
+                duration_seconds=0.5,
+                items_collected=50,
+                errors=[],
+            ),
+        )
+        builder.add_result(r1)
+        builder.add_result(r2)
+        manifest = builder.build()
+
+        assert manifest.summary.collectors_used == ["oom", "relman"]
+
+    def test_merge_three_collectors(self) -> None:
+        """Test merging data from three different collectors."""
+        builder = ManifestBuilder(
+            tool_version="0.1.0",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="1.0.0",
+            ),
+        )
+
+        r1 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="policy/api",
+                    top_level_project="policy",
+                    confidence="high",
+                    discovered_by=["oom"],
+                    docker_images=["onap/policy-api"],
+                ),
+            ],
+        )
+        r2 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="policy/api",
+                    top_level_project="policy",
+                    confidence="medium",
+                    discovered_by=["relman"],
+                    maintained=True,
+                    gerrit_state="ACTIVE",
+                ),
+            ],
+        )
+        r3 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="policy/api",
+                    top_level_project="policy",
+                    confidence="medium",
+                    discovered_by=["jjb"],
+                    has_ci=True,
+                ),
+            ],
+        )
+        builder.add_result(r1)
+        builder.add_result(r2)
+        builder.add_result(r3)
+        manifest = builder.build()
+
+        assert manifest.summary.total_repositories == 1
+        repo = manifest.repositories[0]
+        assert repo.confidence == "high"
+        assert repo.gerrit_state == "ACTIVE"
+        assert repo.maintained is True
+        assert repo.has_ci is True
+        assert "oom" in repo.discovered_by
+        assert "relman" in repo.discovered_by
+        assert "jjb" in repo.discovered_by
+        assert "onap/policy-api" in repo.docker_images
