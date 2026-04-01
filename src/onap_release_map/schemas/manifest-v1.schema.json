@@ -1,0 +1,258 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ONAP Release Manifest",
+  "description": "Machine-readable manifest of all components in an ONAP release",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool_version",
+    "generated_at",
+    "onap_release",
+    "repositories",
+    "docker_images",
+    "helm_components",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Semantic version of the manifest schema",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "examples": ["1.0.0"]
+    },
+    "tool_version": {
+      "type": "string",
+      "description": "Version of onap-release-map that generated this manifest"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 UTC timestamp of generation"
+    },
+    "onap_release": {
+      "type": "object",
+      "required": ["name", "oom_chart_version"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Release code name (e.g. Rabat)"
+        },
+        "oom_chart_version": {
+          "type": "string",
+          "description": "OOM umbrella chart version (e.g. 18.0.0)"
+        },
+        "oom_branch": {
+          "type": ["string", "null"],
+          "description": "Git branch of the OOM repo that was analyzed"
+        },
+        "oom_commit": {
+          "type": ["string", "null"],
+          "description": "Git commit SHA of the OOM repo"
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "description": "Aggregate statistics",
+      "properties": {
+        "total_repositories": { "type": "integer" },
+        "total_docker_images": { "type": "integer" },
+        "total_helm_components": { "type": "integer" },
+        "repositories_by_category": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "repositories_by_confidence": {
+          "type": "object",
+          "additionalProperties": { "type": "integer" }
+        },
+        "collectors_used": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "repositories": {
+      "type": "array",
+      "description": "All Gerrit repositories in the release",
+      "items": { "$ref": "#/definitions/Repository" }
+    },
+    "docker_images": {
+      "type": "array",
+      "description": "All Docker images deployed in the release",
+      "items": { "$ref": "#/definitions/DockerImage" }
+    },
+    "helm_components": {
+      "type": "array",
+      "description": "All Helm chart components parsed from the OOM umbrella and its sub-charts",
+      "items": { "$ref": "#/definitions/HelmComponent" }
+    },
+    "provenance": {
+      "type": "object",
+      "description": "Metadata about how this manifest was generated",
+      "properties": {
+        "data_sources": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "type": { "type": "string" },
+              "url": { "type": ["string", "null"] },
+              "commit": { "type": ["string", "null"] },
+              "fetched_at": { "type": ["string", "null"], "format": "date-time" }
+            }
+          }
+        },
+        "collectors_executed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "duration_seconds": { "type": "number" },
+              "items_collected": { "type": "integer" },
+              "errors": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Repository": {
+      "type": "object",
+      "required": ["gerrit_project", "top_level_project", "confidence"],
+      "properties": {
+        "gerrit_project": {
+          "type": "string",
+          "description": "Full Gerrit project path (e.g. policy/api)"
+        },
+        "top_level_project": {
+          "type": "string",
+          "description": "Top-level project area (e.g. policy)"
+        },
+        "gerrit_url": {
+          "type": ["string", "null"],
+          "format": "uri"
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low"],
+          "description": "Confidence that this repo is in the release"
+        },
+        "confidence_reasons": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Human-readable explanation of confidence score"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "runtime",
+            "build-dependency",
+            "infrastructure",
+            "test",
+            "documentation",
+            "tooling"
+          ]
+        },
+        "gerrit_state": {
+          "type": ["string", "null"],
+          "enum": ["ACTIVE", "READ_ONLY", null],
+          "description": "From Gerrit REST API"
+        },
+        "maintained": {
+          "type": ["boolean", "null"],
+          "description": "From relman/repos.yaml"
+        },
+        "has_ci": {
+          "type": ["boolean", "null"],
+          "description": "From ci-management JJB"
+        },
+        "docker_images": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Docker images built from this repo"
+        },
+        "helm_charts": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Helm charts that deploy images from this repo"
+        },
+        "discovered_by": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Which collectors found this repository"
+        }
+      }
+    },
+    "DockerImage": {
+      "type": "object",
+      "required": ["image", "tag"],
+      "properties": {
+        "image": {
+          "type": "string",
+          "description": "Full image name (e.g. onap/policy-api)"
+        },
+        "tag": {
+          "type": "string",
+          "description": "Pinned image tag (e.g. 4.2.2)"
+        },
+        "registry": {
+          "type": ["string", "null"],
+          "description": "Docker registry (e.g. nexus3.onap.org:10001)"
+        },
+        "gerrit_project": {
+          "type": ["string", "null"],
+          "description": "Source Gerrit project (best-effort mapping)"
+        },
+        "helm_charts": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Helm charts that reference this image"
+        },
+        "nexus_validated": {
+          "type": ["boolean", "null"],
+          "description": "Whether the image:tag was verified in Nexus"
+        }
+      }
+    },
+    "HelmComponent": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Chart name from the umbrella dependency or a nested sub-chart (e.g. policy, policy-api)"
+        },
+        "version": {
+          "type": ["string", "null"],
+          "description": "Chart version constraint"
+        },
+        "enabled_by_default": {
+          "type": ["boolean", "null"]
+        },
+        "condition_key": {
+          "type": ["string", "null"],
+          "description": "Helm values key that enables this component"
+        },
+        "sub_charts": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Names of nested sub-charts"
+        },
+        "docker_images": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "All Docker images deployed by this component"
+        },
+        "gerrit_projects": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "All Gerrit projects contributing to this component"
+        }
+      }
+    }
+  }
+}

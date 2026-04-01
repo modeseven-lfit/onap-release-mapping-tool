@@ -3,47 +3,78 @@
 # SPDX-FileCopyrightText: 2025 The Linux Foundation
 -->
 
-# 🛠️ Template Action
+# onap-release-map
 
-This is a template for the other actions in this Github organisation.
+ONAP release component mapping tool — generates definitive manifests of
+Gerrit projects and Docker images comprising an ONAP release.
 
-## actions-template
+## Overview
 
-## Usage Example
+`onap-release-map` follows an **OOM-first** strategy: it starts from the
+OOM Helm umbrella chart, recursively resolves every sub-chart and Docker
+image reference, then maps those images back to their source Gerrit
+repositories.
 
-<!-- markdownlint-disable MD046 -->
+The tool produces a **versioned, self-describing JSON artifact** that
+captures the complete state of the analysis.
 
-```yaml
-steps:
-  - name: "Action template"
-    id: action-template
-    uses: lfreleng-actions/actions-template@main
-    with:
-      input: "placeholder"
+## Installation
+
+```shell
+pip install onap-release-map
 ```
 
-<!-- markdownlint-enable MD046 -->
+Or install from source:
 
-## Inputs
+```shell
+git clone https://github.com/modeseven-lfit/onap-release-mapping-tool.git
+cd onap-release-mapping-tool
+pip install -e ".[dev]"
+```
+
+## Quick Start
+
+```shell
+# Clone the OOM repository
+git clone https://gerrit.onap.org/r/oom
+
+# Generate the release manifest
+onap-release-map discover --oom-path ./oom
+```
+
+## Commands
 
 <!-- markdownlint-disable MD013 -->
 
-| Name          | Required | Description  |
-| ------------- | -------- | ------------ |
-| input         | False    | Action input |
+| Command    | Description                                        |
+| ---------- | -------------------------------------------------- |
+| `discover` | Parse OOM charts and generate the release manifest |
+| `schema`   | Print the JSON Schema for the manifest format      |
+| `version`  | Print version information                          |
+
+Future phases will add these commands:
+
+| Command    | Description                                        |
+| ---------- | -------------------------------------------------- |
+| `diff`     | Compare two manifests and report differences       |
+| `verify`   | Check Docker image existence in the Nexus registry |
+| `export`   | Convert a manifest to CSV, YAML, or Markdown       |
 
 <!-- markdownlint-enable MD013 -->
 
-## Outputs
+## Development
 
-<!-- markdownlint-disable MD013 -->
+```shell
+# Install development dependencies
+pip install -e ".[dev]"
 
-| Name          | Description   |
-| ------------- | ------------- |
-| output        | Action output |
+# Run tests
+pytest tests/
 
-<!-- markdownlint-enable MD013 -->
+# Run linting
+ruff check src/ tests/
+```
 
-## Implementation Details
+## License
 
-## Notes
+[Apache-2.0](LICENSE)

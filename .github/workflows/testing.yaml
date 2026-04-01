@@ -3,13 +3,11 @@
 # SPDX-FileCopyrightText: 2025 The Linux Foundation
 
 # Action test/validation workflow
-name: "Test GitHub Action 🧪"
+name: "Test GitHub Action"
 
 # yamllint disable-line rule:truthy
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
   pull_request:
     branches: ["main"]
 
@@ -20,56 +18,49 @@ concurrency:
 permissions: {}
 
 jobs:
-  ### Test the GitHub Action in this Repository ###
   tests:
     name: "Test local GitHub Action"
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    timeout-minutes: 10 # Increase this timeout value as needed
+    timeout-minutes: 10
     steps:
-      # Harden the runner used by this workflow
       # yamllint disable-line rule:line-length
       - uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d # v2.16.1
         with:
           egress-policy: audit
 
       - name: "Checkout repository"
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        # yamllint disable-line rule:line-length
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
-      # Perform setup prior to running test(s)
-      - name: "Testing setup step"
+      - name: "Create minimal OOM structure"
         shell: bash
         run: |
-          # Testing setup step
-          echo "Testing setup step"
-          echo "Testing setup step/summary output" >> "$GITHUB_STEP_SUMMARY"
+          # Create minimal OOM structure for testing
+          mkdir -p oom/kubernetes/onap
+          cat > oom/kubernetes/onap/Chart.yaml << 'EOF'
+          apiVersion: v2
+          name: onap
+          version: 0.0.0-test
+          description: Test chart
+          dependencies: []
+          EOF
 
-      - name: "Running local action: ${{ github.repository }}"
+      - name: "Run local action"
         uses: ./
         with:
-          input: "test input 💬"
+          oom-path: "./oom"
+          release-name: "Test"
 
-      - name: "Validated local action: ${{ github.repository }}"
+      - name: "Verify manifest was created"
         shell: bash
         run: |
-          # Local action validation
-          echo "Validated local action: ${{ github.repository }}"
-          echo "Validation step summary output" >> "$GITHUB_STEP_SUMMARY"
-
-      # yamllint disable-line rule:line-length
-      - name: "Running local action: ${{ github.repository }} [Override Failure]"
-        uses: ./
-        id: failure
-        continue-on-error: true
-        with:
-          invalid_input: "Some garbage"
-
-      # Failure testing is also important
-      - name: "Error if step above did NOT fail"
-        if: steps.failure.outcome == 'success'
-        shell: bash
-        run: |
-          # Error if step above did NOT fail
-          echo "Error: previous test step did NOT fail ❌"
-          exit 1
+          # Verify manifest was created
+          if [ -f "./output/manifest.json" ]; then
+            echo "Manifest created successfully"
+            cat ./output/manifest.json | python3 -m json.tool
+          else
+            echo "Error: manifest.json not found"
+            exit 1
+          fi
