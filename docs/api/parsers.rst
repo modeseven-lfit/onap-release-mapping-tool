@@ -5,8 +5,8 @@ Parsers
 =======
 
 The ``parsers`` subpackage provides utilities for parsing Helm charts,
-mapping Docker images to Gerrit repositories, and safely loading YAML
-files.
+mapping Docker images to Gerrit repositories, and loading YAML files
+with error handling.
 
 .. automodule:: onap_release_map.parsers
    :members:

@@ -4,7 +4,7 @@
 Manifest Builder
 ================
 
-The manifest builder aggregates results from multiple collectors into a
+The manifest builder aggregates results from all collectors into a
 single, unified release manifest.
 
 .. automodule:: onap_release_map.manifest

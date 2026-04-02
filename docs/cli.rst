@@ -5,10 +5,9 @@
 CLI Reference
 =============
 
-The ``onap-release-map`` command-line interface is built with
-`Typer <https://typer.tiangolo.com/>`_ and provides several subcommands
-for generating, comparing, exporting, and validating ONAP release
-manifests.
+The ``onap-release-map`` command-line interface uses
+`Typer <https://typer.tiangolo.com/>`_ and provides subcommands for
+generating, comparing, exporting, and validating ONAP release manifests.
 
 .. typer:: onap_release_map.cli:app
    :prog: onap-release-map
@@ -54,7 +53,7 @@ source Gerrit repositories.
        --release-name Rabat \
        --output-dir ./output
 
-   # Run multiple collectors
+   # Run two collectors together
    onap-release-map discover \
        --oom-path ./oom \
        --collectors oom,gerrit
@@ -67,8 +66,8 @@ source Gerrit repositories.
 diff
 ----
 
-The ``diff`` command compares two previously generated manifests and
-produces a structured report of changes between them.
+The ``diff`` command compares two existing manifests and produces a
+structured report of changes between them.
 
 .. code-block:: shell
 
@@ -94,11 +93,8 @@ output formats.
    # Export as YAML
    onap-release-map export manifest.json --format yaml
 
-   # Export as CSV (repositories)
-   onap-release-map export manifest.json --format csv --repos-only
-
-   # Export as CSV (Docker images)
-   onap-release-map export manifest.json --format csv --images-only
+   # Export as CSV
+   onap-release-map export manifest.json --format csv
 
    # Export as Markdown report
    onap-release-map export manifest.json --format md --output report.md
@@ -148,7 +144,7 @@ Global Options
    Show the tool version and exit.
 
 ``--help``
-   Show help text and exit. Can also be used on any subcommand.
+   Show help text and exit. Works on any subcommand as well.
 
 Exit Codes
 ==========

@@ -24,7 +24,7 @@ Clone the OOM repository and point the tool at it:
    $ git clone --depth 1 https://gerrit.onap.org/r/oom
    $ onap-release-map discover --oom-path ./oom
 
-By default the manifest is written to the current directory as
+By default the tool writes the manifest to the current directory as
 ``manifest.json``.
 
 Specifying a Release Name
@@ -45,8 +45,8 @@ Choosing an Output Directory
        --oom-path ./oom \
        --output-dir ./output
 
-Multiple Output Formats
------------------------
+Output Format Options
+---------------------
 
 Request JSON and YAML manifests simultaneously:
 
@@ -56,8 +56,8 @@ Request JSON and YAML manifests simultaneously:
        --oom-path ./oom \
        --output-format all
 
-Running Multiple Collectors
----------------------------
+Combining Collectors
+--------------------
 
 Combine the OOM collector with the Gerrit collector for richer metadata:
 
@@ -127,8 +127,8 @@ Markdown Diff
 Ignoring Timestamps
 -------------------
 
-Ignore the ``generated_at`` field when comparing manifests that were
-produced at different times but should otherwise be identical:
+Ignore the ``generated_at`` field when comparing manifests that the tool
+generated at different times but that should otherwise be identical:
 
 .. code-block:: console
 
@@ -157,13 +157,6 @@ Export the repository list as CSV:
 .. code-block:: console
 
    $ onap-release-map export manifest.json --format csv
-
-Export only the Docker image list:
-
-.. code-block:: console
-
-   $ onap-release-map export manifest.json \
-       --format csv --images-only
 
 Markdown Report
 ---------------
@@ -280,7 +273,7 @@ Action Inputs
 
 .. list-table::
    :header-rows: 1
-   :widths: 20 50 15 15
+   :widths: 20 50 10 20
 
    * - Input
      - Description

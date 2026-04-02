@@ -55,7 +55,7 @@ The test suite uses **pytest** with coverage reporting:
    # Run tests matching a keyword
    uv run pytest tests/ -k "test_diff"
 
-Coverage reports are generated in ``htmlcov/`` by default.
+The test runner generates coverage reports in ``htmlcov/`` by default.
 
 Code Style
 ----------
@@ -74,7 +74,7 @@ and formatting. The configuration lives in ``pyproject.toml``.
    # Format code
    uv run ruff format src/ tests/
 
-Type checking is performed by **mypy** and **basedpyright**:
+**mypy** and **basedpyright** handle type checking:
 
 .. code-block:: shell
 
@@ -197,8 +197,8 @@ For reStructuredText files:
    .. SPDX-FileCopyrightText: 2025 The Linux Foundation
    .. SPDX-License-Identifier: Apache-2.0
 
-Some file types (test fixtures, lock files, documentation assets) are
-covered by ``REUSE.toml`` and do not require inline headers. Check
+Some file types (test fixtures, lock files, documentation assets) fall
+under ``REUSE.toml`` and do not require inline headers. Check
 ``REUSE.toml`` for the full list of glob patterns.
 
 You can verify compliance locally:
@@ -212,7 +212,7 @@ Pull Request Process
 
 1. Create a feature branch from ``main``.
 2. Make your changes in atomic commits (one logical change per commit).
-3. Ensure all tests pass and pre-commit hooks are satisfied.
+3. Ensure all tests pass and pre-commit hooks succeed.
 4. Push your branch and open a pull request.
 5. Respond to review feedback and update your branch as needed.
 

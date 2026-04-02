@@ -4,9 +4,9 @@
 Collectors
 ==========
 
-The collectors framework gathers ONAP release data from various upstream
+The collectors framework gathers ONAP release data from upstream
 sources. Each collector implements the :class:`BaseCollector` interface
-and is registered with the global :data:`registry`.
+and registers itself with the global :data:`registry`.
 
 Framework
 ---------

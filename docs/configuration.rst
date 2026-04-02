@@ -4,7 +4,7 @@
 Configuration
 =============
 
-``onap-release-map`` can be configured through YAML configuration files,
+``onap-release-map`` supports configuration through YAML files,
 command-line options, and environment variables. Command-line options take
 precedence over configuration file values, which in turn take precedence
 over built-in defaults.
@@ -85,7 +85,7 @@ Gerrit Settings
      - HTTP request timeout in seconds for Gerrit API calls.
    * - ``gerrit.max_retries``
      - ``3``
-     - Maximum number of retry attempts for failed Gerrit requests.
+     - Max number of retry attempts for failed Gerrit requests.
 
 OOM Settings
 ~~~~~~~~~~~~
@@ -102,8 +102,8 @@ OOM Settings
      - Default Git branch to use when cloning or analysing OOM.
    * - ``oom.remote_url``
      - ``https://gerrit.onap.org/r/oom``
-     - Remote URL used to clone the OOM repository when no local path
-       is provided.
+     - Remote URL used to clone the OOM repository when the user
+       does not supply a local path.
    * - ``oom.exclude_dirs``
      - ``["argo", "archive"]``
      - List of top-level directories inside the OOM ``kubernetes/``
@@ -140,8 +140,8 @@ Output Settings
        ``json``, ``yaml``.
    * - ``output.deterministic``
      - ``true``
-     - When enabled, timestamps are truncated to whole seconds and
-       output is sorted for reproducible builds.
+     - When enabled, the tool truncates timestamps to whole seconds
+       and sorts output for reproducible builds.
    * - ``output.pretty_print``
      - ``true``
      - Pretty-print JSON output with indentation.
@@ -187,7 +187,8 @@ Logging Settings
        command-line flags.
    * - ``logging.format``
      - ``rich``
-     - Log output format. Currently only ``rich`` is supported.
+     - Log output format. The tool supports ``rich`` as the sole
+       format.
 
 Environment Variable Overrides
 ------------------------------
@@ -201,17 +202,17 @@ The following environment variables can influence tool behaviour:
    * - Variable
      - Description
    * - ``GERRIT_URL``
-     - Override the Gerrit base URL (equivalent to ``gerrit.url``
+     - Override the Gerrit base URL (same as ``gerrit.url``
        in the config file or ``--gerrit-url`` on the CLI).
    * - ``NEXUS_URL``
-     - Override the Nexus registry URL (equivalent to ``nexus.url``
+     - Override the Nexus registry URL (same as ``nexus.url``
        in the config file or ``--nexus-url`` on the CLI).
    * - ``OOM_BRANCH``
-     - Override the default OOM branch (equivalent to
+     - Override the default OOM branch (same as
        ``oom.default_branch`` or ``--oom-branch``).
 
 Command-line options always take highest precedence, followed by
-environment variables, then configuration file values, and finally
+environment variables, then configuration file values, and then
 the built-in defaults.
 
 Example Configurations
@@ -220,7 +221,7 @@ Example Configurations
 Minimal Configuration
 ~~~~~~~~~~~~~~~~~~~~~
 
-A minimal configuration that only changes the release branch:
+A minimal configuration that changes the release branch:
 
 .. code-block:: yaml
 
@@ -230,7 +231,7 @@ A minimal configuration that only changes the release branch:
 Multi-Collector Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Enable multiple collectors and increase Gerrit timeout for slow
+Enable extra collectors and increase Gerrit timeout for slow
 connections:
 
 .. code-block:: yaml
@@ -280,9 +281,10 @@ enabled and higher concurrency:
 Configuration Merging
 ---------------------
 
-When a configuration file is provided, its values are **deep-merged**
-with the built-in defaults. This means you only need to specify the
-keys you want to override — all other values retain their defaults.
+When the user supplies a configuration file, its values are
+**deep-merged** with the built-in defaults. This means you need to
+specify the keys you want to override — all other values keep their
+defaults.
 
 For example, if your configuration file contains:
 
@@ -293,7 +295,7 @@ For example, if your configuration file contains:
 
 The resulting effective configuration will still include
 ``gerrit.url``, ``gerrit.max_retries``, and all other default values.
-Only ``gerrit.timeout`` is overridden to ``60``.
+The tool overrides ``gerrit.timeout`` to ``60`` and nothing else.
 
 List values (such as ``collectors`` and ``oom.exclude_dirs``) are
 **replaced** entirely rather than merged. If you specify

@@ -11,8 +11,8 @@ page.
 
 .. note::
 
-   This project is in early development. The API and CLI interface may change
-   between minor versions until ``1.0.0`` is released.
+   This project is in initial development. The API and CLI interface may change
+   between minor versions until the ``1.0.0`` release.
 
 Release History
 ---------------
@@ -24,6 +24,6 @@ page.
 Unreleased
 ^^^^^^^^^^
 
-Development is tracked on the ``main`` branch. To see what has changed since
+The ``main`` branch tracks ongoing development. To see what has changed since
 the last release, view the
 `commit log <https://github.com/modeseven-lfit/onap-release-mapping-tool/commits/main>`_.

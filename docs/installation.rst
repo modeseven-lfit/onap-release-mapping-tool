@@ -81,7 +81,7 @@ console.
 Runtime Dependencies
 --------------------
 
-The following packages are installed automatically:
+The tool pulls in the following packages automatically:
 
 - **typer** — CLI framework
 - **rich** — terminal formatting and progress display
