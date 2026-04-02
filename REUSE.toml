@@ -7,7 +7,7 @@ version = 1
 path = [
     "tests/fixtures/**",
     "*.lock",
-    "docs/*.png",
+    "docs/**",
     "**/__pycache__/**",
     ".secrets.**",
     "src/onap_release_map/schemas/*.json"

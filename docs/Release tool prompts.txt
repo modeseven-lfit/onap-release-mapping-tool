@@ -1,0 +1,46 @@
+We need to determine the "supported" Gerrit projects/repositories for the ONAP project. These are projects that are included in the default ONAP release. Some projects may not be under active development any more, but if included in a release they are effectively supported.
+
+The 'oom' project/repo contains all the Helm charts. This is the ONAP project deployment repository, used to deploy ONAP to a Kubernets cluster. Please can you scan the content of this project first, and use it to build a dependency graph, containing all the pieces that comprise an active ONAP production/release deployment.
+
+Please note: the 'oom' project contains an 'argo/' folder which should be ignored, as it is NOT an authoratitive information source.
+
+We are looking to build a new scripted process, which should be idempotent and repeatable, on-demand, to be used now and ion the future, to scan the current release state and project state, and determine and output a definitive and inclusive list of all the Gerrit projects and Git repositories that comprise the current ONAP release. It should be comprehensive and include supporting components. Ideally, the output should be a shell script or Python based script/tool.  Python may be a better choice, in which case we should use the Typer CLI framework, and build code to modern PEP standards with a view to publishing it on PyPI. I have added one of our existing Pythoon tools, 'dependamerge' to the context. This is a good baseline project setup to replicate, since it uses modern PEP standards, has existing Python build/test/audit/release workflows, and a mature linting tool environment, setup, etc.
+
+At this stage we do NOT want to produce script/code. We want to perform an audit and explore various solutions. We whould plan the next steps and NOT produce code at this stage. This is a research exercise where we should come up with one or more potential solutions/proposals.
+
+Some general information about the project infrastructure is provided below. Not all of this may be relevant to the task at hand.
+
+###
+
+The source code (provided in the context under the onap/ folder, is hosted primarily in the Gerrit SCM platform/server: https://gerrit.onap.org/
+
+We have two artifact repository servers that are used for binary artifacts:
+https://nexus.onap.org/
+https://nexus3.onap.org/
+
+Jenkins jobs run for some of the CI pipeline, other jobs are run natively in GitHub through a Gerrit platform integration:
+https://jenkins.onap.org/
+
+Jenkins job definitions use the ci-managment repo under the onap/ folder (this is located in the project Gerrit). JJB ma ro/templates come from a templating library called global-jjb, which has also been added to the context.
+
+###
+
+Great, let's go with option A, using OOM as the primary data source. I'd like the design to be modular, and extensible. If we decide the OOM first approach is insufficient, incorporating different data sources, and blending them, to improve our output/results over time, might be necessary. I like the proposal and ability to perform diffs, i.e. the ability to compare the difference in outpus between different tool versions, runs, and perhaps dates/times/releases. I'd like all the underlying data, regardless of source, to be captured at runtime, and output as an authoratative data file, to allow differences between tool versions, or ONAP releases (same tool version) to be compared. I think we will need an extensible schema, and schema definition, to allow for this. I think we should add a native GitHub actions interface, with an action.yaml file acting as a simple wrapper to the CLI tool, to allow the tool to run in Github/CI. A workflow should be built to executre it. I've added the project-reporting-tool, and preoject-reporting-artifact repositories as examples. The first repo contains a similar tool, which creates a GitHub pages site containing results. The second repo contains reporting artefacts. Initially, our workflow could/should be triggered only on workflow_dispatch. Please use these two repositories as templates for our ONAP Release Mapping Tool.
+
+I've added onap-release-mapping-tool to the context here:
+onap-release-mapping-tool (🌴 main) % pwd
+/Users/matt/Repositories/modeseven-lfit/onap-release-mapping-tool
+
+This has been created from our standard/common actions-template repository, which comtains a baseline repo setup and linting. However, the project-reporting-tool and dependamerge repositories have additional Python workflows, such as those related to build/audit/test for Python projects, a release workflow that does those tasks but also publishes/pushes the CLI tool Python package to test.yppi.org and pypi.org, and the reporting tool also contains a workflow which runs the Python CLI tool in the CI environment, kicking off the generation of the local GitHub pages site afterwards, and copying the tool artifacts to the siste repository python-reporting-artifacts. I'd like to see a lot of these compoenents replicated (in a modified form) for our new tool. Please audit the project-reporting-* repos to get an idea of their content, data structures, outputs, then create a markdown documentation/file ONAP-RELEASE-TOOL-PLAN.md at the top-level of the onap/ folder, containing a detailed development plan, outlining the technical design, architecture, data sources, tool/CLI structure, actions interface, workflow design, etc. This will be used as an input for agents to start work on the implementation once we're finished with this cycle.
+
+###
+
+I've also created this (currently empty, no template files) Github repo to hold the artifacts created by our new ONAP release mapping tool:
+
+https://github.com/modeseven-lfit/onap-release-mapping-artifacts
+
+I'd suggest we use this as a target/output repo for storing artifcats from the onap-release-mapping-tool CI runs. I can create a fine-grained GITHUB_TOKEN with write permissions to that repo, which we can then use to push the published artifacts there from our different tool runs.
+
+###
+
+

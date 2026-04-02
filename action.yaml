@@ -7,24 +7,43 @@ description: "Generate ONAP release component manifest from OOM Helm charts"
 
 inputs:
   oom-path:
-    description: "Path to local OOM repository clone"
-    required: true
+    # yamllint disable-line rule:line-length
+    description: "Path to pre-cloned OOM repo (empty triggers Gerrit clone)"
+    required: false
+    default: ""
+  oom-branch:
+    description: "OOM branch to analyze"
+    required: false
+    default: "master"
+  gerrit-url:
+    description: "Gerrit base URL"
+    required: false
+    default: "https://gerrit.onap.org/r"
+  collectors:
+    # Only oom and gerrit are supported by this action.
+    # Other collectors (relman, jjb) need additional
+    # parameters not exposed as action inputs.
+    description: "Comma-separated collector list (oom, gerrit)"
+    required: false
+    default: "oom,gerrit"
+  output-dir:
+    # Computed from RUNNER_TEMP in a step if left empty.
+    description: "Output directory"
+    required: false
+    default: ""
+  output-format:
+    description: "Output formats: json, yaml, all"
+    required: false
+    default: "json"
   release-name:
     description: "ONAP release code name"
     required: false
     default: "Rabat"
-  output-dir:
-    description: "Output directory for manifest files"
-    required: false
-    default: "./output"
-  output-format:
-    # yamllint disable-line rule:line-length
-    description: "Output format: json, yaml, all (non-json values are treated as all)"
-    required: false
-    default: "json"
   mapping-file:
+    # yamllint disable-line rule:line-length
     description: "Custom image-to-repo mapping YAML override"
     required: false
+    default: ""
   python-version:
     description: "Python version to use"
     required: false
@@ -32,14 +51,21 @@ inputs:
 
 outputs:
   manifest-path:
-    description: "Path to the generated manifest JSON file"
+    description: "Path to the generated JSON manifest"
     value: ${{ steps.run-tool.outputs.manifest_path }}
-  repository-count:
-    description: "Number of repositories in the manifest"
-    value: ${{ steps.run-tool.outputs.repository_count }}
-  image-count:
-    description: "Number of Docker images in the manifest"
-    value: ${{ steps.run-tool.outputs.image_count }}
+  manifest-version:
+    # yamllint disable-line rule:line-length
+    description: "Schema version of the generated manifest"
+    value: ${{ steps.run-tool.outputs.manifest_version }}
+  total-repositories:
+    description: "Number of repositories found"
+    value: ${{ steps.run-tool.outputs.total_repositories }}
+  total-images:
+    description: "Number of Docker images found"
+    value: ${{ steps.run-tool.outputs.total_images }}
+  onap-release:
+    description: "ONAP release name"
+    value: ${{ steps.run-tool.outputs.onap_release }}
 
 runs:
   using: "composite"
@@ -50,14 +76,63 @@ runs:
       with:
         python-version: "${{ inputs.python-version }}"
 
+    - name: "Install uv"
+      # yamllint disable-line rule:line-length
+      uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182  # v5.4.1
+
     - name: "Install onap-release-map"
       shell: bash
+      # yamllint disable rule:line-length
       run: |
-        # Install onap-release-map
+        # Install onap-release-map via pip
         # When used as a GitHub Action the checkout has no .git directory,
-        # so hatch-vcs cannot resolve the version dynamically.  The
+        # so hatch-vcs cannot resolve the version dynamically. The
         # fallback-version configured in pyproject.toml handles this case.
         python -m pip install --quiet "${{ github.action_path }}"
+      # yamllint enable rule:line-length
+
+    - name: "Resolve output directory"
+      shell: bash
+      run: |
+        # Use provided output-dir or default to RUNNER_TEMP
+        # Heredoc delimiter prevents environment-file injection
+        # from inputs containing newlines.
+        DELIM="EOF_$(openssl rand -hex 4)"
+        if [ -n "${{ inputs.output-dir }}" ]; then
+          printf 'OUTPUT_DIR<<%s\n%s\n%s\n' \
+            "$DELIM" "${{ inputs.output-dir }}" "$DELIM" \
+            >> "$GITHUB_ENV"
+        else
+          printf 'OUTPUT_DIR<<%s\n%s\n%s\n' \
+            "$DELIM" "${RUNNER_TEMP}/onap-release-map" "$DELIM" \
+            >> "$GITHUB_ENV"
+        fi
+
+    - name: "Clone OOM from Gerrit"
+      shell: bash
+      # yamllint disable rule:line-length
+      run: |
+        # Clone OOM from Gerrit (if no pre-cloned path provided)
+        if [ -z "${{ inputs.oom-path }}" ]; then
+          git clone --depth 1 \
+            --branch "${{ inputs.oom-branch }}" \
+            --single-branch \
+            --filter=blob:none \
+            --sparse \
+            "${{ inputs.gerrit-url }}/oom" \
+            "${{ runner.temp }}/oom"
+          cd "${{ runner.temp }}/oom"
+          git sparse-checkout set kubernetes/
+          RESOLVED_OOM="${{ runner.temp }}/oom"
+        else
+          RESOLVED_OOM="${{ inputs.oom-path }}"
+        fi
+        # Heredoc delimiter prevents environment-file injection
+        DELIM="EOF_$(openssl rand -hex 4)"
+        printf 'OOM_PATH<<%s\n%s\n%s\n' \
+          "$DELIM" "$RESOLVED_OOM" "$DELIM" \
+          >> "$GITHUB_ENV"
+      # yamllint enable rule:line-length
 
     - name: "Run onap-release-map discover"
       id: run-tool
@@ -65,6 +140,7 @@ runs:
       # yamllint disable rule:line-length
       run: |
         # Run onap-release-map discover
+
         # Always include JSON so outputs can be parsed
         FORMAT="${{ inputs.output-format }}"
         if [ "$FORMAT" != "json" ] && [ "$FORMAT" != "all" ]; then
@@ -72,10 +148,12 @@ runs:
         fi
 
         ARGS=(discover)
-        ARGS+=(--oom-path "${{ inputs.oom-path }}")
-        ARGS+=(--output-dir "${{ inputs.output-dir }}")
+        ARGS+=(--oom-path "$OOM_PATH")
+        ARGS+=(--output-dir "$OUTPUT_DIR")
         ARGS+=(--output-format "$FORMAT")
         ARGS+=(--release-name "${{ inputs.release-name }}")
+        ARGS+=(--collectors "${{ inputs.collectors }}")
+        ARGS+=(--gerrit-url "${{ inputs.gerrit-url }}")
 
         if [ -n "${{ inputs.mapping-file }}" ]; then
           ARGS+=(--mapping-file "${{ inputs.mapping-file }}")
@@ -84,29 +162,42 @@ runs:
         onap-release-map "${ARGS[@]}"
 
         # Set outputs from the JSON manifest
-        MANIFEST="${{ inputs.output-dir }}/manifest.json"
+        MANIFEST="${OUTPUT_DIR}/manifest.json"
         if [ -f "$MANIFEST" ]; then
           echo "manifest_path=$MANIFEST" >> "$GITHUB_OUTPUT"
-          REPO_COUNT=$(python3 -c "import json; m = json.load(open('$MANIFEST')); print(m.get('summary', {}).get('total_repositories', 0))")
-          IMAGE_COUNT=$(python3 -c "import json; m = json.load(open('$MANIFEST')); print(m.get('summary', {}).get('total_docker_images', 0))")
-          echo "repository_count=$REPO_COUNT" >> "$GITHUB_OUTPUT"
-          echo "image_count=$IMAGE_COUNT" >> "$GITHUB_OUTPUT"
+          manifest_version=$(python3 -c 'import json,sys; m=json.load(open(sys.argv[1])); print(m["schema_version"])' "$MANIFEST")
+          echo "manifest_version=$manifest_version" >> "$GITHUB_OUTPUT"
+          total_repositories=$(python3 -c 'import json,sys; m=json.load(open(sys.argv[1])); print(m["summary"]["total_repositories"])' "$MANIFEST")
+          echo "total_repositories=$total_repositories" >> "$GITHUB_OUTPUT"
+          total_images=$(python3 -c 'import json,sys; m=json.load(open(sys.argv[1])); print(m["summary"]["total_docker_images"])' "$MANIFEST")
+          echo "total_images=$total_images" >> "$GITHUB_OUTPUT"
+          onap_release=$(python3 -c 'import json,sys; m=json.load(open(sys.argv[1])); print(m["onap_release"]["name"])' "$MANIFEST")
+          echo "onap_release=$onap_release" >> "$GITHUB_OUTPUT"
         fi
       # yamllint enable rule:line-length
+
+    - name: "Upload output artifacts"
+      # yamllint disable-line rule:line-length
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7.0.0
+      with:
+        name: onap-release-manifest
+        path: "${{ env.OUTPUT_DIR }}"
+        retention-days: 90
 
     - name: "Summary"
       shell: bash
       # yamllint disable rule:line-length
       run: |
-        # Summary
+        # Write step summary
         {
           echo "## ONAP Release Map Results"
           echo ""
           echo "| Metric | Value |"
           echo "| ------ | ----- |"
-          echo "| Repositories | ${{ steps.run-tool.outputs.repository_count }} |"
-          echo "| Docker Images | ${{ steps.run-tool.outputs.image_count }} |"
-          echo "| Release | ${{ inputs.release-name }} |"
-          echo "| Output | ${{ inputs.output-dir }} |"
+          echo "| Manifest Path | ${{ steps.run-tool.outputs.manifest_path }} |"
+          echo "| Schema Version | ${{ steps.run-tool.outputs.manifest_version }} |"
+          echo "| Repositories | ${{ steps.run-tool.outputs.total_repositories }} |"
+          echo "| Docker Images | ${{ steps.run-tool.outputs.total_images }} |"
+          echo "| Release | ${{ steps.run-tool.outputs.onap_release }} |"
         } >> "$GITHUB_STEP_SUMMARY"
       # yamllint enable rule:line-length
