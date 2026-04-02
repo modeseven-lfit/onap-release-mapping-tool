@@ -288,6 +288,9 @@ jobs:
   test-pypi:
     name: 'Test PyPI Publishing'
     runs-on: 'ubuntu-latest'
+    # SBOM/Grype is intentionally not a gate for publishing.
+    # It runs in parallel for visibility but must not block
+    # releases, matching the dependamerge pipeline pattern.
     needs:
       - 'tag-validate'
       - 'python-tests'

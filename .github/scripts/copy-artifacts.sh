@@ -25,12 +25,12 @@ mkdir -p "$DEST"
 
 # Copy manifest files
 if [ -d "manifest" ]; then
-  cp -r manifest/* "$DEST/"
+  cp -a manifest/. "$DEST/"
 fi
 
 # Copy metadata files
 if [ -d "metadata" ]; then
-  cp -r metadata/* "$DEST/"
+  cp -a metadata/. "$DEST/"
 fi
 
 # Generate a README for this date folder

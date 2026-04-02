@@ -17,7 +17,7 @@ on:
         description: "Collectors to enable"
         type: string
         required: false
-        default: "oom,gerrit,relman,jjb"
+        default: "oom,gerrit"
       skip_pages:
         description: "Skip GitHub Pages update"
         type: boolean
@@ -81,12 +81,13 @@ jobs:
           # Clone OOM (sparse checkout of kubernetes/ only)
           GERRIT_URL="${{ vars.GERRIT_URL || 'https://gerrit.onap.org/r' }}"
           git clone --depth 1 --branch "${{ inputs.oom_branch }}" \
-            --single-branch --filter=blob:none \
+            --single-branch --filter=blob:none --no-checkout \
             "${GERRIT_URL}/oom" \
             "${{ runner.temp }}/oom"
           cd "${{ runner.temp }}/oom"
           git sparse-checkout init --cone
           git sparse-checkout set kubernetes
+          git checkout
 
       - name: "Run discover"
         run: |
@@ -105,6 +106,19 @@ jobs:
             ARGS+=(--verbose -v)
           fi
           onap-release-map "${ARGS[@]}"
+
+      - name: "Export additional formats"
+        run: |
+          # Generate Markdown and CSV from manifest
+          MANIFEST="${{ runner.temp }}/output/manifest.json"
+          if [ -f "$MANIFEST" ]; then
+            onap-release-map export "$MANIFEST" \
+              --format md \
+              --output "${{ runner.temp }}/output/manifest.md"
+            onap-release-map export "$MANIFEST" \
+              --format csv \
+              --output "${{ runner.temp }}/output/manifest.csv"
+          fi
 
       - name: "Create metadata.json"
         # yamllint disable rule:line-length
@@ -130,11 +144,15 @@ jobs:
         run: |
           # Parse manifest.json for job outputs
           MANIFEST="${{ runner.temp }}/output/manifest.json"
+          manifest_date=$(date -u +%Y-%m-%d)
+          onap_release=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["onap_release"]["name"])' "$MANIFEST")
+          total_repos=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["summary"]["total_repositories"])' "$MANIFEST")
+          total_images=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["summary"]["total_docker_images"])' "$MANIFEST")
           {
-            echo "manifest_date=$(date -u +%Y-%m-%d)"
-            echo "onap_release=$(python3 -c "import json; print(json.load(open('${MANIFEST}'))['onap_release']['name'])")"
-            echo "total_repos=$(python3 -c "import json; print(json.load(open('${MANIFEST}'))['summary']['total_repositories'])")"
-            echo "total_images=$(python3 -c "import json; print(json.load(open('${MANIFEST}'))['summary']['total_docker_images'])")"
+            echo "manifest_date=$manifest_date"
+            echo "onap_release=$onap_release"
+            echo "total_repos=$total_repos"
+            echo "total_images=$total_images"
           } >> "$GITHUB_OUTPUT"
         # yamllint enable rule:line-length
 
@@ -170,16 +188,20 @@ jobs:
           egress-policy: audit
 
       - name: "Checkout gh-pages branch"
+        # yamllint disable rule:line-length
         run: |
           # Clone gh-pages branch (create if missing)
-          REPO_URL="https://x-access-token:${{ secrets.GITHUB_TOKEN }}"
-          REPO_URL="${REPO_URL}@github.com/${{ github.repository }}.git"
+          REPO_URL="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
           git clone --single-branch --branch gh-pages \
             "${REPO_URL}" gh-pages 2>/dev/null || {
             mkdir gh-pages && cd gh-pages && git init
+            git remote add origin "${REPO_URL}"
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
             git checkout --orphan gh-pages
             git commit --allow-empty -m "Init gh-pages"
           }
+        # yamllint enable rule:line-length
 
       - name: "Checkout repository"
         # yamllint disable-line rule:line-length
@@ -199,6 +221,7 @@ jobs:
           # Copy manifest to date-stamped and latest dirs
           DATE="${{ needs.analyze.outputs.manifest_date }}"
           mkdir -p "gh-pages/${DATE}" "gh-pages/latest"
+          rm -rf "gh-pages/${DATE:?}"/*
           cp -r manifest/* "gh-pages/${DATE}/"
           rm -rf gh-pages/latest/*
           cp -r manifest/* "gh-pages/latest/"

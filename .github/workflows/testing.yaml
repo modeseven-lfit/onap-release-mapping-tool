@@ -52,6 +52,7 @@ jobs:
         with:
           oom-path: "./oom"
           release-name: "Test"
+          output-dir: "./output"
 
       - name: "Verify manifest was created"
         shell: bash

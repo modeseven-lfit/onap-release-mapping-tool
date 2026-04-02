@@ -20,15 +20,19 @@ inputs:
     required: false
     default: "https://gerrit.onap.org/r"
   collectors:
-    description: "Comma-separated collector list"
+    # Only oom and gerrit are supported by this action.
+    # Other collectors (relman, jjb) need additional
+    # parameters not exposed as action inputs.
+    description: "Comma-separated collector list (oom, gerrit)"
     required: false
     default: "oom,gerrit"
   output-dir:
+    # Computed from RUNNER_TEMP in a step if left empty.
     description: "Output directory"
     required: false
-    default: "${{ runner.temp }}/onap-release-map"
+    default: ""
   output-format:
-    description: "Output formats: json, yaml, csv, md, all"
+    description: "Output formats: json, yaml, all"
     required: false
     default: "json"
   release-name:
@@ -87,6 +91,23 @@ runs:
         python -m pip install --quiet "${{ github.action_path }}"
       # yamllint enable rule:line-length
 
+    - name: "Resolve output directory"
+      shell: bash
+      run: |
+        # Use provided output-dir or default to RUNNER_TEMP
+        # Heredoc delimiter prevents environment-file injection
+        # from inputs containing newlines.
+        DELIM="EOF_$(openssl rand -hex 4)"
+        if [ -n "${{ inputs.output-dir }}" ]; then
+          printf 'OUTPUT_DIR<<%s\n%s\n%s\n' \
+            "$DELIM" "${{ inputs.output-dir }}" "$DELIM" \
+            >> "$GITHUB_ENV"
+        else
+          printf 'OUTPUT_DIR<<%s\n%s\n%s\n' \
+            "$DELIM" "${RUNNER_TEMP}/onap-release-map" "$DELIM" \
+            >> "$GITHUB_ENV"
+        fi
+
     - name: "Clone OOM from Gerrit"
       shell: bash
       # yamllint disable rule:line-length
@@ -102,10 +123,15 @@ runs:
             "${{ runner.temp }}/oom"
           cd "${{ runner.temp }}/oom"
           git sparse-checkout set kubernetes/
-          echo "OOM_PATH=${{ runner.temp }}/oom" >> "$GITHUB_ENV"
+          RESOLVED_OOM="${{ runner.temp }}/oom"
         else
-          echo "OOM_PATH=${{ inputs.oom-path }}" >> "$GITHUB_ENV"
+          RESOLVED_OOM="${{ inputs.oom-path }}"
         fi
+        # Heredoc delimiter prevents environment-file injection
+        DELIM="EOF_$(openssl rand -hex 4)"
+        printf 'OOM_PATH<<%s\n%s\n%s\n' \
+          "$DELIM" "$RESOLVED_OOM" "$DELIM" \
+          >> "$GITHUB_ENV"
       # yamllint enable rule:line-length
 
     - name: "Run onap-release-map discover"
@@ -114,10 +140,17 @@ runs:
       # yamllint disable rule:line-length
       run: |
         # Run onap-release-map discover
+
+        # Always include JSON so outputs can be parsed
+        FORMAT="${{ inputs.output-format }}"
+        if [ "$FORMAT" != "json" ] && [ "$FORMAT" != "all" ]; then
+          FORMAT="all"
+        fi
+
         ARGS=(discover)
         ARGS+=(--oom-path "$OOM_PATH")
-        ARGS+=(--output-dir "${{ inputs.output-dir }}")
-        ARGS+=(--output-format "${{ inputs.output-format }}")
+        ARGS+=(--output-dir "$OUTPUT_DIR")
+        ARGS+=(--output-format "$FORMAT")
         ARGS+=(--release-name "${{ inputs.release-name }}")
         ARGS+=(--collectors "${{ inputs.collectors }}")
         ARGS+=(--gerrit-url "${{ inputs.gerrit-url }}")
@@ -129,13 +162,17 @@ runs:
         onap-release-map "${ARGS[@]}"
 
         # Set outputs from the JSON manifest
-        MANIFEST="${{ inputs.output-dir }}/manifest.json"
+        MANIFEST="${OUTPUT_DIR}/manifest.json"
         if [ -f "$MANIFEST" ]; then
           echo "manifest_path=$MANIFEST" >> "$GITHUB_OUTPUT"
-          echo "manifest_version=$(python3 -c "import json; m=json.load(open('$MANIFEST')); print(m['schema_version'])")" >> "$GITHUB_OUTPUT"
-          echo "total_repositories=$(python3 -c "import json; m=json.load(open('$MANIFEST')); print(m['summary']['total_repositories'])")" >> "$GITHUB_OUTPUT"
-          echo "total_images=$(python3 -c "import json; m=json.load(open('$MANIFEST')); print(m['summary']['total_docker_images'])")" >> "$GITHUB_OUTPUT"
-          echo "onap_release=$(python3 -c "import json; m=json.load(open('$MANIFEST')); print(m['onap_release']['name'])")" >> "$GITHUB_OUTPUT"
+          manifest_version=$(python3 -c 'import json,sys; m=json.load(open(sys.argv[1])); print(m["schema_version"])' "$MANIFEST")
+          echo "manifest_version=$manifest_version" >> "$GITHUB_OUTPUT"
+          total_repositories=$(python3 -c 'import json,sys; m=json.load(open(sys.argv[1])); print(m["summary"]["total_repositories"])' "$MANIFEST")
+          echo "total_repositories=$total_repositories" >> "$GITHUB_OUTPUT"
+          total_images=$(python3 -c 'import json,sys; m=json.load(open(sys.argv[1])); print(m["summary"]["total_docker_images"])' "$MANIFEST")
+          echo "total_images=$total_images" >> "$GITHUB_OUTPUT"
+          onap_release=$(python3 -c 'import json,sys; m=json.load(open(sys.argv[1])); print(m["onap_release"]["name"])' "$MANIFEST")
+          echo "onap_release=$onap_release" >> "$GITHUB_OUTPUT"
         fi
       # yamllint enable rule:line-length
 
@@ -144,7 +181,7 @@ runs:
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f  # v7.0.0
       with:
         name: onap-release-manifest
-        path: "${{ inputs.output-dir }}"
+        path: "${{ env.OUTPUT_DIR }}"
         retention-days: 90
 
     - name: "Summary"
