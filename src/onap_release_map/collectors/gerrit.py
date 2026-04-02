@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+import copy
 import json
 import time
 from typing import Any, Literal
@@ -62,6 +63,7 @@ class GerritCollector(BaseCollector):
         self._gerrit_url = (gerrit_url or "https://gerrit.onap.org/r").rstrip("/")
         self._timeout = timeout
         self._max_retries = max_retries
+        self._cache: dict[str, dict[str, Any]] = {}
 
     # -----------------------------------------------------------------
     # Public API
@@ -116,6 +118,15 @@ class GerritCollector(BaseCollector):
             len(sorted_repos),
         )
         return CollectorResult(repositories=sorted_repos)
+
+    def clear_cache(self) -> None:
+        """Clear the in-memory API response cache.
+
+        Removes all cached Gerrit API responses so that subsequent
+        calls to :meth:`_get_json` will issue fresh HTTP requests.
+        """
+        self._cache.clear()
+        self._logger.debug("Gerrit API response cache cleared")
 
     # -----------------------------------------------------------------
     # Internal helpers
@@ -182,6 +193,10 @@ class GerritCollector(BaseCollector):
         Strips the Gerrit magic prefix from the response body and
         retries on transient errors up to ``max_retries`` times.
 
+        Successful responses are cached in memory so that repeated
+        requests for the same URL within a single run return
+        instantly without issuing another HTTP request.
+
         Args:
             client: An ``httpx.Client`` instance for the request.
             url: Fully-qualified URL to fetch.
@@ -194,6 +209,10 @@ class GerritCollector(BaseCollector):
                 network errors, or if the response cannot be decoded
                 as JSON.
         """
+        if url in self._cache:
+            self._logger.debug("Cache hit for %s", url)
+            return copy.deepcopy(self._cache[url])
+
         last_exc: Exception | None = None
 
         for attempt in range(1, self._max_retries + 1):
@@ -209,6 +228,7 @@ class GerritCollector(BaseCollector):
                     body = body[len(_GERRIT_MAGIC_PREFIX) :]
 
                 result: dict[str, Any] = json.loads(body)
+                self._cache[url] = copy.deepcopy(result)
                 return result
 
             except (httpx.HTTPStatusError, httpx.RequestError) as exc:

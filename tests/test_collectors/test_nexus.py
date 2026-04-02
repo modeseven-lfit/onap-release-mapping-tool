@@ -5,7 +5,10 @@
 
 from __future__ import annotations
 
+from unittest.mock import patch
+
 import httpx
+import pytest
 import respx
 
 from onap_release_map.collectors import CollectorResult, registry
@@ -129,6 +132,83 @@ class TestNexusCollector:
         assert result.execution.duration_seconds >= 0
         assert len(result.docker_images) == 1
         assert result.docker_images[0].nexus_validated is True
+
+    @respx.mock
+    @patch("onap_release_map.collectors.nexus.time.sleep")
+    def test_retry_on_server_error(self, _mock_sleep: object) -> None:
+        """Retry after HTTP 500 succeeds on second attempt."""
+        url = f"{NEXUS_URL}/v2/onap/policy-api/manifests/4.2.2"
+        respx.head(url).mock(
+            side_effect=[
+                httpx.Response(500),
+                httpx.Response(200),
+            ],
+        )
+
+        images = [DockerImage(image="onap/policy-api", tag="4.2.2")]
+        collector = NexusCollector(
+            nexus_url=NEXUS_URL,
+            docker_images=images,
+            concurrent_workers=1,
+            max_retries=3,
+        )
+        result = collector.collect()
+
+        assert len(result.docker_images) == 1
+        assert result.docker_images[0].nexus_validated is True
+
+    @respx.mock
+    @patch("onap_release_map.collectors.nexus.time.sleep")
+    def test_retry_exhaustion(self, _mock_sleep: object) -> None:
+        """All retries exhausted on persistent 500 yields False."""
+        url = f"{NEXUS_URL}/v2/onap/policy-api/manifests/4.2.2"
+        respx.head(url).mock(
+            return_value=httpx.Response(500),
+        )
+
+        images = [DockerImage(image="onap/policy-api", tag="4.2.2")]
+        collector = NexusCollector(
+            nexus_url=NEXUS_URL,
+            docker_images=images,
+            concurrent_workers=1,
+            max_retries=2,
+        )
+        result = collector.collect()
+
+        assert len(result.docker_images) == 1
+        assert result.docker_images[0].nexus_validated is False
+
+    @respx.mock
+    def test_no_retry_on_404(self) -> None:
+        """HTTP 404 is definitive; only one request is made."""
+        route = respx.head(
+            f"{NEXUS_URL}/v2/onap/policy-api/manifests/4.2.2",
+        ).mock(
+            return_value=httpx.Response(404),
+        )
+
+        images = [DockerImage(image="onap/policy-api", tag="4.2.2")]
+        collector = NexusCollector(
+            nexus_url=NEXUS_URL,
+            docker_images=images,
+            concurrent_workers=1,
+            max_retries=3,
+        )
+        result = collector.collect()
+
+        assert len(result.docker_images) == 1
+        assert result.docker_images[0].nexus_validated is False
+        assert route.call_count == 1
+
+    def test_max_retries_validation(self) -> None:
+        """Passing max_retries=0 raises ValueError."""
+        with pytest.raises(ValueError, match="max_retries must be >= 1"):
+            NexusCollector(
+                nexus_url=NEXUS_URL,
+                docker_images=[],
+                concurrent_workers=1,
+                max_retries=0,
+            )
 
     @respx.mock
     def test_collect_multiple_images(self) -> None:
