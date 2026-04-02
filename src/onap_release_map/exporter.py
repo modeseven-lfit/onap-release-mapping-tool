@@ -493,9 +493,7 @@ def _sanitise_manifest(manifest: ReleaseManifest) -> ReleaseManifest:
             if key in repo and isinstance(repo[key], str):
                 repo[key] = _esc(repo[key])
         if "discovered_by" in repo:
-            repo["discovered_by"] = [
-                _esc(v) for v in repo["discovered_by"]
-            ]
+            repo["discovered_by"] = [_esc(v) for v in repo["discovered_by"]]
 
     # Escape Docker image fields
     for img in data.get("docker_images", []):
@@ -503,9 +501,7 @@ def _sanitise_manifest(manifest: ReleaseManifest) -> ReleaseManifest:
             if key in img and isinstance(img[key], str):
                 img[key] = _esc(img[key])
         if "helm_charts" in img:
-            img["helm_charts"] = [
-                _esc(v) for v in img["helm_charts"]
-            ]
+            img["helm_charts"] = [_esc(v) for v in img["helm_charts"]]
 
     # Escape Helm component fields
     for comp in data.get("helm_components", []):

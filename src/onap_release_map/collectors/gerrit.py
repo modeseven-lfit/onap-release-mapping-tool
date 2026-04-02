@@ -81,10 +81,7 @@ class GerritCollector(BaseCollector):
             )
         else:
             if isinstance(states, str | bytes):
-                msg = (
-                    "states must be a list of strings, "
-                    f"not {type(states).__name__!r}"
-                )
+                msg = f"states must be a list of strings, not {type(states).__name__!r}"
                 raise TypeError(msg)
             invalid = {s for s in states if s not in self.VALID_STATES}
             if invalid:

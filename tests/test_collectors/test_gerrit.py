@@ -314,7 +314,6 @@ def test_gerrit_top_level_project(_mock_sleep: object) -> None:
     assert repos_by_name["cps"].top_level_project == "cps"
 
 
-
 # -----------------------------------------------------------------
 # State-based filtering tests
 # -----------------------------------------------------------------
@@ -324,9 +323,7 @@ def test_gerrit_top_level_project(_mock_sleep: object) -> None:
 @patch("onap_release_map.collectors.gerrit.time.sleep")
 def test_states_active_only(_mock_sleep: object) -> None:
     """When states=["ACTIVE"], only ACTIVE projects are queried."""
-    active_body = (
-        '{"policy/api": {"id": "policy%2Fapi", "state": "ACTIVE"}}'
-    )
+    active_body = '{"policy/api": {"id": "policy%2Fapi", "state": "ACTIVE"}}'
 
     respx.get(_active_url()).mock(
         return_value=_gerrit_response(active_body),
@@ -337,7 +334,9 @@ def test_states_active_only(_mock_sleep: object) -> None:
     )
 
     collector = GerritCollector(
-        gerrit_url=GERRIT_URL, max_retries=1, states=["ACTIVE"],
+        gerrit_url=GERRIT_URL,
+        max_retries=1,
+        states=["ACTIVE"],
     )
     result = collector.collect()
 
@@ -351,9 +350,7 @@ def test_states_active_only(_mock_sleep: object) -> None:
 @patch("onap_release_map.collectors.gerrit.time.sleep")
 def test_states_readonly_only(_mock_sleep: object) -> None:
     """When states=["READ_ONLY"], only READ_ONLY projects are queried."""
-    readonly_body = (
-        '{"aaf/authz": {"id": "aaf%2Fauthz", "state": "READ_ONLY"}}'
-    )
+    readonly_body = '{"aaf/authz": {"id": "aaf%2Fauthz", "state": "READ_ONLY"}}'
 
     route_active = respx.get(_active_url()).mock(
         return_value=_gerrit_response("{}"),
@@ -363,7 +360,9 @@ def test_states_readonly_only(_mock_sleep: object) -> None:
     )
 
     collector = GerritCollector(
-        gerrit_url=GERRIT_URL, max_retries=1, states=["READ_ONLY"],
+        gerrit_url=GERRIT_URL,
+        max_retries=1,
+        states=["READ_ONLY"],
     )
     result = collector.collect()
 
@@ -400,6 +399,8 @@ def test_states_default_backward_compat() -> None:
 def test_states_property() -> None:
     """The states property reflects the configured filter."""
     collector = GerritCollector(
-        gerrit_url=GERRIT_URL, max_retries=1, states=["ACTIVE"],
+        gerrit_url=GERRIT_URL,
+        max_retries=1,
+        states=["ACTIVE"],
     )
     assert collector.states == ("ACTIVE",)

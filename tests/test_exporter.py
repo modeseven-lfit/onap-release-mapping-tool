@@ -386,9 +386,7 @@ class TestHtmlXssSanitisation:
         """Markdown link syntax in manifest fields is neutralised."""
         manifest = _make_manifest()
         data = manifest.model_dump(mode="json")
-        data["repositories"][0]["gerrit_project"] = (
-            "[click](javascript:alert(1))"
-        )
+        data["repositories"][0]["gerrit_project"] = "[click](javascript:alert(1))"
         safe = ReleaseManifest.model_validate(data)
         result = export_html(safe)
         assert 'href="javascript:' not in result
