@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import concurrent.futures
+import time
 
 import httpx
 
@@ -34,6 +35,7 @@ class NexusCollector(BaseCollector):
         nexus_url: str = "https://nexus3.onap.org",
         timeout: int = 10,
         concurrent_workers: int = 4,
+        max_retries: int = 3,
         docker_images: list[DockerImage] | None = None,
         **kwargs: object,
     ) -> None:
@@ -45,12 +47,21 @@ class NexusCollector(BaseCollector):
             timeout: HTTP request timeout in seconds.
             concurrent_workers: Maximum number of threads used for
                 concurrent image validation.
+            max_retries: Maximum number of attempts per image
+                validation request.  Must be at least 1.  Retries
+                are performed on network errors and HTTP 500+
+                responses, with a 1-second delay between attempts.
             docker_images: List of :class:`DockerImage` objects to
                 validate.  Typically produced by an earlier collector
                 such as :class:`OOMCollector`.
             **kwargs: Additional keyword arguments accepted for forward
                 compatibility. Currently ignored and not passed to
                 :class:`BaseCollector`.
+
+        Raises:
+            ValueError: If ``timeout`` is not positive,
+                ``concurrent_workers`` is less than 1, or
+                ``max_retries`` is less than 1.
         """
         super().__init__()
         if timeout <= 0:
@@ -59,9 +70,13 @@ class NexusCollector(BaseCollector):
         if concurrent_workers < 1:
             msg = f"concurrent_workers must be at least 1, got {concurrent_workers}"
             raise ValueError(msg)
+        if max_retries < 1:
+            msg = f"max_retries must be >= 1, got {max_retries}"
+            raise ValueError(msg)
         self._nexus_url = nexus_url.rstrip("/")
         self._timeout = timeout
         self._concurrent_workers = concurrent_workers
+        self._max_retries = max_retries
         self._docker_images = docker_images or []
 
     # -----------------------------------------------------------------
@@ -143,7 +158,11 @@ class NexusCollector(BaseCollector):
 
         Issues a ``HEAD`` request to the Docker Registry V2 manifests
         endpoint for the specific tag, avoiding the overhead of
-        fetching the full tag list.
+        fetching the full tag list.  Retries on transient network
+        errors (:class:`httpx.HTTPError`) and HTTP 500+ server errors
+        up to ``max_retries`` times, sleeping 1 second between
+        attempts.  HTTP 200 (found) and 404 (not found) are treated
+        as definitive responses and are never retried.
 
         Args:
             client: An :class:`httpx.Client` to use for the request.
@@ -156,52 +175,85 @@ class NexusCollector(BaseCollector):
         url = f"{self._nexus_url}/v2/{image.image}/manifests/{image.tag}"
         self._logger.debug("Checking %s:%s -> %s", image.image, image.tag, url)
 
-        try:
-            response = client.head(
-                url,
-                headers={
-                    "Accept": (
-                        "application/vnd.docker.distribution.manifest.v2+json, "
-                        "application/vnd.oci.image.manifest.v1+json, "
-                        "application/vnd.docker.distribution.manifest.list.v2+json, "
-                        "application/vnd.oci.image.index.v1+json"
-                    ),
-                },
-            )
-            found = response.status_code == 200
+        for attempt in range(1, self._max_retries + 1):
+            try:
+                response = client.head(
+                    url,
+                    headers={
+                        "Accept": (
+                            "application/vnd.docker.distribution.manifest.v2+json, "
+                            "application/vnd.oci.image.manifest.v1+json, "
+                            "application/vnd.docker.distribution.manifest.list.v2+json, "
+                            "application/vnd.oci.image.index.v1+json"
+                        ),
+                    },
+                )
 
-            if found:
-                self._logger.debug(
-                    "Tag %s found for %s",
-                    image.tag,
-                    image.image,
-                )
-            elif response.status_code == 404:
-                self._logger.info(
-                    "Tag %s NOT found for %s (HTTP %d)",
-                    image.tag,
-                    image.image,
-                    response.status_code,
-                )
-            else:
+                if response.status_code == 200:
+                    self._logger.debug(
+                        "Tag %s found for %s",
+                        image.tag,
+                        image.image,
+                    )
+                    return image.model_copy(
+                        update={"nexus_validated": True},
+                    )
+
+                if response.status_code == 404:
+                    self._logger.info(
+                        "Tag %s NOT found for %s (HTTP %d)",
+                        image.tag,
+                        image.image,
+                        response.status_code,
+                    )
+                    return image.model_copy(
+                        update={"nexus_validated": False},
+                    )
+
+                # Server error — eligible for retry.
+                if response.status_code >= 500:
+                    self._logger.warning(
+                        "Server error HTTP %d for %s:%s "
+                        "(attempt %d/%d)",
+                        response.status_code,
+                        image.image,
+                        image.tag,
+                        attempt,
+                        self._max_retries,
+                    )
+                    if attempt < self._max_retries:
+                        time.sleep(1)
+                    continue
+
+                # Other unexpected status — not retried.
                 self._logger.warning(
                     "Unexpected HTTP %d when checking %s:%s",
                     response.status_code,
                     image.image,
                     image.tag,
                 )
+                return image.model_copy(
+                    update={"nexus_validated": False},
+                )
 
-            result: DockerImage = image.model_copy(
-                update={"nexus_validated": found},
-            )
-            return result
+            except httpx.HTTPError as exc:
+                self._logger.warning(
+                    "HTTP error validating %s:%s: %s "
+                    "(attempt %d/%d)",
+                    image.image,
+                    image.tag,
+                    exc,
+                    attempt,
+                    self._max_retries,
+                )
+                if attempt < self._max_retries:
+                    time.sleep(1)
 
-        except httpx.HTTPError as exc:
-            self._logger.warning(
-                "HTTP error validating %s:%s: %s",
-                image.image,
-                image.tag,
-                exc,
-            )
-            result = image.model_copy(update={"nexus_validated": False})
-            return result
+        # All retries exhausted.
+        self._logger.warning(
+            "All %d attempts exhausted for %s:%s",
+            self._max_retries,
+            image.image,
+            image.tag,
+        )
+        return image.model_copy(update={"nexus_validated": False})
