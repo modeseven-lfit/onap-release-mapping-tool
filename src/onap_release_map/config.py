@@ -24,6 +24,7 @@ DEFAULTS: dict[str, Any] = {
         "url": "https://gerrit.onap.org/r",
         "timeout": 30,
         "max_retries": 3,
+        "states": ["ACTIVE"],
     },
     "oom": {
         "default_branch": "master",

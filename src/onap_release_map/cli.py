@@ -305,6 +305,7 @@ def discover(
             "gerrit_url": gerrit_url or gerrit_cfg.get("url"),
             "timeout": gerrit_cfg.get("timeout", 30),
             "max_retries": gerrit_cfg.get("max_retries", 3),
+            "states": gerrit_cfg.get("states"),
         },
     }
 
@@ -532,7 +533,7 @@ def export_cmd(
         str,
         typer.Option(
             "--format",
-            help="Output format: yaml, csv, md, gerrit-list.",
+            help="Output format: yaml, csv, md, html, gerrit-list.",
         ),
     ] = "yaml",
     output: Annotated[
@@ -559,7 +560,7 @@ def export_cmd(
         ),
     ] = False,
 ) -> None:
-    """Convert a manifest to CSV, YAML, Markdown, or Gerrit list format."""
+    """Convert a manifest to CSV, YAML, Markdown, HTML, or Gerrit list format."""
     import json
 
     from onap_release_map.exceptions import ExportError

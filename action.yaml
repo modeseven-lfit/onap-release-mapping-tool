@@ -48,6 +48,10 @@ inputs:
     description: "Python version to use"
     required: false
     default: "3.12"
+  version:
+    description: "Tool version to use (e.g. '0.1.0' or 'latest')"
+    required: false
+    default: "latest"
 
 outputs:
   manifest-path:
@@ -80,16 +84,23 @@ runs:
       # yamllint disable-line rule:line-length
       uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57  # v8.0.0
 
-    - name: "Install onap-release-map"
+    - name: "Resolve tool specifier"
       shell: bash
-      # yamllint disable rule:line-length
       run: |
-        # Install onap-release-map via pip
-        # When used as a GitHub Action the checkout has no .git directory,
-        # so hatch-vcs cannot resolve the version dynamically. The
-        # fallback-version configured in pyproject.toml handles this case.
-        python -m pip install --quiet "${{ github.action_path }}"
-      # yamllint enable rule:line-length
+        # Build uvx specifier with optional version pin
+        VERSION="${{ inputs.version }}"
+        if [ "$VERSION" = "latest" ] || [ -z "$VERSION" ]; then
+          TOOL_SPEC="onap-release-map"
+        else
+          TOOL_SPEC="onap-release-map@${VERSION}"
+        fi
+        DELIM="EOF_$(openssl rand -hex 4)"
+        printf 'TOOL_SPEC<<%s\n%s\n%s\n' \
+          "$DELIM" "$TOOL_SPEC" "$DELIM" \
+          >> "$GITHUB_ENV"
+        echo "::group::Tool version"
+        uvx "${TOOL_SPEC}" version
+        echo "::endgroup::"
 
     - name: "Resolve output directory"
       shell: bash
@@ -159,7 +170,7 @@ runs:
           ARGS+=(--mapping-file "${{ inputs.mapping-file }}")
         fi
 
-        onap-release-map "${ARGS[@]}"
+        uvx "${TOOL_SPEC}" "${ARGS[@]}"
 
         # Set outputs from the JSON manifest
         MANIFEST="${OUTPUT_DIR}/manifest.json"

@@ -28,6 +28,16 @@ on:
         type: boolean
         required: false
         default: false
+      skip_nexus:
+        description: "Skip Nexus image verification"
+        type: boolean
+        required: false
+        default: false
+      version:
+        description: "Tool version (e.g. '0.1.0' or 'latest')"
+        type: string
+        required: false
+        default: "latest"
       debug:
         description: "Enable debug output"
         type: boolean
@@ -73,8 +83,19 @@ jobs:
         # yamllint disable-line rule:line-length
         uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57  # v8.0.0
 
-      - name: "Install dependencies"
-        run: uv pip install --system .
+      - name: "Resolve tool specifier"
+        run: |
+          # Build uvx specifier with optional version pin
+          VERSION="${{ inputs.version }}"
+          if [ "$VERSION" = "latest" ] || [ -z "$VERSION" ]; then
+            TOOL_SPEC="onap-release-map"
+          else
+            TOOL_SPEC="onap-release-map@${VERSION}"
+          fi
+          echo "TOOL_SPEC=${TOOL_SPEC}" >> "$GITHUB_ENV"
+          echo "::group::Tool version"
+          uvx "${TOOL_SPEC}" version
+          echo "::endgroup::"
 
       - name: "Clone OOM from Gerrit"
         run: |
@@ -105,26 +126,38 @@ jobs:
           if [ "${{ inputs.debug }}" = "true" ]; then
             ARGS+=(--verbose -v)
           fi
-          onap-release-map "${ARGS[@]}"
+          uvx "${TOOL_SPEC}" "${ARGS[@]}"
 
       - name: "Export additional formats"
         run: |
-          # Generate Markdown and CSV from manifest
+          # Generate Markdown, CSV, and HTML from manifest
           MANIFEST="${{ runner.temp }}/output/manifest.json"
           if [ -f "$MANIFEST" ]; then
-            onap-release-map export "$MANIFEST" \
+            uvx "${TOOL_SPEC}" export "$MANIFEST" \
               --format md \
               --output "${{ runner.temp }}/output/manifest.md"
-            onap-release-map export "$MANIFEST" \
+            uvx "${TOOL_SPEC}" export "$MANIFEST" \
               --format csv \
               --output "${{ runner.temp }}/output/manifest.csv"
+            uvx "${TOOL_SPEC}" export "$MANIFEST" \
+              --format html \
+              --output "${{ runner.temp }}/output/manifest.html"
+          fi
+
+      - name: "Verify images on Nexus"
+        if: inputs.skip_nexus != true
+        run: |
+          # Validate Docker images exist in Nexus registry
+          MANIFEST="${{ runner.temp }}/output/manifest.json"
+          if [ -f "$MANIFEST" ]; then
+            uvx "${TOOL_SPEC}" verify "$MANIFEST"
           fi
 
       - name: "Create metadata.json"
         # yamllint disable rule:line-length
         run: |
           # Create run provenance metadata
-          TOOL_VERSION="$(onap-release-map version 2>&1 | head -1)"
+          TOOL_VERSION="$(uvx "${TOOL_SPEC}" version 2>&1 | head -1)"
           cat > "${{ runner.temp }}/output/metadata.json" <<EOF
           {
             "run_id": "${GITHUB_RUN_ID}",
@@ -295,8 +328,11 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: "Generate summary"
+        # yamllint disable rule:line-length
         run: |
           # Generate workflow summary
+          PAGES="https://modeseven-lfit.github.io"
+          PAGES="${PAGES}/onap-release-mapping-tool"
           {
             echo "## Release Mapping Production Summary"
             echo ""
@@ -323,4 +359,15 @@ jobs:
           ${{ needs.publish-pages.result }} |"
             echo "| Copy to Artifacts Repo | \
           ${{ needs.copy-to-artifacts-repo.result }} |"
+            echo ""
+            echo "### Published Links"
+            echo ""
+            echo "| Link | URL |"
+            echo "| ---- | --- |"
+            echo "| **GitHub Pages** | ${PAGES}/ |"
+            echo "| **Latest Report** | \
+          ${PAGES}/latest/manifest.html |"
+            echo "| **Latest JSON** | \
+          ${PAGES}/latest/manifest.json |"
           } >> "$GITHUB_STEP_SUMMARY"
+        # yamllint enable rule:line-length
