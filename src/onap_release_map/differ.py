@@ -526,9 +526,7 @@ def _format_section_text(label: str, section: SectionDiff) -> str:
         for chg in section.changed:
             old = chg.old_value if chg.old_value is not None else "—"
             new = chg.new_value if chg.new_value is not None else "—"
-            lines.append(
-                f"      ~ {chg.key} [{chg.field}]: {old} -> {new}"
-            )
+            lines.append(f"      ~ {chg.key} [{chg.field}]: {old} -> {new}")
 
     lines.append(f"    Unchanged: {section.unchanged_count}")
     return "\n".join(lines)
