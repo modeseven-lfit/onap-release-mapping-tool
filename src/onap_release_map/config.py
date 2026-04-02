@@ -40,6 +40,7 @@ DEFAULTS: dict[str, Any] = {
     "nexus": {
         "url": "https://nexus3.onap.org",
         "timeout": 10,
+        "max_retries": 3,
         "concurrent_workers": 4,
     },
     "logging": {

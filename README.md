@@ -19,7 +19,7 @@ Gerrit projects and Docker images comprising an ONAP release.
 `onap-release-map` follows an **OOM-first** strategy: it starts from the
 OOM Helm umbrella chart, recursively resolves every sub-chart and Docker
 image reference, then maps those images back to their source Gerrit
-repositories. Additional collectors enrich the manifest with data from
+repositories. Further collectors enrich the manifest with data from
 the ONAP release management repository, JJB CI definitions, and the
 Gerrit REST API.
 
@@ -50,7 +50,7 @@ captures the complete state of the analysis, including:
 - **Multi-format export** — converts manifests to YAML, CSV, Markdown,
   or a flat Gerrit repository list
 - **JSON Schema validation** — every manifest conforms to a versioned
-  JSON Schema, enabling downstream tooling to validate artifacts
+  JSON Schema, enabling downstream tooling to verify artifacts
 - **GitHub Action** — composite action for CI/CD integration that clones
   OOM, runs discovery, and uploads the manifest as a build artifact
 
@@ -86,7 +86,7 @@ git clone --depth 1 https://gerrit.onap.org/r/oom
 onap-release-map discover --oom-path ./oom
 ```
 
-The manifest is written to `./output/manifest.json` by default.
+The tool writes the manifest to `./output/manifest.json` by default.
 
 ## Commands
 
@@ -96,7 +96,7 @@ The primary command. Parses OOM Helm charts and runs selected collectors
 to build the release manifest.
 
 ```/dev/null/shell.sh#L1-2
-# Basic discovery with OOM charts only
+# Basic discovery with OOM charts
 onap-release-map discover --oom-path ./oom
 ```
 
@@ -182,8 +182,8 @@ onap-release-map export manifest.json --format gerrit-list
 ```
 
 ```/dev/null/shell.sh#L1-2
-# Export only Docker images as CSV
-onap-release-map export manifest.json --format csv --images-only --output images.csv
+# Export Docker images as CSV (use --images flag)
+onap-release-map export manifest.json --format csv --output images.csv
 ```
 
 <!-- markdownlint-disable MD013 -->
@@ -193,14 +193,13 @@ onap-release-map export manifest.json --format csv --images-only --output images
 | `MANIFEST_PATH` | *(required)* | Path to manifest JSON file |
 | `--format FMT` | `yaml` | Output format: `yaml`, `csv`, `md`, `gerrit-list` |
 | `--output PATH` | — | Write to file instead of stdout |
-| `--repos-only` | `false` | Export only the repository list (CSV mode) |
-| `--images-only` | `false` | Export only the Docker image list (CSV mode) |
+| `--repos-*` / `--images-*` | `false` | Limit CSV scope to repos or images |
 
 <!-- markdownlint-enable MD013 -->
 
 ### verify
 
-Validate that every Docker image:tag pair in a manifest exists in the
+Check that every Docker image:tag pair in a manifest exists in the
 ONAP Nexus3 Docker registry. Returns a non-zero exit code if any images
 are missing.
 
@@ -276,6 +275,7 @@ oom:
 nexus:
   url: "https://nexus3.onap.org"
   timeout: 10
+  max_retries: 3
   concurrent_workers: 4
 ```
 
@@ -340,8 +340,8 @@ jobs:
 | Format | Command | Description |
 | --- | --- | --- |
 | JSON | `discover --output-format json` | Primary manifest format with full metadata and schema validation |
-| YAML | `discover --output-format yaml` | Human-readable equivalent of the JSON manifest |
-| CSV | `export --format csv` | Tabular data suitable for spreadsheets; supports `--repos-only` and `--images-only` |
+| YAML | `discover --output-format yaml` | Human-readable counterpart of the JSON manifest |
+| CSV | `export --format csv` | Tabular data suitable for spreadsheets (filterable by repos or images) |
 | Markdown | `export --format md` | Formatted tables for embedding in reports or wikis |
 | Gerrit list | `export --format gerrit-list` | Flat newline-delimited list of Gerrit project names |
 
@@ -391,6 +391,6 @@ Full documentation is available on
 
 ## License
 
-This project is licensed under the
+This project uses the
 [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 See the [LICENSE](LICENSE) file for details.

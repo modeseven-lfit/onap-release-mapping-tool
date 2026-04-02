@@ -119,6 +119,6 @@ suppress_warnings = [
     "toc.not_included",
 ]
 
-# Deduplicate Pydantic model attribute entries across package re-exports
-# and submodule definitions by allowing overwrites in the object inventory.
+# Hide parent class prefixes in the table of contents to keep
+# API reference entries concise and readable.
 toc_object_entries_show_parents = "hide"

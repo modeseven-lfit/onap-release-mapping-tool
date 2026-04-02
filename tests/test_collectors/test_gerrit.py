@@ -246,6 +246,56 @@ def test_clear_cache(_mock_sleep: object) -> None:
 
 @respx.mock
 @patch("onap_release_map.collectors.gerrit.time.sleep")
+def test_cache_safe_with_pagination(_mock_sleep: object) -> None:
+    """Cached responses with _more_projects are not corrupted by mutation.
+
+    _fetch_projects() pops the _more_projects key from the response
+    dict.  The cache must return a defensive copy so that the stored
+    value remains intact for later calls.
+    """
+    # First page has a pagination marker; second page does not.
+    page1_body = (
+        '{"policy/api": {"id": "policy%2Fapi", "state": "ACTIVE"}, '
+        '"_more_projects": true}'
+    )
+    page2_body = '{"aai/aai-common": {"id": "aai%2Faai-common", "state": "ACTIVE"}}'
+
+    active_url_page1 = (
+        f"{GERRIT_URL}/projects/?type=ALL&d&state=ACTIVE&S=0&n=500"
+    )
+    active_url_page2 = (
+        f"{GERRIT_URL}/projects/?type=ALL&d&state=ACTIVE&S=1&n=500"
+    )
+
+    respx.get(active_url_page1).mock(
+        return_value=_gerrit_response(page1_body),
+    )
+    respx.get(active_url_page2).mock(
+        return_value=_gerrit_response(page2_body),
+    )
+    respx.get(_readonly_url()).mock(
+        return_value=_gerrit_response("{}"),
+    )
+
+    collector = GerritCollector(gerrit_url=GERRIT_URL, max_retries=1)
+
+    result1 = collector.collect()
+    names1 = {r.gerrit_project for r in result1.repositories}
+    assert "policy/api" in names1
+    assert "aai/aai-common" in names1
+
+    # Second collect uses the cache.  If the cached page-1 dict was
+    # mutated (pop removed _more_projects), the collector would stop
+    # after page 1 and miss aai/aai-common.
+    result2 = collector.collect()
+    names2 = {r.gerrit_project for r in result2.repositories}
+    assert "policy/api" in names2
+    assert "aai/aai-common" in names2
+    assert names1 == names2
+
+
+@respx.mock
+@patch("onap_release_map.collectors.gerrit.time.sleep")
 def test_gerrit_top_level_project(_mock_sleep: object) -> None:
     """``top_level_project`` is the first path component of the name."""
     active_body = (

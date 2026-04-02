@@ -195,9 +195,10 @@ class NexusCollector(BaseCollector):
                         image.tag,
                         image.image,
                     )
-                    return image.model_copy(
+                    result: DockerImage = image.model_copy(
                         update={"nexus_validated": True},
                     )
+                    return result
 
                 if response.status_code == 404:
                     self._logger.info(
@@ -206,9 +207,10 @@ class NexusCollector(BaseCollector):
                         image.image,
                         response.status_code,
                     )
-                    return image.model_copy(
+                    result = image.model_copy(
                         update={"nexus_validated": False},
                     )
+                    return result
 
                 # Server error — eligible for retry.
                 if response.status_code >= 500:
@@ -231,9 +233,10 @@ class NexusCollector(BaseCollector):
                     image.image,
                     image.tag,
                 )
-                return image.model_copy(
+                result = image.model_copy(
                     update={"nexus_validated": False},
                 )
+                return result
 
             except httpx.HTTPError as exc:
                 self._logger.warning(
@@ -254,4 +257,7 @@ class NexusCollector(BaseCollector):
             image.image,
             image.tag,
         )
-        return image.model_copy(update={"nexus_validated": False})
+        result = image.model_copy(
+            update={"nexus_validated": False},
+        )
+        return result

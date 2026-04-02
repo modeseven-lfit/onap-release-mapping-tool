@@ -24,8 +24,7 @@ Clone the OOM repository and point the tool at it:
    $ git clone --depth 1 https://gerrit.onap.org/r/oom
    $ onap-release-map discover --oom-path ./oom
 
-By default the tool writes the manifest to the current directory as
-``manifest.json``.
+By default the tool writes the manifest to ``./output/manifest.json``.
 
 Specifying a Release Name
 -------------------------

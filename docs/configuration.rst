@@ -4,15 +4,16 @@
 Configuration
 =============
 
-``onap-release-map`` supports configuration through YAML files,
-command-line options, and environment variables. Command-line options take
-precedence over configuration file values, which in turn take precedence
-over built-in defaults.
+``onap-release-map`` supports configuration through YAML files and
+command-line options. Command-line options take precedence over
+configuration file values, which in turn take precedence over built-in
+defaults.
 
 Configuration File
 ------------------
 
-Pass a configuration file to any command with the ``--config`` option:
+Pass a configuration file to the ``discover`` command with the
+``--config`` option:
 
 .. code-block:: shell
 
@@ -57,6 +58,7 @@ Default Configuration
    nexus:
      url: "https://nexus3.onap.org"
      timeout: 10
+     max_retries: 3
      concurrent_workers: 4
 
    # Logging
@@ -166,6 +168,11 @@ Nexus Settings
    * - ``nexus.timeout``
      - ``10``
      - HTTP request timeout in seconds for Nexus API calls.
+   * - ``nexus.max_retries``
+     - ``3``
+     - Max number of attempts per image validation request.
+       Retries occur on network errors and HTTP 500+ responses,
+       with a 1-second delay between attempts.
    * - ``nexus.concurrent_workers``
      - ``4``
      - Number of concurrent threads used when verifying Docker
@@ -189,31 +196,6 @@ Logging Settings
      - ``rich``
      - Log output format. The tool supports ``rich`` as the sole
        format.
-
-Environment Variable Overrides
-------------------------------
-
-The following environment variables can influence tool behaviour:
-
-.. list-table::
-   :header-rows: 1
-   :widths: 35 65
-
-   * - Variable
-     - Description
-   * - ``GERRIT_URL``
-     - Override the Gerrit base URL (same as ``gerrit.url``
-       in the config file or ``--gerrit-url`` on the CLI).
-   * - ``NEXUS_URL``
-     - Override the Nexus registry URL (same as ``nexus.url``
-       in the config file or ``--nexus-url`` on the CLI).
-   * - ``OOM_BRANCH``
-     - Override the default OOM branch (same as
-       ``oom.default_branch`` or ``--oom-branch``).
-
-Command-line options always take highest precedence, followed by
-environment variables, then configuration file values, and then
-the built-in defaults.
 
 Example Configurations
 ----------------------

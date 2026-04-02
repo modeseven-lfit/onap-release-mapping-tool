@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+import copy
 import json
 import time
 from typing import Any, Literal
@@ -210,7 +211,7 @@ class GerritCollector(BaseCollector):
         """
         if url in self._cache:
             self._logger.debug("Cache hit for %s", url)
-            return self._cache[url]
+            return copy.deepcopy(self._cache[url])
 
         last_exc: Exception | None = None
 
@@ -227,7 +228,7 @@ class GerritCollector(BaseCollector):
                     body = body[len(_GERRIT_MAGIC_PREFIX) :]
 
                 result: dict[str, Any] = json.loads(body)
-                self._cache[url] = result
+                self._cache[url] = copy.deepcopy(result)
                 return result
 
             except (httpx.HTTPStatusError, httpx.RequestError) as exc:
