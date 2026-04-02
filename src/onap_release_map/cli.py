@@ -408,6 +408,313 @@ def version() -> None:
     console.print(f"Python {sys.version}")
 
 
+@app.command(name="diff")
+def diff_cmd(
+    manifest_a: Annotated[
+        Path,
+        typer.Argument(
+            help="Path to the baseline manifest (JSON).",
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            readable=True,
+            resolve_path=True,
+        ),
+    ],
+    manifest_b: Annotated[
+        Path,
+        typer.Argument(
+            help="Path to the comparison manifest (JSON).",
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            readable=True,
+            resolve_path=True,
+        ),
+    ],
+    output_format: Annotated[
+        str,
+        typer.Option(
+            "--output-format",
+            help="Output format: text, json, md.",
+        ),
+    ] = "text",
+    output: Annotated[
+        Path | None,
+        typer.Option(
+            "--output",
+            help="Write diff to file instead of stdout.",
+            dir_okay=False,
+            resolve_path=True,
+        ),
+    ] = None,
+    ignore_timestamps: Annotated[
+        bool,
+        typer.Option(
+            "--ignore-timestamps",
+            help="Ignore generated_at when comparing.",
+        ),
+    ] = False,
+) -> None:
+    """Compare two manifests and report differences."""
+    import json
+
+    from onap_release_map.differ import (
+        diff_manifests,
+        format_diff_json,
+        format_diff_markdown,
+        format_diff_text,
+    )
+    from onap_release_map.models import ReleaseManifest
+
+    # Load manifests
+    try:
+        data_a = json.loads(manifest_a.read_text(encoding="utf-8"))
+        a = ReleaseManifest.model_validate(data_a)
+    except Exception as exc:
+        err_console.print(f"[red]Error loading {manifest_a}:[/] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    try:
+        data_b = json.loads(manifest_b.read_text(encoding="utf-8"))
+        b = ReleaseManifest.model_validate(data_b)
+    except Exception as exc:
+        err_console.print(f"[red]Error loading {manifest_b}:[/] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    result = diff_manifests(a, b, ignore_timestamps=ignore_timestamps)
+
+    formatters = {
+        "text": format_diff_text,
+        "json": format_diff_json,
+        "md": format_diff_markdown,
+    }
+    formatter = formatters.get(output_format)
+    if formatter is None:
+        err_console.print(
+            f"[red]Error:[/] unknown diff format [bold]{output_format}[/]. "
+            f"Choose from: {', '.join(sorted(formatters))}"
+        )
+        raise typer.Exit(code=1)
+
+    text = formatter(result)
+    if output:
+        if not text.endswith("\n"):
+            text += "\n"
+        try:
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(text, encoding="utf-8")
+        except OSError as exc:
+            err_console.print(f"[red]Error writing {output}:[/] {exc}")
+            raise typer.Exit(code=1) from exc
+        console.print(f"Diff written to [green]{output}[/]")
+    else:
+        if text.endswith("\n"):
+            print(text, end="")
+        else:
+            print(text)
+
+
+@app.command(name="export")
+def export_cmd(
+    manifest_path: Annotated[
+        Path,
+        typer.Argument(
+            help="Path to manifest JSON file.",
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            readable=True,
+            resolve_path=True,
+        ),
+    ],
+    fmt: Annotated[
+        str,
+        typer.Option(
+            "--format",
+            help="Output format: yaml, csv, md, gerrit-list.",
+        ),
+    ] = "yaml",
+    output: Annotated[
+        Path | None,
+        typer.Option(
+            "--output",
+            help="Write to file instead of stdout.",
+            dir_okay=False,
+            resolve_path=True,
+        ),
+    ] = None,
+    repos_only: Annotated[
+        bool,
+        typer.Option(
+            "--repos-only",
+            help="Export only the repository list.",
+        ),
+    ] = False,
+    images_only: Annotated[
+        bool,
+        typer.Option(
+            "--images-only",
+            help="Export only the Docker image list.",
+        ),
+    ] = False,
+) -> None:
+    """Convert a manifest to CSV, YAML, Markdown, or Gerrit list format."""
+    import json
+
+    from onap_release_map.exceptions import ExportError
+    from onap_release_map.exporter import export_manifest
+    from onap_release_map.models import ReleaseManifest
+
+    if repos_only and images_only:
+        err_console.print(
+            "[red]--repos-only and --images-only are mutually exclusive[/]"
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        data = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest = ReleaseManifest.model_validate(data)
+    except Exception as exc:
+        err_console.print(f"[red]Error loading {manifest_path}:[/] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if repos_only:
+        mode = "repos"
+    elif images_only:
+        mode = "images"
+    else:
+        mode = "repos"
+
+    if (repos_only or images_only) and fmt != "csv":
+        err_console.print(
+            "[yellow]Warning:[/] --repos-only/--images-only only affects CSV output"
+        )
+
+    try:
+        text = export_manifest(manifest, fmt, mode=mode)
+    except ExportError as exc:
+        err_console.print(f"[red]Export error:[/] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if output:
+        try:
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(text, encoding="utf-8")
+        except OSError as exc:
+            err_console.print(f"[red]Error writing {output}:[/] {exc}")
+            raise typer.Exit(code=1) from exc
+        console.print(f"Export written to [green]{output}[/]")
+    else:
+        print(text, end="")
+
+
+@app.command()
+def verify(
+    manifest_path: Annotated[
+        Path,
+        typer.Argument(
+            help="Path to manifest JSON file.",
+            exists=True,
+            file_okay=True,
+            dir_okay=False,
+            readable=True,
+            resolve_path=True,
+        ),
+    ],
+    nexus_url: Annotated[
+        str,
+        typer.Option(
+            "--nexus-url",
+            help="Nexus3 registry URL.",
+        ),
+    ] = "https://nexus3.onap.org",
+    check_images: Annotated[
+        bool,
+        typer.Option(
+            "--check-images/--no-check-images",
+            help="Verify Docker image:tag existence.",
+        ),
+    ] = True,
+    workers: Annotated[
+        int,
+        typer.Option(
+            "--workers",
+            help="Concurrent validation threads.",
+            min=1,
+        ),
+    ] = 4,
+) -> None:
+    """Check Docker image existence in the Nexus registry."""
+    import json
+
+    from onap_release_map.collectors.nexus import NexusCollector
+    from onap_release_map.models import ReleaseManifest
+
+    try:
+        data = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest = ReleaseManifest.model_validate(data)
+    except Exception as exc:
+        err_console.print(f"[red]Error loading {manifest_path}:[/] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    if not check_images:
+        console.print("[yellow]No verification checks selected.[/]")
+        raise typer.Exit()
+
+    console.print(
+        f"[bold blue]Verifying[/] {len(manifest.docker_images)} "
+        f"Docker images against [cyan]{nexus_url}[/]"
+    )
+
+    collector = NexusCollector(
+        nexus_url=nexus_url,
+        docker_images=manifest.docker_images,
+        concurrent_workers=workers,
+    )
+
+    with console.status("[bold green]Validating Docker images..."):
+        result = collector.timed_collect()
+
+    # Check for collector-level errors
+    if result.execution and result.execution.errors:
+        err_console.print("[red]Errors during Nexus validation:[/]")
+        for err in result.execution.errors:
+            err_console.print(f"  - {err}")
+        raise typer.Exit(code=1)
+
+    if len(result.docker_images) != len(manifest.docker_images):
+        err_console.print(
+            f"[red]Error:[/] validated {len(result.docker_images)} "
+            f"of {len(manifest.docker_images)} images"
+        )
+        raise typer.Exit(code=1)
+
+    passed = sum(1 for img in result.docker_images if img.nexus_validated)
+    failed = sum(1 for img in result.docker_images if not img.nexus_validated)
+
+    console.print()
+
+    table = Table(title="Nexus Validation Results", show_lines=True)
+    table.add_column("Image", style="cyan")
+    table.add_column("Tag")
+    table.add_column("Status")
+
+    for img in result.docker_images:
+        status = "[green]✓ Found[/]" if img.nexus_validated else "[red]✗ Missing[/]"
+        table.add_row(img.image, img.tag, status)
+
+    console.print(table)
+    console.print()
+    console.print(
+        f"[bold]Results:[/] {passed} passed, {failed} failed "
+        f"out of {len(result.docker_images)} images"
+    )
+
+    if failed > 0:
+        raise typer.Exit(code=1)
+
+
 # ------------------------------------------------------------------
 # Private helpers
 # ------------------------------------------------------------------
