@@ -65,6 +65,7 @@ repos:
     hooks:
       - id: mypy
         additional_dependencies:
+          - types-Markdown>=3.7
           - types-PyYAML>=6.0.12
 
   - repo: https://github.com/btford/write-good

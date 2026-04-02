@@ -9,6 +9,8 @@ gerrit:
   url: "https://gerrit.onap.org/r"
   timeout: 30
   max_retries: 3
+  states:
+    - "ACTIVE"
 
 # OOM repository
 oom:
