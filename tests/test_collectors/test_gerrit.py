@@ -260,12 +260,8 @@ def test_cache_safe_with_pagination(_mock_sleep: object) -> None:
     )
     page2_body = '{"aai/aai-common": {"id": "aai%2Faai-common", "state": "ACTIVE"}}'
 
-    active_url_page1 = (
-        f"{GERRIT_URL}/projects/?type=ALL&d&state=ACTIVE&S=0&n=500"
-    )
-    active_url_page2 = (
-        f"{GERRIT_URL}/projects/?type=ALL&d&state=ACTIVE&S=1&n=500"
-    )
+    active_url_page1 = f"{GERRIT_URL}/projects/?type=ALL&d&state=ACTIVE&S=0&n=500"
+    active_url_page2 = f"{GERRIT_URL}/projects/?type=ALL&d&state=ACTIVE&S=1&n=500"
 
     respx.get(active_url_page1).mock(
         return_value=_gerrit_response(page1_body),
