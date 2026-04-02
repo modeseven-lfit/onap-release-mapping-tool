@@ -213,8 +213,7 @@ class NexusCollector(BaseCollector):
                 # Server error — eligible for retry.
                 if response.status_code >= 500:
                     self._logger.warning(
-                        "Server error HTTP %d for %s:%s "
-                        "(attempt %d/%d)",
+                        "Server error HTTP %d for %s:%s (attempt %d/%d)",
                         response.status_code,
                         image.image,
                         image.tag,
@@ -238,8 +237,7 @@ class NexusCollector(BaseCollector):
 
             except httpx.HTTPError as exc:
                 self._logger.warning(
-                    "HTTP error validating %s:%s: %s "
-                    "(attempt %d/%d)",
+                    "HTTP error validating %s:%s: %s (attempt %d/%d)",
                     image.image,
                     image.tag,
                     exc,
