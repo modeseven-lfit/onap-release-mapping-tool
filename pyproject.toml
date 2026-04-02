@@ -45,7 +45,7 @@ Homepage = "https://github.com/modeseven-lfit/onap-release-mapping-tool"
 Repository = "https://github.com/modeseven-lfit/onap-release-mapping-tool"
 Downloads = "https://github.com/modeseven-lfit/onap-release-mapping-tool/releases"
 "Bug Tracker" = "https://github.com/modeseven-lfit/onap-release-mapping-tool/issues"
-Documentation = "https://github.com/modeseven-lfit/onap-release-mapping-tool/tree/main/docs"
+Documentation = "https://onap-release-mapping-tool.readthedocs.io/"
 "Source Code" = "https://github.com/modeseven-lfit/onap-release-mapping-tool"
 
 [project.optional-dependencies]
