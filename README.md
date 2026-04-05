@@ -291,6 +291,9 @@ filter_repos:
   - ".github"
   - "All-Projects"
   - "All-Users"
+  # JJB CI job definitions for the ONAP Jenkins instance, not runtime
+  # release content
+  - "ci-management"
 
 # Exclude read-only/archived Gerrit projects from reports
 exclude_readonly: true
@@ -305,8 +308,10 @@ nexus:
 
 The `filter_repos` list and `exclude_readonly` flag control which
 repositories appear in exported reports. Infrastructure repositories
-(`.github`, `All-Projects`, `All-Users`) and read-only/archived Gerrit
-projects do not appear by default. Override either setting via CLI flags
+(`.github`, `All-Projects`, `All-Users`) and CI-only repositories
+(`ci-management`, which contains JJB CI job definitions for the ONAP
+Jenkins instance) do not appear by default, nor do read-only/archived
+Gerrit projects. Override either setting via CLI flags
 (`--filter-repos`, `--no-exclude-readonly`) or a custom config file.
 
 ## GitHub Action

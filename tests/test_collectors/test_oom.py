@@ -39,6 +39,25 @@ class TestOOMCollector:
         project_names = [r.gerrit_project for r in result.repositories]
         assert "oom" in project_names
 
+    def test_collect_includes_repository_generator(self, sample_oom_path: Path) -> None:
+        """Test that repositoryGenerator images are included."""
+        collector = OOMCollector(oom_path=sample_oom_path)
+        result = collector.collect()
+
+        # Infrastructure images from repositoryGenerator must appear
+        image_names = [img.image for img in result.docker_images]
+        assert "onap/oom/readiness" in image_names
+        assert "onap/integration-java11" in image_names
+
+        # Non-ONAP images (busybox) must be excluded
+        assert "busybox" not in image_names
+
+        # The repositoryGenerator chart attribution must propagate
+        readiness = next(
+            img for img in result.docker_images if img.image == "onap/oom/readiness"
+        )
+        assert "repositoryGenerator" in readiness.helm_charts
+
     def test_timed_collect(self, sample_oom_path: Path) -> None:
         """Test timed_collect produces execution metadata."""
         collector = OOMCollector(oom_path=sample_oom_path)

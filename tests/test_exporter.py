@@ -635,6 +635,17 @@ class TestTotalsSection:
         result = export_html(_make_stateful_manifest())
         assert "Totals" in result
 
+    def test_totals_table_has_no_datatables(self) -> None:
+        """Totals table is plain HTML without the dt-enabled class."""
+        result = export_html(_make_stateful_manifest())
+        marker = "<h3>Totals</h3>"
+        idx = result.index(marker)
+        after = result[idx + len(marker) :]
+        tbl_start = after.index("<table")
+        tbl_end = after.index(">", tbl_start)
+        tag = after[tbl_start : tbl_end + 1]
+        assert "dt-enabled" not in tag
+
 
 class TestFilterRepositories:
     """Tests for the filter_repositories function."""

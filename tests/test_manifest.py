@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 from onap_release_map.collectors import CollectorResult
-from onap_release_map.manifest import ManifestBuilder
+from onap_release_map.manifest import CrossRefProvider, ManifestBuilder
 from onap_release_map.models import (
     DockerImage,
     HelmComponent,
@@ -583,3 +583,283 @@ class TestManifestBuilder:
 
         repo = manifest.repositories[0]
         assert repo.in_current_release is True
+
+
+class _StubProvider:
+    """Simple cross-reference provider for testing."""
+
+    def __init__(
+        self,
+        name: str,
+        targets: dict[str, str],
+    ) -> None:
+        self._name = name
+        self._targets = targets
+        self.call_count = 0
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    def reconcile(
+        self,
+        repo_map: dict[str, OnapRepository],
+    ) -> set[str]:
+        self.call_count += 1
+        promoted: set[str] = set()
+        for project, reason in self._targets.items():
+            repo = repo_map.get(project)
+            if repo and repo.in_current_release is not True:
+                repo.in_current_release = True
+                repo.confidence_reasons.append(reason)
+                promoted.add(project)
+        return promoted
+
+
+class _ChainedProvider:
+    """Provider that only promotes Y when X is already in-release."""
+
+    def __init__(
+        self,
+        name: str,
+        prerequisite: str,
+        target: str,
+        reason: str,
+    ) -> None:
+        self._name = name
+        self._prerequisite = prerequisite
+        self._target = target
+        self._reason = reason
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    def reconcile(
+        self,
+        repo_map: dict[str, OnapRepository],
+    ) -> set[str]:
+        prereq = repo_map.get(self._prerequisite)
+        target = repo_map.get(self._target)
+        if (
+            prereq
+            and prereq.in_current_release is True
+            and target
+            and target.in_current_release is not True
+        ):
+            target.in_current_release = True
+            target.confidence_reasons.append(self._reason)
+            return {self._target}
+        return set()
+
+
+def _make_builder_with_repos(
+    *repos: OnapRepository,
+) -> ManifestBuilder:
+    """Create a builder pre-loaded with repos."""
+    builder = ManifestBuilder(
+        tool_version="0.1.0",
+        onap_release=OnapRelease(
+            name="Test",
+            oom_chart_version="1.0.0",
+        ),
+    )
+    builder.add_result(CollectorResult(repositories=list(repos)))
+    return builder
+
+
+class TestReconciliation:
+    """Tests for the cross-reference reconciliation loop."""
+
+    def test_no_providers_is_noop(self) -> None:
+        """Build without providers does not alter repo state."""
+        builder = _make_builder_with_repos(
+            OnapRepository(
+                gerrit_project="vnfsdk/model",
+                top_level_project="vnfsdk",
+                confidence="medium",
+                discovered_by=["gerrit"],
+                gerrit_state="ACTIVE",
+            ),
+        )
+        manifest = builder.build()
+        repo = manifest.repositories[0]
+        assert repo.in_current_release is False
+
+    def test_provider_promotes_repo(self) -> None:
+        """A registered provider can promote a repo to in-release."""
+        builder = _make_builder_with_repos(
+            OnapRepository(
+                gerrit_project="integration",
+                top_level_project="integration",
+                confidence="medium",
+                discovered_by=["gerrit"],
+                gerrit_state="ACTIVE",
+            ),
+        )
+        provider = _StubProvider(
+            "test",
+            {"integration": "Referenced by OOM"},
+        )
+        builder.add_crossref_provider(provider)
+        manifest = builder.build()
+
+        repo = manifest.repositories[0]
+        assert repo.in_current_release is True
+        assert "Referenced by OOM" in repo.confidence_reasons
+
+    def test_provider_called_until_convergence(self) -> None:
+        """Provider is called again after promoting, then stops."""
+        builder = _make_builder_with_repos(
+            OnapRepository(
+                gerrit_project="integration",
+                top_level_project="integration",
+                confidence="medium",
+                discovered_by=["gerrit"],
+                gerrit_state="ACTIVE",
+            ),
+        )
+        provider = _StubProvider(
+            "test",
+            {"integration": "Promoted"},
+        )
+        builder.add_crossref_provider(provider)
+        builder.build()
+
+        # Pass 1 promotes, pass 2 finds nothing → converge
+        assert provider.call_count == 2
+
+    def test_recursive_promotion_across_passes(self) -> None:
+        """Chained providers promote repos across passes."""
+        builder = _make_builder_with_repos(
+            OnapRepository(
+                gerrit_project="policy/api",
+                top_level_project="policy",
+                confidence="high",
+                discovered_by=["oom"],
+                gerrit_state="ACTIVE",
+            ),
+            OnapRepository(
+                gerrit_project="integration",
+                top_level_project="integration",
+                confidence="medium",
+                discovered_by=["gerrit"],
+                gerrit_state="ACTIVE",
+            ),
+            OnapRepository(
+                gerrit_project="demo",
+                top_level_project="demo",
+                confidence="medium",
+                discovered_by=["gerrit"],
+                gerrit_state="ACTIVE",
+            ),
+        )
+        # Provider A: promotes integration (unconditionally)
+        prov_a = _StubProvider(
+            "provA",
+            {"integration": "Image in repositoryGenerator"},
+        )
+        # Provider B: promotes demo only if integration is in-release
+        prov_b = _ChainedProvider(
+            "provB",
+            prerequisite="integration",
+            target="demo",
+            reason="Referenced by integration",
+        )
+        builder.add_crossref_provider(prov_a)
+        builder.add_crossref_provider(prov_b)
+        manifest = builder.build()
+
+        names_in = {
+            r.gerrit_project
+            for r in manifest.repositories
+            if r.in_current_release is True
+        }
+        assert "integration" in names_in
+        assert "demo" in names_in
+
+    def test_parent_re_promoted_after_crossref(self) -> None:
+        """Parent projects are re-promoted after cross-ref discovery."""
+        builder = _make_builder_with_repos(
+            OnapRepository(
+                gerrit_project="dmaap",
+                top_level_project="dmaap",
+                confidence="medium",
+                discovered_by=["gerrit"],
+                gerrit_state="ACTIVE",
+                is_parent_project=True,
+            ),
+            OnapRepository(
+                gerrit_project="dmaap/datarouter",
+                top_level_project="dmaap",
+                confidence="medium",
+                discovered_by=["gerrit"],
+                gerrit_state="ACTIVE",
+            ),
+        )
+        # Provider promotes the child
+        provider = _StubProvider(
+            "test",
+            {"dmaap/datarouter": "Image in repositoryGenerator"},
+        )
+        builder.add_crossref_provider(provider)
+        manifest = builder.build()
+
+        child = next(
+            r for r in manifest.repositories if r.gerrit_project == "dmaap/datarouter"
+        )
+        parent = next(r for r in manifest.repositories if r.gerrit_project == "dmaap")
+        assert child.in_current_release is True
+        assert parent.in_current_release is True
+
+    def test_readonly_not_promoted(self) -> None:
+        """READ_ONLY repos are not promoted by providers."""
+        builder = _make_builder_with_repos(
+            OnapRepository(
+                gerrit_project="old/archived",
+                top_level_project="old",
+                confidence="medium",
+                discovered_by=["gerrit"],
+                gerrit_state="READ_ONLY",
+                in_current_release=False,
+            ),
+        )
+        provider = _StubProvider(
+            "test",
+            {"old/archived": "Should not promote"},
+        )
+        builder.add_crossref_provider(provider)
+        manifest = builder.build()
+
+        repo = manifest.repositories[0]
+        assert repo.in_current_release is False
+
+    def test_readonly_reasons_rolled_back(self) -> None:
+        """Confidence reasons are rolled back for reverted READ_ONLY repos."""
+        builder = _make_builder_with_repos(
+            OnapRepository(
+                gerrit_project="old/archived",
+                top_level_project="old",
+                confidence="medium",
+                confidence_reasons=["Discovered via Gerrit REST API"],
+                discovered_by=["gerrit"],
+                gerrit_state="READ_ONLY",
+                in_current_release=False,
+            ),
+        )
+        provider = _StubProvider(
+            "test",
+            {"old/archived": "Bogus cross-ref reason"},
+        )
+        builder.add_crossref_provider(provider)
+        manifest = builder.build()
+
+        repo = manifest.repositories[0]
+        assert repo.in_current_release is False
+        assert "Bogus cross-ref reason" not in repo.confidence_reasons
+        assert "Discovered via Gerrit REST API" in repo.confidence_reasons
+
+    def test_stub_satisfies_protocol(self) -> None:
+        """_StubProvider satisfies the CrossRefProvider protocol."""
+        provider = _StubProvider("x", {})
+        assert isinstance(provider, CrossRefProvider)

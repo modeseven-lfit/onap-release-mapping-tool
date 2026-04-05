@@ -138,6 +138,80 @@ class HelmChartParser:
         )
         return helm_components, docker_images, chart_image_mapping
 
+    def parse_repository_generator(
+        self,
+    ) -> list[dict[str, str | None]]:
+        """Parse the repositoryGenerator values for infrastructure images.
+
+        The ``common/repositoryGenerator/values.yaml`` file is the
+        central Docker image catalogue for OOM.  It defines shared
+        images (readiness probes, base JRE, etc.) that individual
+        component charts consume via Helm template includes.
+
+        Unlike component ``values.yaml`` files where images live
+        under well-known keys (``image``, ``imageName``), the
+        repositoryGenerator uses arbitrary key names such as
+        ``readinessImage`` or ``jreImage``.  This method scans
+        top-level string values under the ``global`` block for
+        ONAP image references.
+
+        Returns
+        -------
+        list[dict[str, str | None]]
+            Image record dicts with keys *image*, *tag*,
+            *registry*, and *chart_name*.
+        """
+        repo_gen_path = (
+            self.kubernetes_path / "common" / "repositoryGenerator" / "values.yaml"
+        )
+        if not repo_gen_path.is_file():
+            self._logger.debug(
+                "repositoryGenerator values.yaml not found: %s",
+                repo_gen_path,
+            )
+            return []
+
+        data = safe_load_yaml(repo_gen_path)
+        if not isinstance(data, dict):
+            return []
+
+        global_block = data.get("global")
+        if not isinstance(global_block, dict):
+            return []
+
+        # Detect the registry defined alongside the images.
+        registry = self._detect_global_registry(data)
+
+        results: list[dict[str, str | None]] = []
+        for key, value in global_block.items():
+            if not isinstance(value, str):
+                continue
+            match = _IMAGE_RE.match(value)
+            if match:
+                has_explicit_registry = value.startswith("nexus3.onap.org:")
+                results.append(
+                    self._build_image_record(
+                        match.group(1),
+                        match.group(2),
+                        value,
+                        "repositoryGenerator",
+                        registry_override=(registry or None)
+                        if not has_explicit_registry
+                        else None,
+                    )
+                )
+                self._logger.debug(
+                    "repositoryGenerator: %s = %s",
+                    key,
+                    value,
+                )
+
+        self._logger.info(
+            "Parsed %d infrastructure images from repositoryGenerator",
+            len(results),
+        )
+        return results
+
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
