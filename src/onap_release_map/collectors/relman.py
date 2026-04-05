@@ -35,6 +35,35 @@ def _parse_bool(value: object) -> bool:
     return False
 
 
+def _parse_included_in(value: object) -> list[str]:
+    """Parse the ``included_in`` field from repos.yaml.
+
+    The field may be a YAML list, a string representation of a list
+    (e.g. ``'[]'`` or ``'[\"Montreal\"]'``), or ``None``.
+
+    Args:
+        value: Raw value from the YAML entry.
+
+    Returns:
+        A list of release name strings (may be empty).
+    """
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return [str(item) for item in value if item]
+    if isinstance(value, str):
+        stripped = value.strip()
+        if stripped in ("[]", ""):
+            return []
+        # Handle string like '["Montreal", "Rabat"]'
+        if stripped.startswith("[") and stripped.endswith("]"):
+            inner = stripped[1:-1]
+            parts = [p.strip().strip("'\"") for p in inner.split(",") if p.strip()]
+            return [p for p in parts if p]
+        return [stripped]
+    return []
+
+
 @registry.register
 class RelmanCollector(BaseCollector):
     """Collect repository metadata from the ONAP relman ``repos.yaml``.
@@ -118,6 +147,18 @@ class RelmanCollector(BaseCollector):
                 if repo is not None:
                     repositories.append(repo)
 
+        # Detect parent projects: a project is a parent if another
+        # project exists beneath it as a slash-delimited child path.
+        parent_projects: set[str] = set()
+        for repo in repositories:
+            parts = repo.gerrit_project.split("/")
+            for index in range(1, len(parts)):
+                parent_projects.add("/".join(parts[:index]))
+
+        for repo in repositories:
+            if repo.gerrit_project in parent_projects:
+                repo.is_parent_project = True
+
         repositories.sort(key=lambda r: r.gerrit_project)
 
         self._logger.info(
@@ -158,11 +199,30 @@ class RelmanCollector(BaseCollector):
 
         unmaintained = _parse_bool(entry.get("unmaintained", False))
         read_only = _parse_bool(entry.get("read_only", False))
+        included_in = _parse_included_in(entry.get("included_in"))
 
         maintained = not unmaintained
         gerrit_state: Literal["ACTIVE", "READ_ONLY"] = (
             "READ_ONLY" if read_only else "ACTIVE"
         )
+
+        # Determine release inclusion from relman data.
+        # READ_ONLY repos are archived and definitively not
+        # in the current release.  Active repos with a
+        # non-empty included_in list are treated as likely in
+        # the release (the field lists release names, but the
+        # collector does not yet know the *current* release
+        # name, so any inclusion signal is taken as positive).
+        # Active repos with an empty included_in list are left
+        # undetermined (None); the manifest builder may later
+        # set this to True if OOM discovers them.
+        in_current_release: bool | None
+        if read_only:
+            in_current_release = False
+        elif included_in:
+            in_current_release = True
+        else:
+            in_current_release = None
 
         # Repos that are both read-only AND unmaintained are legacy
         # build dependencies; everything else is treated as runtime.
@@ -191,6 +251,7 @@ class RelmanCollector(BaseCollector):
             ],
             category=category,
             gerrit_state=gerrit_state,
+            in_current_release=in_current_release,
             maintained=maintained,
             discovered_by=["relman"],
         )

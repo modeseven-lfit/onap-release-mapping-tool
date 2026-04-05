@@ -197,7 +197,7 @@ class TestExportHtml:
     def test_html_contains_tables(self) -> None:
         """The rendered HTML contains table elements from Markdown."""
         result = export_html(_make_manifest())
-        assert "<table>" in result
+        assert '<table class="dt-enabled">' in result
         assert "<th>" in result
         assert "<td>" in result
 
@@ -230,11 +230,47 @@ class TestExportHtml:
         result = export_html(_make_manifest())
         assert "tr:nth-child(even)" in result
 
-    def test_html_no_external_dependencies(self) -> None:
-        """The HTML has no external stylesheet or script links."""
+    def test_html_has_datatables_dependencies(self) -> None:
+        """The HTML includes Simple-DataTables CDN resources."""
         result = export_html(_make_manifest())
-        assert '<link rel="stylesheet"' not in result
-        assert "<script src=" not in result
+        assert "simple-datatables@9/dist/style.css" in result
+        assert "simple-datatables@9" in result
+        assert "simpleDatatables.DataTable" in result
+        assert "paging: false" in result
+
+    def test_html_contains_state_emoji(self) -> None:
+        """The HTML includes emoji state indicators in table rows."""
+        result = export_html(_make_manifest())
+        # policy/api has gerrit_state=ACTIVE, in_current_release=None
+        # so it should get the ❓ (undetermined) emoji in its table row.
+        policy_index = result.index("policy/api")
+        row_start = result.rfind("<tr", 0, policy_index)
+        row_end = result.find("</tr>", policy_index)
+        policy_row = result[row_start : row_end + len("</tr>")]
+        assert "\u2753" in policy_row
+
+    def test_html_contains_state_legend(self) -> None:
+        """The HTML includes a state legend explaining emoji meanings."""
+        result = export_html(_make_manifest())
+        assert "State Legend" in result
+        assert "\U0001f4e6" in result  # 📦
+        assert "\u2705" in result  # ✅
+        assert "\u274c" in result  # ❌
+
+    def test_html_datatables_search_enabled(self) -> None:
+        """The DataTables init enables search."""
+        result = export_html(_make_manifest())
+        assert "searchable: true" in result
+
+    def test_html_datatables_sort_enabled(self) -> None:
+        """The DataTables init enables column sorting."""
+        result = export_html(_make_manifest())
+        assert "sortable: true" in result
+
+    def test_html_datatables_pagination_disabled(self) -> None:
+        """The DataTables init disables pagination."""
+        result = export_html(_make_manifest())
+        assert "paging: false" in result
 
     def test_dispatch_html(self) -> None:
         """Dispatching html via export_manifest returns HTML output."""
@@ -348,7 +384,8 @@ class TestHtmlXssSanitisation:
     def test_script_tag_escaped_in_release_name(self) -> None:
         """Script tag in release name is escaped in HTML output."""
         result = export_html(_make_xss_manifest())
-        assert "<script>" not in result
+        # The only <script tags should be the two DataTables entries
+        assert result.count("<script") == 2
         assert "&lt;script&gt;" in result
 
     def test_script_tag_escaped_in_title(self) -> None:
@@ -371,7 +408,11 @@ class TestHtmlXssSanitisation:
         """Script tag in Helm component name is escaped in HTML."""
         result = export_html(_make_xss_manifest())
         body = result.split("Helm Components")[1]
-        assert "<script>" not in body
+        # Table content must not contain raw script tags;
+        # only the DataTables init scripts should appear after
+        # the Helm Components heading.
+        assert "<script>alert" not in body
+        assert "&lt;script&gt;" in body
 
     def test_ampersand_escaped_in_title(self) -> None:
         """Ampersand in release name is escaped in title element."""
