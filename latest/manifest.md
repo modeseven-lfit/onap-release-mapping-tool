@@ -1,7 +1,7 @@
 # ONAP Release Manifest: Master
 
-- **Generated:** 2026-04-05T10:56:21Z
-- **Tool version:** 0.2.0
+- **Generated:** 2026-04-05T12:18:34Z
+- **Tool version:** 0.2.1
 - **Schema version:** 1.0.0
 - **OOM chart version:** 18.0.0
 
@@ -414,98 +414,98 @@
 
 | Image | Tag | Gerrit Project | Registry | Validated |
 | ----- | --- | -------------- | -------- | --------- |
-| onap/aai-graphadmin | 1.16.0 | aai/graphadmin |  |  |
-| onap/aai-haproxy | 1.15.2 | aai/aai-common |  |  |
-| onap/aai-resources | 1.16.0 | aai/resources |  |  |
-| onap/aai-schema-service | 1.12.11 | aai/schema-service |  |  |
-| onap/aai-traversal | 1.16.0 | aai/traversal |  |  |
-| onap/babel | 1.13.5 | aai/babel |  |  |
-| onap/ccsdk-apps-ms-neng | 1.4.0 | ccsdk/apps |  |  |
-| onap/ccsdk-blueprintsprocessor | 1.8.1 | ccsdk/cds |  |  |
-| onap/ccsdk-cds-ui-server | 1.8.1 | ccsdk/cds |  |  |
-| onap/ccsdk-commandexecutor | 1.8.1 | ccsdk/cds |  |  |
-| onap/ccsdk-dgbuilder-image | 2.2.0 | ccsdk/distribution |  |  |
-| onap/ccsdk-oran-a1policymanagementservice | 2.2.0 | ccsdk/oran |  |  |
-| onap/ccsdk-py-executor | 1.8.1 | ccsdk/cds |  |  |
-| onap/ccsdk-sdclistener | 1.8.1 | ccsdk/cds |  |  |
-| onap/cps-and-ncmp | 3.7.0 | cps |  |  |
-| onap/cps-temporal | 1.2.1 | cps |  |  |
-| onap/model-loader | 1.14.3 | aai/model-loader |  |  |
-| onap/multicloud/framework | 1.9.2 | multicloud/framework |  |  |
-| onap/multicloud/framework-artifactbroker | 1.9.3 | multicloud/framework |  |  |
-| onap/multicloud/k8s | 0.12.0 | multicloud/k8s |  |  |
-| onap/multicloud/openstack-fcaps | 1.5.7 | multicloud/openstack |  |  |
-| onap/music/prom | 1.0.5 | music/prom |  |  |
-| onap/ncmp-dmi-plugin | 1.7.0 | cps/ncmp-dmi-plugin |  |  |
-| onap/org.onap.dcaegen2.collectors.hv-ves.hv-collector-main | 1.11.0 | dcaegen2/collectors/hv-ves |  |  |
-| onap/org.onap.dcaegen2.collectors.ves.vescollector | 1.12.4 | dcaegen2/collectors/ves |  |  |
-| onap/org.onap.dcaegen2.deployments.healthcheck-container | 2.4.1 | dcaegen2/deployments |  |  |
-| onap/org.onap.dcaegen2.platform.ves-openapi-manager | 1.3.1 | dcaegen2/platform/ves-openapi-manager |  |  |
-| onap/org.onap.dcaegen2.services.datalake.exposure.service | 1.1.1 | dcaegen2/services |  |  |
-| onap/org.onap.dcaegen2.services.datalakeadminui | 1.1.1 | dcaegen2/services |  |  |
-| onap/org.onap.dcaegen2.services.datalakefeeder | 1.1.1 | dcaegen2/services |  |  |
-| onap/org.onap.dcaegen2.services.prh.prh-app-server | 1.12.0 | dcaegen2/services/prh |  |  |
-| onap/org.onap.oom.platform.cert-service.oom-certservice-api | 2.6.0 | oom/platform/cert-service |  |  |
-| onap/org.onap.oom.platform.cert-service.oom-certservice-k8s-external-provider | 2.6.0 | oom/platform/cert-service |  |  |
-| onap/policy-apex-pdp | 4.2.2 | policy/apex-pdp |  |  |
-| onap/policy-api | 4.2.2 | policy/api |  |  |
-| onap/policy-clamp-ac-a1pms-ppnt | 9.0.0 | policy/clamp |  |  |
-| onap/policy-clamp-ac-http-ppnt | 9.0.0 | policy/clamp |  |  |
-| onap/policy-clamp-ac-k8s-ppnt | 8.2.2 | policy/clamp |  |  |
-| onap/policy-clamp-ac-kserve-ppnt | 9.0.0 | policy/clamp |  |  |
-| onap/policy-clamp-ac-pf-ppnt | 9.0.0 | policy/clamp |  |  |
-| onap/policy-clamp-runtime-acm | 8.2.2 | policy/clamp |  |  |
-| onap/policy-db-migrator | 4.2.2 | policy/docker |  |  |
-| onap/policy-distribution | 4.2.2 | policy/distribution |  |  |
-| onap/policy-opa-pdp | 1.0.8 | policy/opa-pdp |  |  |
-| onap/policy-pap | 4.2.2 | policy/pap |  |  |
-| onap/policy-pdpd-cl | 3.2.2 | policy/drools-pdp |  |  |
-| onap/policy-xacml-pdp | 4.2.2 | policy/xacml-pdp |  |  |
-| onap/portal-ng/bff | latest | portal-ng/bff |  |  |
-| onap/portal-ng/history | latest | portal-ng/history |  |  |
-| onap/portal-ng/preferences | latest | portal-ng/preferences |  |  |
-| onap/portal-ng/ui | latest | portal-ng/ui |  |  |
-| onap/sdc-backend-all-plugins | 1.15.0 | sdc |  |  |
-| onap/sdc-cassandra | 1.15.0 | sdc |  |  |
-| onap/sdc-frontend | 1.15.0 | sdc |  |  |
-| onap/sdc-helm-validator | 1.3.3 | sdc/sdc-helm-validator |  |  |
-| onap/sdc-onboard-backend | 1.15.0 | sdc |  |  |
-| onap/sdc-workflow-backend | 1.14.1 | sdc/sdc-workflow-designer |  |  |
-| onap/sdc-workflow-frontend | 1.14.1 | sdc/sdc-workflow-designer |  |  |
-| onap/sdnc-ansible-server-image | 3.2.4 | sdnc/oam |  |  |
-| onap/sdnc-image | 3.2.4 | sdnc/oam |  |  |
-| onap/sdnc-ueb-listener-image | 3.2.4 | sdnc/oam |  |  |
-| onap/sdnc-web-image | 3.2.4 | sdnc/oam |  |  |
-| onap/so/api-handler-infra | 1.17.0 | so |  |  |
-| onap/so/bpmn-infra | 1.17.0 | so |  |  |
-| onap/so/catalog-db-adapter | 1.17.0 | so |  |  |
-| onap/so/openstack-adapter | 1.17.0 | so |  |  |
-| onap/so/request-db-adapter | 1.17.0 | so |  |  |
-| onap/so/sdc-controller | 1.17.0 | so |  |  |
-| onap/so/sdnc-adapter | 1.17.0 | so |  |  |
-| onap/so/so-admin-cockpit | 1.10.0 | so/so-admin-cockpit |  |  |
-| onap/so/so-cnf-adapter | 1.13.1 | so |  |  |
-| onap/so/so-cnfm-as-lcm | 1.13.1 | so |  |  |
-| onap/so/so-etsi-nfvo-ns-lcm | 1.9.0 | so |  |  |
-| onap/so/so-etsi-sol003-adapter | 1.10.0 | so/adapters/so-etsi-sol003-adapter |  |  |
-| onap/so/so-etsi-sol005-adapter | 1.10.0 | so/adapters/so-etsi-sol005-adapter |  |  |
-| onap/so/so-nssmf-adapter | 1.11.1 | so/adapters/so-nssmf-adapter |  |  |
-| onap/so/so-oof-adapter | 1.10.2 | so/adapters/so-oof-adapter |  |  |
-| onap/so/ve-vnfm-adapter | 1.6.4 | so |  |  |
-| onap/sparky-be | 2.1.0 | aai/sparky-be |  |  |
-| onap/testsuite | 1.14.0 | testsuite |  |  |
-| onap/usecase-ui | 16.0.1 | usecase-ui |  |  |
-| onap/usecase-ui-intent-analysis | 16.0.1 | usecase-ui/intent-analysis |  |  |
-| onap/usecase-ui-llm-adaptation | 16.0.1 | usecase-ui/llm-adaptation |  |  |
-| onap/usecase-ui-nlp | 1.0.5 | usecase-ui/nlp |  |  |
-| onap/usecase-ui-server | 16.0.1 | usecase-ui/server |  |  |
+| onap/aai-graphadmin | 1.16.0 | aai/graphadmin | nexus3.onap.org:10001 | Yes |
+| onap/aai-haproxy | 1.15.2 | aai/aai-common | nexus3.onap.org:10001 | Yes |
+| onap/aai-resources | 1.16.0 | aai/resources | nexus3.onap.org:10001 | Yes |
+| onap/aai-schema-service | 1.12.11 | aai/schema-service | nexus3.onap.org:10001 | Yes |
+| onap/aai-traversal | 1.16.0 | aai/traversal | nexus3.onap.org:10001 | Yes |
+| onap/babel | 1.13.5 | aai/babel | nexus3.onap.org:10001 | Yes |
+| onap/ccsdk-apps-ms-neng | 1.4.0 | ccsdk/apps | nexus3.onap.org:10001 | Yes |
+| onap/ccsdk-blueprintsprocessor | 1.8.1 | ccsdk/cds | nexus3.onap.org:10001 | Yes |
+| onap/ccsdk-cds-ui-server | 1.8.1 | ccsdk/cds | nexus3.onap.org:10001 | Yes |
+| onap/ccsdk-commandexecutor | 1.8.1 | ccsdk/cds | nexus3.onap.org:10001 | Yes |
+| onap/ccsdk-dgbuilder-image | 2.2.0 | ccsdk/distribution | nexus3.onap.org:10001 | Yes |
+| onap/ccsdk-oran-a1policymanagementservice | 2.2.0 | ccsdk/oran | nexus3.onap.org:10001 | Yes |
+| onap/ccsdk-py-executor | 1.8.1 | ccsdk/cds | nexus3.onap.org:10001 | Yes |
+| onap/ccsdk-sdclistener | 1.8.1 | ccsdk/cds | nexus3.onap.org:10001 | Yes |
+| onap/cps-and-ncmp | 3.7.0 | cps | nexus3.onap.org:10001 | Yes |
+| onap/cps-temporal | 1.2.1 | cps | nexus3.onap.org:10001 | Yes |
+| onap/model-loader | 1.14.3 | aai/model-loader | nexus3.onap.org:10001 | Yes |
+| onap/multicloud/framework | 1.9.2 | multicloud/framework | nexus3.onap.org:10001 | Yes |
+| onap/multicloud/framework-artifactbroker | 1.9.3 | multicloud/framework | nexus3.onap.org:10001 | Yes |
+| onap/multicloud/k8s | 0.12.0 | multicloud/k8s | nexus3.onap.org:10001 | Yes |
+| onap/multicloud/openstack-fcaps | 1.5.7 | multicloud/openstack | nexus3.onap.org:10001 | Yes |
+| onap/music/prom | 1.0.5 | music/prom | nexus3.onap.org:10001 | Yes |
+| onap/ncmp-dmi-plugin | 1.7.0 | cps/ncmp-dmi-plugin | nexus3.onap.org:10001 | Yes |
+| onap/org.onap.dcaegen2.collectors.hv-ves.hv-collector-main | 1.11.0 | dcaegen2/collectors/hv-ves | nexus3.onap.org:10001 | Yes |
+| onap/org.onap.dcaegen2.collectors.ves.vescollector | 1.12.4 | dcaegen2/collectors/ves | nexus3.onap.org:10001 | Yes |
+| onap/org.onap.dcaegen2.deployments.healthcheck-container | 2.4.1 | dcaegen2/deployments | nexus3.onap.org:10001 | Yes |
+| onap/org.onap.dcaegen2.platform.ves-openapi-manager | 1.3.1 | dcaegen2/platform/ves-openapi-manager | nexus3.onap.org:10001 | Yes |
+| onap/org.onap.dcaegen2.services.datalake.exposure.service | 1.1.3 | dcaegen2/services | nexus3.onap.org:10001 | Yes |
+| onap/org.onap.dcaegen2.services.datalakeadminui | 1.1.3 | dcaegen2/services | nexus3.onap.org:10001 | Yes |
+| onap/org.onap.dcaegen2.services.datalakefeeder | 1.1.3 | dcaegen2/services | nexus3.onap.org:10001 | Yes |
+| onap/org.onap.dcaegen2.services.prh.prh-app-server | 1.12.0 | dcaegen2/services/prh | nexus3.onap.org:10001 | Yes |
+| onap/org.onap.oom.platform.cert-service.oom-certservice-api | 2.6.0 | oom/platform/cert-service | nexus3.onap.org:10001 | Yes |
+| onap/org.onap.oom.platform.cert-service.oom-certservice-k8s-external-provider | 2.6.0 | oom/platform/cert-service | nexus3.onap.org:10001 | Yes |
+| onap/policy-apex-pdp | 4.2.2 | policy/apex-pdp | nexus3.onap.org:10001 | Yes |
+| onap/policy-api | 4.2.2 | policy/api | nexus3.onap.org:10001 | Yes |
+| onap/policy-clamp-ac-a1pms-ppnt | 9.0.0 | policy/clamp | nexus3.onap.org:10001 | Yes |
+| onap/policy-clamp-ac-http-ppnt | 9.0.0 | policy/clamp | nexus3.onap.org:10001 | Yes |
+| onap/policy-clamp-ac-k8s-ppnt | 8.2.2 | policy/clamp | nexus3.onap.org:10001 | Yes |
+| onap/policy-clamp-ac-kserve-ppnt | 9.0.0 | policy/clamp | nexus3.onap.org:10001 | Yes |
+| onap/policy-clamp-ac-pf-ppnt | 9.0.0 | policy/clamp | nexus3.onap.org:10001 | Yes |
+| onap/policy-clamp-runtime-acm | 8.2.2 | policy/clamp | nexus3.onap.org:10001 | Yes |
+| onap/policy-db-migrator | 4.2.2 | policy/docker | nexus3.onap.org:10001 | Yes |
+| onap/policy-distribution | 4.2.2 | policy/distribution | nexus3.onap.org:10001 | Yes |
+| onap/policy-opa-pdp | 1.0.8 | policy/opa-pdp | nexus3.onap.org:10001 | Yes |
+| onap/policy-pap | 4.2.2 | policy/pap | nexus3.onap.org:10001 | Yes |
+| onap/policy-pdpd-cl | 3.2.2 | policy/drools-pdp | nexus3.onap.org:10001 | Yes |
+| onap/policy-xacml-pdp | 4.2.2 | policy/xacml-pdp | nexus3.onap.org:10001 | Yes |
+| onap/portal-ng/bff | latest | portal-ng/bff | nexus3.onap.org:10001 | Yes |
+| onap/portal-ng/history | latest | portal-ng/history | nexus3.onap.org:10001 | Yes |
+| onap/portal-ng/preferences | latest | portal-ng/preferences | nexus3.onap.org:10001 | Yes |
+| onap/portal-ng/ui | latest | portal-ng/ui | nexus3.onap.org:10001 | Yes |
+| onap/sdc-backend-all-plugins | 1.15.0 | sdc | nexus3.onap.org:10001 | Yes |
+| onap/sdc-cassandra | 1.15.0 | sdc | nexus3.onap.org:10001 | Yes |
+| onap/sdc-frontend | 1.15.0 | sdc | nexus3.onap.org:10001 | Yes |
+| onap/sdc-helm-validator | 1.3.3 | sdc/sdc-helm-validator | nexus3.onap.org:10001 | Yes |
+| onap/sdc-onboard-backend | 1.15.0 | sdc | nexus3.onap.org:10001 | Yes |
+| onap/sdc-workflow-backend | 1.14.1 | sdc/sdc-workflow-designer | nexus3.onap.org:10001 | Yes |
+| onap/sdc-workflow-frontend | 1.14.1 | sdc/sdc-workflow-designer | nexus3.onap.org:10001 | Yes |
+| onap/sdnc-ansible-server-image | 3.2.4 | sdnc/oam | nexus3.onap.org:10001 | Yes |
+| onap/sdnc-image | 3.2.4 | sdnc/oam | nexus3.onap.org:10001 | Yes |
+| onap/sdnc-ueb-listener-image | 3.2.4 | sdnc/oam | nexus3.onap.org:10001 | Yes |
+| onap/sdnc-web-image | 3.2.4 | sdnc/oam | nexus3.onap.org:10001 | Yes |
+| onap/so/api-handler-infra | 1.17.0 | so | nexus3.onap.org:10001 | Yes |
+| onap/so/bpmn-infra | 1.17.0 | so | nexus3.onap.org:10001 | Yes |
+| onap/so/catalog-db-adapter | 1.17.0 | so | nexus3.onap.org:10001 | Yes |
+| onap/so/openstack-adapter | 1.17.0 | so | nexus3.onap.org:10001 | Yes |
+| onap/so/request-db-adapter | 1.17.0 | so | nexus3.onap.org:10001 | Yes |
+| onap/so/sdc-controller | 1.17.0 | so | nexus3.onap.org:10001 | Yes |
+| onap/so/sdnc-adapter | 1.17.0 | so | nexus3.onap.org:10001 | Yes |
+| onap/so/so-admin-cockpit | 1.10.0 | so/so-admin-cockpit | nexus3.onap.org:10001 | Yes |
+| onap/so/so-cnf-adapter | 1.13.1 | so | nexus3.onap.org:10001 | Yes |
+| onap/so/so-cnfm-as-lcm | 1.13.1 | so | nexus3.onap.org:10001 | Yes |
+| onap/so/so-etsi-nfvo-ns-lcm | 1.9.0 | so | nexus3.onap.org:10001 | Yes |
+| onap/so/so-etsi-sol003-adapter | 1.10.0 | so/adapters/so-etsi-sol003-adapter | nexus3.onap.org:10001 | Yes |
+| onap/so/so-etsi-sol005-adapter | 1.10.0 | so/adapters/so-etsi-sol005-adapter | nexus3.onap.org:10001 | Yes |
+| onap/so/so-nssmf-adapter | 1.11.1 | so/adapters/so-nssmf-adapter | nexus3.onap.org:10001 | Yes |
+| onap/so/so-oof-adapter | 1.10.2 | so/adapters/so-oof-adapter | nexus3.onap.org:10001 | Yes |
+| onap/so/ve-vnfm-adapter | 1.6.4 | so | nexus3.onap.org:10001 | Yes |
+| onap/sparky-be | 2.1.0 | aai/sparky-be | nexus3.onap.org:10001 | Yes |
+| onap/testsuite | 1.14.0 | testsuite | nexus3.onap.org:10001 | Yes |
+| onap/usecase-ui | 16.0.1 | usecase-ui | nexus3.onap.org:10001 | Yes |
+| onap/usecase-ui-intent-analysis | 16.0.1 | usecase-ui/intent-analysis | nexus3.onap.org:10001 | Yes |
+| onap/usecase-ui-llm-adaptation | 16.0.1 | usecase-ui/llm-adaptation | nexus3.onap.org:10001 | Yes |
+| onap/usecase-ui-nlp | 1.0.5 | usecase-ui/nlp | nexus3.onap.org:10001 | Yes |
+| onap/usecase-ui-server | 16.0.1 | usecase-ui/server | nexus3.onap.org:10001 | Yes |
 
 ## Helm Components
 
 | Name | Version | Enabled | Condition Key |
 | ---- | ------- | ------- | ------------- |
-| a1policymanagement | ~13.x-0 |  | a1policymanagement.enabled |
-| aai | ~16.x-0 |  | aai.enabled |
+| a1policymanagement | ~13.x-0 | No | a1policymanagement.enabled |
+| aai | ~16.x-0 | No | aai.enabled |
 | aai-babel | 15.0.2 |  |  |
 | aai-graphadmin | 16.0.0 |  |  |
 | aai-modelloader | 15.0.5 |  |  |
@@ -513,8 +513,8 @@
 | aai-schema-service | 16.0.0 |  |  |
 | aai-sparky-be | 16.0.0 |  |  |
 | aai-traversal | 16.0.0 |  |  |
-| authentication | ~15.x-0 |  | authentication.enabled |
-| cds | ~16.x-0 |  | cds.enabled |
+| authentication | ~15.x-0 | No | authentication.enabled |
+| cds | ~16.x-0 | No | cds.enabled |
 | cds-blueprints-processor | 13.0.1 |  |  |
 | cds-command-executor | 13.0.0 |  |  |
 | cds-py-executor | 13.0.0 |  |  |
@@ -522,28 +522,28 @@
 | cds-ui | 13.0.0 |  |  |
 | chartmuseum | 13.0.0 |  |  |
 | cmpv2-cert-provider | 13.0.0 |  |  |
-| cps | ~13.x-0 |  | cps.enabled |
+| cps | ~13.x-0 | No | cps.enabled |
 | cps-core | 13.0.2 |  |  |
 | cps-temporal | 13.0.1 |  |  |
-| dcae-datalake-admin-ui | 13.0.0 |  |  |
-| dcae-datalake-des | 13.0.0 |  |  |
-| dcae-datalake-feeder | 13.0.0 |  |  |
+| dcae-datalake-admin-ui | 13.0.1 |  |  |
+| dcae-datalake-des | 13.0.1 |  |  |
+| dcae-datalake-feeder | 13.0.1 |  |  |
 | dcae-hv-ves-collector | 13.0.0 |  |  |
 | dcae-ms-healthcheck | 13.0.0 |  |  |
 | dcae-prh | 14.0.0 |  |  |
 | dcae-ves-collector | 13.1.1 |  |  |
 | dcae-ves-openapi-manager | 13.0.0 |  |  |
-| dcaegen2-services | ~16.x-0 |  | dcaegen2-services.enabled |
+| dcaegen2-services | ~16.x-0 | No | dcaegen2-services.enabled |
 | dgbuilder | 15.1.0 |  |  |
-| multicloud | ~15.x-0 |  | multicloud.enabled |
+| multicloud | ~15.x-0 | No | multicloud.enabled |
 | multicloud-fcaps | 13.0.0 |  |  |
 | multicloud-k8s | 13.3.0 |  |  |
 | ncmp-dmi-plugin | 13.0.1 |  |  |
 | network-name-gen | 16.0.0 |  |  |
 | onap-keycloak-config-cli | 6.2.1 |  |  |
 | oom-cert-service | 13.0.0 |  |  |
-| platform | ~13.x-0 |  | platform.enabled |
-| policy | ~17.x-0 |  | policy.enabled |
+| platform | ~13.x-0 | No | platform.enabled |
+| policy | ~17.x-0 | No | policy.enabled |
 | policy-apex-pdp | 17.0.0 |  |  |
 | policy-api | 17.0.0 |  |  |
 | policy-clamp-ac-a1pms-ppnt | 17.0.1 |  |  |
@@ -558,13 +558,13 @@
 | policy-opa-pdp | 17.0.0 |  |  |
 | policy-pap | 17.0.0 |  |  |
 | policy-xacml-pdp | 17.0.0 |  |  |
-| portal-ng | ~14.x-0 |  | portal-ng.enabled |
+| portal-ng | ~14.x-0 | No | portal-ng.enabled |
 | portal-ng-bff | 13.1.1 |  |  |
 | portal-ng-history | 14.1.1 |  |  |
 | portal-ng-preferences | 14.1.1 |  |  |
 | portal-ng-ui | 13.0.1 |  |  |
-| robot | ~13.x-0 |  | robot.enabled |
-| sdc | ~13.x-0 |  | sdc.enabled |
+| robot | ~13.x-0 | No | robot.enabled |
+| sdc | ~13.x-0 | No | sdc.enabled |
 | sdc-be | 13.0.5 |  |  |
 | sdc-cs | 13.0.5 |  |  |
 | sdc-fe | 13.0.4 |  |  |
@@ -572,11 +572,11 @@
 | sdc-onboarding-be | 13.0.5 |  |  |
 | sdc-wfd-be | 13.0.5 |  |  |
 | sdc-wfd-fe | 13.0.4 |  |  |
-| sdnc | ~16.x-0 |  | sdnc.enabled |
+| sdnc | ~16.x-0 | No | sdnc.enabled |
 | sdnc-ansible-server | 15.1.0 |  |  |
 | sdnc-prom | 13.0.0 |  |  |
 | sdnc-web | 15.1.0 |  |  |
-| so | ~17.x-0 |  | so.enabled |
+| so | ~17.x-0 | No | so.enabled |
 | so-admin-cockpit | 15.0.0 |  |  |
 | so-bpmn-infra | 17.0.0 |  |  |
 | so-catalog-db-adapter | 17.0.0 |  |  |
@@ -594,10 +594,10 @@
 | so-sdnc-adapter | 17.0.0 |  |  |
 | so-ve-vnfm-adapter | 13.0.0 |  |  |
 | soHelpers | 13.0.1 |  |  |
-| strimzi | ~16.x-0 |  | strimzi.enabled |
+| strimzi | ~16.x-0 | No | strimzi.enabled |
 | strimzi-kafka-bridge | 13.0.3 |  |  |
 | ueb-listener | 15.1.0 |  |  |
-| uui | ~16.x-0 |  | uui.enabled |
+| uui | ~16.x-0 | No | uui.enabled |
 | uui-intent-analysis | 16.0.1 |  |  |
 | uui-llm-adaptation | 16.0.1 |  |  |
 | uui-nlp | 13.0.0 |  |  |

@@ -4,602 +4,602 @@ docker_images:
   - aai/aai-graphadmin
   image: onap/aai-graphadmin
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.16.0
 - gerrit_project: aai/aai-common
   helm_charts:
   - aai
   image: onap/aai-haproxy
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.15.2
 - gerrit_project: aai/resources
   helm_charts:
   - aai/aai-resources
   image: onap/aai-resources
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.16.0
 - gerrit_project: aai/schema-service
   helm_charts:
   - aai/aai-schema-service
   image: onap/aai-schema-service
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.12.11
 - gerrit_project: aai/traversal
   helm_charts:
   - aai/aai-traversal
   image: onap/aai-traversal
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.16.0
 - gerrit_project: aai/babel
   helm_charts:
   - aai/aai-babel
   image: onap/babel
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.13.5
 - gerrit_project: ccsdk/apps
   helm_charts:
   - sdnc/network-name-gen
   image: onap/ccsdk-apps-ms-neng
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.4.0
 - gerrit_project: ccsdk/cds
   helm_charts:
   - cds/cds-blueprints-processor
   image: onap/ccsdk-blueprintsprocessor
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.8.1
 - gerrit_project: ccsdk/cds
   helm_charts:
   - cds/cds-ui
   image: onap/ccsdk-cds-ui-server
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.8.1
 - gerrit_project: ccsdk/cds
   helm_charts:
   - cds/cds-command-executor
   image: onap/ccsdk-commandexecutor
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.8.1
 - gerrit_project: ccsdk/distribution
   helm_charts:
   - sdnc/dgbuilder
   image: onap/ccsdk-dgbuilder-image
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 2.2.0
 - gerrit_project: ccsdk/oran
   helm_charts:
   - a1policymanagement
   image: onap/ccsdk-oran-a1policymanagementservice
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 2.2.0
 - gerrit_project: ccsdk/cds
   helm_charts:
   - cds/cds-py-executor
   image: onap/ccsdk-py-executor
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.8.1
 - gerrit_project: ccsdk/cds
   helm_charts:
   - cds/cds-sdc-listener
   image: onap/ccsdk-sdclistener
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.8.1
 - gerrit_project: cps
   helm_charts:
   - cps/cps-core
   image: onap/cps-and-ncmp
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 3.7.0
 - gerrit_project: cps
   helm_charts:
   - cps/cps-temporal
   image: onap/cps-temporal
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.2.1
 - gerrit_project: aai/model-loader
   helm_charts:
   - aai/aai-modelloader
   image: onap/model-loader
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.14.3
 - gerrit_project: multicloud/framework
   helm_charts:
   - multicloud
   image: onap/multicloud/framework
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.9.2
 - gerrit_project: multicloud/framework
   helm_charts:
   - multicloud/multicloud-k8s
   image: onap/multicloud/framework-artifactbroker
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.9.3
 - gerrit_project: multicloud/k8s
   helm_charts:
   - multicloud/multicloud-k8s
   image: onap/multicloud/k8s
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 0.12.0
 - gerrit_project: multicloud/openstack
   helm_charts:
   - multicloud/multicloud-fcaps
   image: onap/multicloud/openstack-fcaps
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.5.7
 - gerrit_project: music/prom
   helm_charts:
   - sdnc/sdnc-prom
   image: onap/music/prom
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.0.5
 - gerrit_project: cps/ncmp-dmi-plugin
   helm_charts:
   - cps/ncmp-dmi-plugin
   image: onap/ncmp-dmi-plugin
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.7.0
 - gerrit_project: dcaegen2/collectors/hv-ves
   helm_charts:
   - dcaegen2-services/dcae-hv-ves-collector
   image: onap/org.onap.dcaegen2.collectors.hv-ves.hv-collector-main
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.11.0
 - gerrit_project: dcaegen2/collectors/ves
   helm_charts:
   - dcaegen2-services/dcae-ves-collector
   image: onap/org.onap.dcaegen2.collectors.ves.vescollector
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.12.4
 - gerrit_project: dcaegen2/deployments
   helm_charts:
   - dcaegen2-services/dcae-ms-healthcheck
   image: onap/org.onap.dcaegen2.deployments.healthcheck-container
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 2.4.1
 - gerrit_project: dcaegen2/platform/ves-openapi-manager
   helm_charts:
   - dcaegen2-services/dcae-ves-openapi-manager
   image: onap/org.onap.dcaegen2.platform.ves-openapi-manager
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.3.1
 - gerrit_project: dcaegen2/services
   helm_charts:
   - dcaegen2-services/dcae-datalake-des
   image: onap/org.onap.dcaegen2.services.datalake.exposure.service
   nexus_validated: null
-  registry: null
-  tag: 1.1.1
+  registry: nexus3.onap.org:10001
+  tag: 1.1.3
 - gerrit_project: dcaegen2/services
   helm_charts:
   - dcaegen2-services/dcae-datalake-admin-ui
   image: onap/org.onap.dcaegen2.services.datalakeadminui
   nexus_validated: null
-  registry: null
-  tag: 1.1.1
+  registry: nexus3.onap.org:10001
+  tag: 1.1.3
 - gerrit_project: dcaegen2/services
   helm_charts:
   - dcaegen2-services/dcae-datalake-feeder
   image: onap/org.onap.dcaegen2.services.datalakefeeder
   nexus_validated: null
-  registry: null
-  tag: 1.1.1
+  registry: nexus3.onap.org:10001
+  tag: 1.1.3
 - gerrit_project: dcaegen2/services/prh
   helm_charts:
   - dcaegen2-services/dcae-prh
   image: onap/org.onap.dcaegen2.services.prh.prh-app-server
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.12.0
 - gerrit_project: oom/platform/cert-service
   helm_charts:
   - platform/oom-cert-service
   image: onap/org.onap.oom.platform.cert-service.oom-certservice-api
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 2.6.0
 - gerrit_project: oom/platform/cert-service
   helm_charts:
   - platform/cmpv2-cert-provider
   image: onap/org.onap.oom.platform.cert-service.oom-certservice-k8s-external-provider
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 2.6.0
 - gerrit_project: policy/apex-pdp
   helm_charts:
   - policy/policy-apex-pdp
   image: onap/policy-apex-pdp
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 4.2.2
 - gerrit_project: policy/api
   helm_charts:
   - policy/policy-api
   image: onap/policy-api
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 4.2.2
 - gerrit_project: policy/clamp
   helm_charts:
   - policy/policy-clamp-ac-a1pms-ppnt
   image: onap/policy-clamp-ac-a1pms-ppnt
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 9.0.0
 - gerrit_project: policy/clamp
   helm_charts:
   - policy/policy-clamp-ac-http-ppnt
   image: onap/policy-clamp-ac-http-ppnt
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 9.0.0
 - gerrit_project: policy/clamp
   helm_charts:
   - policy/policy-clamp-ac-k8s-ppnt
   image: onap/policy-clamp-ac-k8s-ppnt
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 8.2.2
 - gerrit_project: policy/clamp
   helm_charts:
   - policy/policy-clamp-ac-kserve-ppnt
   image: onap/policy-clamp-ac-kserve-ppnt
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 9.0.0
 - gerrit_project: policy/clamp
   helm_charts:
   - policy/policy-clamp-ac-pf-ppnt
   image: onap/policy-clamp-ac-pf-ppnt
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 9.0.0
 - gerrit_project: policy/clamp
   helm_charts:
   - policy/policy-clamp-runtime-acm
   image: onap/policy-clamp-runtime-acm
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 8.2.2
 - gerrit_project: policy/docker
   helm_charts:
   - policy/policy-api
   image: onap/policy-db-migrator
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 4.2.2
 - gerrit_project: policy/distribution
   helm_charts:
   - policy/policy-distribution
   image: onap/policy-distribution
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 4.2.2
 - gerrit_project: policy/opa-pdp
   helm_charts:
   - policy/policy-opa-pdp
   image: onap/policy-opa-pdp
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.0.8
 - gerrit_project: policy/pap
   helm_charts:
   - policy/policy-pap
   image: onap/policy-pap
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 4.2.2
 - gerrit_project: policy/drools-pdp
   helm_charts:
   - policy/policy-drools-pdp
   image: onap/policy-pdpd-cl
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 3.2.2
 - gerrit_project: policy/xacml-pdp
   helm_charts:
   - policy/policy-xacml-pdp
   image: onap/policy-xacml-pdp
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 4.2.2
 - gerrit_project: portal-ng/bff
   helm_charts:
   - portal-ng/portal-ng-bff
   image: onap/portal-ng/bff
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: latest
 - gerrit_project: portal-ng/history
   helm_charts:
   - portal-ng/portal-ng-history
   image: onap/portal-ng/history
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: latest
 - gerrit_project: portal-ng/preferences
   helm_charts:
   - portal-ng/portal-ng-preferences
   image: onap/portal-ng/preferences
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: latest
 - gerrit_project: portal-ng/ui
   helm_charts:
   - portal-ng/portal-ng-ui
   image: onap/portal-ng/ui
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: latest
 - gerrit_project: sdc
   helm_charts:
   - sdc/sdc-be
   image: onap/sdc-backend-all-plugins
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.15.0
 - gerrit_project: sdc
   helm_charts:
   - sdc/sdc-cs
   image: onap/sdc-cassandra
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.15.0
 - gerrit_project: sdc
   helm_charts:
   - sdc/sdc-fe
   image: onap/sdc-frontend
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.15.0
 - gerrit_project: sdc/sdc-helm-validator
   helm_charts:
   - sdc/sdc-helm-validator
   image: onap/sdc-helm-validator
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.3.3
 - gerrit_project: sdc
   helm_charts:
   - sdc/sdc-onboarding-be
   image: onap/sdc-onboard-backend
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.15.0
 - gerrit_project: sdc/sdc-workflow-designer
   helm_charts:
   - sdc/sdc-wfd-be
   image: onap/sdc-workflow-backend
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.14.1
 - gerrit_project: sdc/sdc-workflow-designer
   helm_charts:
   - sdc/sdc-wfd-fe
   image: onap/sdc-workflow-frontend
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.14.1
 - gerrit_project: sdnc/oam
   helm_charts:
   - sdnc/sdnc-ansible-server
   image: onap/sdnc-ansible-server-image
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 3.2.4
 - gerrit_project: sdnc/oam
   helm_charts:
   - sdnc
   image: onap/sdnc-image
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 3.2.4
 - gerrit_project: sdnc/oam
   helm_charts:
   - sdnc/ueb-listener
   image: onap/sdnc-ueb-listener-image
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 3.2.4
 - gerrit_project: sdnc/oam
   helm_charts:
   - sdnc/sdnc-web
   image: onap/sdnc-web-image
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 3.2.4
 - gerrit_project: so
   helm_charts:
   - so
   image: onap/so/api-handler-infra
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.17.0
 - gerrit_project: so
   helm_charts:
   - so/so-bpmn-infra
   image: onap/so/bpmn-infra
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.17.0
 - gerrit_project: so
   helm_charts:
   - so/so-catalog-db-adapter
   image: onap/so/catalog-db-adapter
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.17.0
 - gerrit_project: so
   helm_charts:
   - so/so-openstack-adapter
   image: onap/so/openstack-adapter
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.17.0
 - gerrit_project: so
   helm_charts:
   - so/so-request-db-adapter
   image: onap/so/request-db-adapter
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.17.0
 - gerrit_project: so
   helm_charts:
   - so/so-sdc-controller
   image: onap/so/sdc-controller
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.17.0
 - gerrit_project: so
   helm_charts:
   - so/so-sdnc-adapter
   image: onap/so/sdnc-adapter
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.17.0
 - gerrit_project: so/so-admin-cockpit
   helm_charts:
   - so/so-admin-cockpit
   image: onap/so/so-admin-cockpit
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.10.0
 - gerrit_project: so
   helm_charts:
   - so/so-cnf-adapter
   image: onap/so/so-cnf-adapter
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.13.1
 - gerrit_project: so
   helm_charts:
   - so/so-cnfm-lcm
   image: onap/so/so-cnfm-as-lcm
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.13.1
 - gerrit_project: so
   helm_charts:
   - so/so-etsi-nfvo-ns-lcm
   image: onap/so/so-etsi-nfvo-ns-lcm
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.9.0
 - gerrit_project: so/adapters/so-etsi-sol003-adapter
   helm_charts:
   - so/so-etsi-sol003-adapter
   image: onap/so/so-etsi-sol003-adapter
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.10.0
 - gerrit_project: so/adapters/so-etsi-sol005-adapter
   helm_charts:
   - so/so-etsi-sol005-adapter
   image: onap/so/so-etsi-sol005-adapter
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.10.0
 - gerrit_project: so/adapters/so-nssmf-adapter
   helm_charts:
   - so/so-nssmf-adapter
   image: onap/so/so-nssmf-adapter
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.11.1
 - gerrit_project: so/adapters/so-oof-adapter
   helm_charts:
   - so/so-oof-adapter
   image: onap/so/so-oof-adapter
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.10.2
 - gerrit_project: so
   helm_charts:
   - so/so-ve-vnfm-adapter
   image: onap/so/ve-vnfm-adapter
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.6.4
 - gerrit_project: aai/sparky-be
   helm_charts:
   - aai/aai-sparky-be
   image: onap/sparky-be
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 2.1.0
 - gerrit_project: testsuite
   helm_charts:
   - robot
   image: onap/testsuite
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.14.0
 - gerrit_project: usecase-ui
   helm_charts:
   - uui
   image: onap/usecase-ui
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 16.0.1
 - gerrit_project: usecase-ui/intent-analysis
   helm_charts:
   - uui/uui-intent-analysis
   image: onap/usecase-ui-intent-analysis
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 16.0.1
 - gerrit_project: usecase-ui/llm-adaptation
   helm_charts:
   - uui/uui-llm-adaptation
   image: onap/usecase-ui-llm-adaptation
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 16.0.1
 - gerrit_project: usecase-ui/nlp
   helm_charts:
   - uui/uui-nlp
   image: onap/usecase-ui-nlp
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 1.0.5
 - gerrit_project: usecase-ui/server
   helm_charts:
   - uui/uui-server
   image: onap/usecase-ui-server
   nexus_validated: null
-  registry: null
+  registry: nexus3.onap.org:10001
   tag: 16.0.1
-generated_at: '2026-04-05T10:56:21Z'
+generated_at: '2026-04-05T12:18:34Z'
 helm_components:
 - condition_key: a1policymanagement.enabled
   docker_images:
   - onap/ccsdk-oran-a1policymanagementservice
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects:
   - ccsdk/oran
   name: a1policymanagement
@@ -615,7 +615,7 @@ helm_components:
   - onap/aai-schema-service
   - onap/sparky-be
   - onap/aai-traversal
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects:
   - aai/aai-common
   - aai/babel
@@ -700,7 +700,7 @@ helm_components:
   version: 16.0.0
 - condition_key: authentication.enabled
   docker_images: []
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects: []
   name: authentication
   sub_charts:
@@ -713,7 +713,7 @@ helm_components:
   - onap/ccsdk-py-executor
   - onap/ccsdk-sdclistener
   - onap/ccsdk-cds-ui-server
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects:
   - ccsdk/cds
   name: cds
@@ -790,7 +790,7 @@ helm_components:
   - onap/cps-and-ncmp
   - onap/cps-temporal
   - onap/ncmp-dmi-plugin
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects:
   - cps
   - cps/ncmp-dmi-plugin
@@ -826,7 +826,7 @@ helm_components:
   - dcaegen2/services
   name: dcae-datalake-admin-ui
   sub_charts: []
-  version: 13.0.0
+  version: 13.0.1
 - condition_key: null
   docker_images:
   - onap/org.onap.dcaegen2.services.datalake.exposure.service
@@ -835,7 +835,7 @@ helm_components:
   - dcaegen2/services
   name: dcae-datalake-des
   sub_charts: []
-  version: 13.0.0
+  version: 13.0.1
 - condition_key: null
   docker_images:
   - onap/org.onap.dcaegen2.services.datalakefeeder
@@ -844,7 +844,7 @@ helm_components:
   - dcaegen2/services
   name: dcae-datalake-feeder
   sub_charts: []
-  version: 13.0.0
+  version: 13.0.1
 - condition_key: null
   docker_images:
   - onap/org.onap.dcaegen2.collectors.hv-ves.hv-collector-main
@@ -900,7 +900,7 @@ helm_components:
   - onap/org.onap.dcaegen2.services.prh.prh-app-server
   - onap/org.onap.dcaegen2.collectors.ves.vescollector
   - onap/org.onap.dcaegen2.platform.ves-openapi-manager
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects:
   - dcaegen2/services
   - dcaegen2/collectors/hv-ves
@@ -934,7 +934,7 @@ helm_components:
   - onap/multicloud/openstack-fcaps
   - onap/multicloud/k8s
   - onap/multicloud/framework-artifactbroker
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects:
   - multicloud/framework
   - multicloud/openstack
@@ -1002,7 +1002,7 @@ helm_components:
   docker_images:
   - onap/org.onap.oom.platform.cert-service.oom-certservice-k8s-external-provider
   - onap/org.onap.oom.platform.cert-service.oom-certservice-api
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects:
   - oom/platform/cert-service
   name: platform
@@ -1027,7 +1027,7 @@ helm_components:
   - onap/policy-opa-pdp
   - onap/policy-pap
   - onap/policy-xacml-pdp
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects:
   - policy/apex-pdp
   - policy/api
@@ -1187,7 +1187,7 @@ helm_components:
   - onap/portal-ng/history
   - onap/portal-ng/preferences
   - onap/portal-ng/ui
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects:
   - portal-ng/bff
   - portal-ng/history
@@ -1239,7 +1239,7 @@ helm_components:
 - condition_key: robot.enabled
   docker_images:
   - onap/testsuite
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects:
   - testsuite
   name: robot
@@ -1254,7 +1254,7 @@ helm_components:
   - onap/sdc-onboard-backend
   - onap/sdc-workflow-backend
   - onap/sdc-workflow-frontend
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects:
   - sdc
   - sdc/sdc-helm-validator
@@ -1341,7 +1341,7 @@ helm_components:
   - onap/music/prom
   - onap/sdnc-web-image
   - onap/sdnc-ueb-listener-image
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects:
   - sdnc/oam
   - ccsdk/distribution
@@ -1401,7 +1401,7 @@ helm_components:
   - onap/so/sdc-controller
   - onap/so/sdnc-adapter
   - onap/so/ve-vnfm-adapter
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects:
   - so
   - so/so-admin-cockpit
@@ -1580,7 +1580,7 @@ helm_components:
   version: 13.0.1
 - condition_key: strimzi.enabled
   docker_images: []
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects: []
   name: strimzi
   sub_charts:
@@ -1609,7 +1609,7 @@ helm_components:
   - onap/usecase-ui-llm-adaptation
   - onap/usecase-ui-nlp
   - onap/usecase-ui-server
-  enabled_by_default: null
+  enabled_by_default: false
   gerrit_projects:
   - usecase-ui
   - usecase-ui/intent-analysis
@@ -1663,27 +1663,27 @@ onap_release:
   name: Master
   oom_branch: master
   oom_chart_version: 18.0.0
-  oom_commit: b4baa121c07184c563880e9a620f5c289624ea0c
+  oom_commit: 4ad36579a06b56ed10b819d7a453d5040f75040d
 provenance:
   collectors_executed:
-  - duration_seconds: 1.033
+  - duration_seconds: 1.245
     errors: []
     items_collected: 238
     name: oom
-  - duration_seconds: 0.258
+  - duration_seconds: 0.353
     errors: []
     items_collected: 181
     name: gerrit
-  - duration_seconds: 0.09
+  - duration_seconds: 0.103
     errors: []
     items_collected: 372
     name: relman
-  - duration_seconds: 0.853
+  - duration_seconds: 0.98
     errors: []
     items_collected: 114
     name: jjb
   data_sources:
-  - commit: b4baa121c07184c563880e9a620f5c289624ea0c
+  - commit: 4ad36579a06b56ed10b819d7a453d5040f75040d
     fetched_at: null
     name: oom
     type: git
@@ -8063,4 +8063,4 @@ summary:
   total_docker_images: 85
   total_helm_components: 98
   total_repositories: 394
-tool_version: 0.2.0
+tool_version: 0.2.1
