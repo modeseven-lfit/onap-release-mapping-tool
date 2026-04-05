@@ -24,6 +24,15 @@ oom:
 collectors:
   - oom
 
+# Repository filtering
+filter_repos:
+  - ".github"
+  - "All-Projects"
+  - "All-Users"
+
+# Exclude read-only/archived Gerrit projects
+exclude_readonly: true
+
 # Output settings
 output:
   formats:
