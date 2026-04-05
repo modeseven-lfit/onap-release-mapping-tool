@@ -27,10 +27,14 @@ dates.
 
 ### Repositories
 
-| Repository | Purpose |
-|------------|---------|
-| [`modeseven-lfit/onap-release-mapping-tool`][tool-repo] | CLI tool, GitHub Action wrapper, CI/CD workflows |
+<!-- markdownlint-disable MD013 -->
+
+| Repository                                                        | Purpose                                          |
+| ----------------------------------------------------------------- | ------------------------------------------------ |
+| [`modeseven-lfit/onap-release-mapping-tool`][tool-repo]           | CLI tool, GitHub Action wrapper, CI/CD workflows |
 | [`modeseven-lfit/onap-release-mapping-artifacts`][artifacts-repo] | Date-stamped artifact archive, GitHub Pages site |
+
+<!-- markdownlint-enable MD013 -->
 
 [tool-repo]: https://github.com/modeseven-lfit/onap-release-mapping-tool
 [artifacts-repo]: https://github.com/modeseven-lfit/onap-release-mapping-artifacts
@@ -41,32 +45,40 @@ dates.
 
 ### 2.1 Functional Requirements
 
-| ID | Requirement |
-|----|-------------|
-| FR-01 | Parse the OOM umbrella Helm chart and all sub-charts recursively |
-| FR-02 | Extract every `onap/*` Docker image reference with its pinned tag |
-| FR-03 | Map Docker image names to Gerrit project paths |
-| FR-04 | Query the Gerrit REST API for project state and metadata |
-| FR-05 | Cross-reference with `relman/repos.yaml` for maintenance status |
-| FR-06 | Cross-reference with ci-management JJB for active CI status |
+<!-- markdownlint-disable MD013 -->
+
+| ID    | Requirement                                                                                              |
+| ----- | -------------------------------------------------------------------------------------------------------- |
+| FR-01 | Parse the OOM umbrella Helm chart and all sub-charts recursively                                         |
+| FR-02 | Extract every `onap/*` Docker image reference with its pinned tag                                        |
+| FR-03 | Map Docker image names to Gerrit project paths                                                           |
+| FR-04 | Query the Gerrit REST API for project state and metadata                                                 |
+| FR-05 | Cross-reference with `relman/repos.yaml` for maintenance status                                          |
+| FR-06 | Cross-reference with ci-management JJB for active CI status                                              |
 | FR-07 | Produce a unified release manifest in JSON (primary) and additional output formats (YAML, CSV, Markdown) |
-| FR-08 | Support diffing two manifests to show added/removed/changed repos and images |
-| FR-09 | Validate that referenced Docker images exist in the Nexus registry |
-| FR-10 | Run as a CLI tool locally and as a GitHub Action in CI |
-| FR-11 | Store every run's artifacts in the companion artifacts repository |
-| FR-12 | Generate a GitHub Pages site from the latest and historical artifacts |
+| FR-08 | Support diffing two manifests to show added/removed/changed repos and images                             |
+| FR-09 | Validate that referenced Docker images exist in the Nexus registry                                       |
+| FR-10 | Run as a CLI tool locally and as a GitHub Action in CI                                                   |
+| FR-11 | Store every run's artifacts in the companion artifacts repository                                        |
+| FR-12 | Generate a GitHub Pages site from the latest and historical artifacts                                    |
+
+<!-- markdownlint-enable MD013 -->
 
 ### 2.2 Non-Functional Requirements
 
-| ID | Requirement |
-|----|-------------|
-| NF-01 | Idempotent and repeatable: same inputs produce byte-identical JSON |
-| NF-02 | Extensible schema with a version field for forward compatibility |
-| NF-03 | Modular source-plugin architecture for adding new data sources |
+<!-- markdownlint-disable MD013 -->
+
+| ID    | Requirement                                                               |
+| ----- | ------------------------------------------------------------------------- |
+| NF-01 | Idempotent and repeatable: same inputs produce byte-identical JSON        |
+| NF-02 | Extensible schema with a version field for forward compatibility          |
+| NF-03 | Modular source-plugin architecture for adding new data sources            |
 | NF-04 | No authentication required for basic operation (Gerrit REST is anonymous) |
-| NF-05 | Python ≥3.10, modern PEP standards, publishable to PyPI |
-| NF-06 | Comprehensive pre-commit hooks, type checking, and test coverage |
-| NF-07 | Deterministic JSON output (sorted keys, stable ordering) for diffability |
+| NF-05 | Python ≥3.10, modern PEP standards, publishable to PyPI                   |
+| NF-06 | Comprehensive pre-commit hooks, type checking, and test coverage          |
+| NF-07 | Deterministic JSON output (sorted keys, stable ordering) for diffability  |
+
+<!-- markdownlint-enable MD013 -->
 
 ---
 
@@ -126,14 +138,18 @@ without modifying existing code.
 
 **Collector priority/confidence tiers:**
 
-| Tier | Collector | Confidence | What It Provides |
-|------|-----------|------------|------------------|
-| 1 (Primary) | `OOMCollector` | High | Helm chart dependencies, Docker images, chart→image mapping |
-| 2 (Enrichment) | `GerritCollector` | Medium | Project state (ACTIVE/READ_ONLY), descriptions, branches |
-| 2 (Enrichment) | `RelmanCollector` | Medium | Maintenance status, read-only flags from `repos.yaml` |
-| 2 (Enrichment) | `JJBCollector` | Medium | Active CI status, job types, Gerrit project paths |
-| 2 (Enrichment) | `IntegrationCollector` | Medium | Version manifest data, release CSV refs |
-| 3 (Validation) | `NexusCollector` | N/A | Validates image:tag existence in Nexus3 registry |
+<!-- markdownlint-disable MD013 -->
+
+| Tier           | Collector              | Confidence | What It Provides                                            |
+| -------------- | ---------------------- | ---------- | ----------------------------------------------------------- |
+| 1 (Primary)    | `OOMCollector`         | High       | Helm chart dependencies, Docker images, chart→image mapping |
+| 2 (Enrichment) | `GerritCollector`      | Medium     | Project state (ACTIVE/READ_ONLY), descriptions, branches    |
+| 2 (Enrichment) | `RelmanCollector`      | Medium     | Maintenance status, read-only flags from `repos.yaml`       |
+| 2 (Enrichment) | `JJBCollector`         | Medium     | Active CI status, job types, Gerrit project paths           |
+| 2 (Enrichment) | `IntegrationCollector` | Medium     | Version manifest data, release CSV refs                     |
+| 3 (Validation) | `NexusCollector`       | N/A        | Validates image:tag existence in Nexus3 registry            |
+
+<!-- markdownlint-enable MD013 -->
 
 ### 3.3 Design Principles
 
@@ -163,14 +179,18 @@ without modifying existing code.
 
 **What to parse:**
 
-| File | Data Extracted |
-|------|----------------|
-| `onap/Chart.yaml` | Top-level dependencies (component names, version constraints, conditions) |
-| `<component>/Chart.yaml` | Sub-chart dependencies (nested components, shared infrastructure charts) |
-| `<component>/values.yaml` | Docker image references (`image:` keys with `onap/*` prefixes) |
-| `<component>/components/*/Chart.yaml` | Deeply nested sub-chart dependencies |
-| `<component>/components/*/values.yaml` | Deeply nested Docker image references |
-| `common/repositoryGenerator/values.yaml` | Global image definitions, registry endpoints, image→repo mapping |
+<!-- markdownlint-disable MD013 -->
+
+| File                                     | Data Extracted                                                            |
+| ---------------------------------------- | ------------------------------------------------------------------------- |
+| `onap/Chart.yaml`                        | Top-level dependencies (component names, version constraints, conditions) |
+| `<component>/Chart.yaml`                 | Sub-chart dependencies (nested components, shared infrastructure charts)  |
+| `<component>/values.yaml`                | Docker image references (`image:` keys with `onap/*` prefixes)            |
+| `<component>/components/*/Chart.yaml`    | Deeply nested sub-chart dependencies                                      |
+| `<component>/components/*/values.yaml`   | Deeply nested Docker image references                                     |
+| `common/repositoryGenerator/values.yaml` | Global image definitions, registry endpoints, image→repo mapping          |
+
+<!-- markdownlint-enable MD013 -->
 
 **Parsing rules:**
 
@@ -210,11 +230,15 @@ Heuristic rules (applied in order):
 
 **Key queries:**
 
-| Query | Purpose |
-|-------|---------|
-| `GET /projects/?type=ALL&d&state=ACTIVE` | All active projects with descriptions |
-| `GET /projects/?type=ALL&d&state=READ_ONLY` | All archived/read-only projects |
-| `GET /projects/{name}/branches/` | Branch list for release branch detection |
+<!-- markdownlint-disable MD013 -->
+
+| Query                                       | Purpose                                  |
+| ------------------------------------------- | ---------------------------------------- |
+| `GET /projects/?type=ALL&d&state=ACTIVE`    | All active projects with descriptions    |
+| `GET /projects/?type=ALL&d&state=READ_ONLY` | All archived/read-only projects          |
+| `GET /projects/{name}/branches/`            | Branch list for release branch detection |
+
+<!-- markdownlint-enable MD013 -->
 
 **Magic prefix:** All Gerrit REST responses start with `)]}'` which must be
 stripped before JSON parsing.
@@ -564,11 +588,11 @@ consumers that check `schema_version`.
 
 ### 6.1 Package Identity
 
-| Field | Value |
-|-------|-------|
-| **PyPI name** | `onap-release-map` |
-| **Import name** | `onap_release_map` |
-| **CLI command** | `onap-release-map` |
+| Field           | Value                      |
+| --------------- | -------------------------- |
+| **PyPI name**   | `onap-release-map`         |
+| **Import name** | `onap_release_map`         |
+| **CLI command** | `onap-release-map`         |
 | **Entry point** | `onap_release_map.cli:app` |
 
 ### 6.2 Subcommands
@@ -757,25 +781,25 @@ onap-release-mapping-tool/
 
 ### 6.4 Key Dependencies
 
-| Package | Purpose | Min Version |
-|---------|---------|-------------|
-| `typer` | CLI framework | ≥0.21.0 |
-| `rich` | Terminal formatting, tables, progress bars | ≥14.0.0 |
-| `pydantic` | Data validation and serialization for models | ≥2.10.0 |
-| `httpx` | HTTP client for Gerrit/Nexus REST APIs | ≥0.28.0 |
-| `pyyaml` | YAML parsing for Helm charts and config | ≥6.0.0 |
-| `jsonschema` | Runtime manifest validation | ≥4.23.0 |
+| Package      | Purpose                                      | Min Version |
+| ------------ | -------------------------------------------- | ----------- |
+| `typer`      | CLI framework                                | ≥0.21.0     |
+| `rich`       | Terminal formatting, tables, progress bars   | ≥14.0.0     |
+| `pydantic`   | Data validation and serialization for models | ≥2.10.0     |
+| `httpx`      | HTTP client for Gerrit/Nexus REST APIs       | ≥0.28.0     |
+| `pyyaml`     | YAML parsing for Helm charts and config      | ≥6.0.0      |
+| `jsonschema` | Runtime manifest validation                  | ≥4.23.0     |
 
 **Dev dependencies:**
 
-| Package | Purpose |
-|---------|---------|
-| `pytest` | Testing framework |
-| `pytest-cov` | Coverage reporting |
+| Package                | Purpose                    |
+| ---------------------- | -------------------------- |
+| `pytest`               | Testing framework          |
+| `pytest-cov`           | Coverage reporting         |
 | `responses` or `respx` | HTTP mocking for API tests |
-| `ruff` | Linting and formatting |
-| `mypy` | Type checking |
-| `basedpyright` | Additional type checking |
+| `ruff`                 | Linting and formatting     |
+| `mypy`                 | Type checking              |
+| `basedpyright`         | Additional type checking   |
 
 ### 6.5 Build System
 
@@ -798,25 +822,29 @@ installs the tool via `uv` and runs the `discover` subcommand.
 
 **Inputs:**
 
-| Input | Required | Default | Description |
-|-------|----------|---------|-------------|
-| `oom-path` | No | (clones from Gerrit) | Path to pre-cloned OOM repo |
-| `oom-branch` | No | `master` | OOM branch to analyze |
-| `gerrit-url` | No | `https://gerrit.onap.org/r` | Gerrit base URL |
-| `collectors` | No | `oom,gerrit` | Comma-separated collector list |
-| `output-dir` | No | `$RUNNER_TEMP/onap-release-map` | Output directory |
-| `output-format` | No | `json` | Output formats |
-| `python-version` | No | `3.12` | Python version to use |
+<!-- markdownlint-disable MD013 -->
+
+| Input            | Required | Default                         | Description                    |
+| ---------------- | -------- | ------------------------------- | ------------------------------ |
+| `oom-path`       | No       | (clones from Gerrit)            | Path to pre-cloned OOM repo    |
+| `oom-branch`     | No       | `master`                        | OOM branch to analyze          |
+| `gerrit-url`     | No       | `https://gerrit.onap.org/r`     | Gerrit base URL                |
+| `collectors`     | No       | `oom,gerrit`                    | Comma-separated collector list |
+| `output-dir`     | No       | `$RUNNER_TEMP/onap-release-map` | Output directory               |
+| `output-format`  | No       | `json`                          | Output formats                 |
+| `python-version` | No       | `3.12`                          | Python version to use          |
+
+<!-- markdownlint-enable MD013 -->
 
 **Outputs:**
 
-| Output | Description |
-|--------|-------------|
-| `manifest-path` | Path to the generated JSON manifest |
-| `manifest-version` | Schema version of the generated manifest |
-| `total-repositories` | Number of repositories found |
-| `total-images` | Number of Docker images found |
-| `onap-release` | ONAP release name (e.g. Rabat) |
+| Output               | Description                              |
+| -------------------- | ---------------------------------------- |
+| `manifest-path`      | Path to the generated JSON manifest      |
+| `manifest-version`   | Schema version of the generated manifest |
+| `total-repositories` | Number of repositories found             |
+| `total-images`       | Number of Docker images found            |
+| `onap-release`       | ONAP release name (e.g. Rabat)           |
 
 **Steps (composite):**
 
@@ -880,13 +908,17 @@ added later once the tool is stable.
 
 **Inputs (workflow_dispatch):**
 
-| Input | Required | Default | Description |
-|-------|----------|---------|-------------|
-| `oom_branch` | No | `master` | OOM branch to analyze |
-| `collectors` | No | `oom,gerrit,relman,jjb` | Collectors to enable |
-| `skip_pages` | No | `false` | Skip GitHub Pages update |
-| `skip_artifacts` | No | `false` | Skip artifact transfer |
-| `debug` | No | `false` | Enable debug output |
+<!-- markdownlint-disable MD013 -->
+
+| Input            | Required | Default                 | Description              |
+| ---------------- | -------- | ----------------------- | ------------------------ |
+| `oom_branch`     | No       | `master`                | OOM branch to analyze    |
+| `collectors`     | No       | `oom,gerrit,relman,jjb` | Collectors to enable     |
+| `skip_pages`     | No       | `false`                 | Skip GitHub Pages update |
+| `skip_artifacts` | No       | `false`                 | Skip artifact transfer   |
+| `debug`          | No       | `false`                 | Enable debug output      |
+
+<!-- markdownlint-enable MD013 -->
 
 **Job DAG:**
 
@@ -936,16 +968,20 @@ analyze ──▶ publish-pages ──▶ copy-to-artifacts-repo ──▶ summa
 
 **Repository secrets** (on the tool repo):
 
-| Secret | Purpose |
-|--------|---------|
+<!-- markdownlint-disable MD013 -->
+
+| Secret                 | Purpose                                                                |
+| ---------------------- | ---------------------------------------------------------------------- |
 | `ARTIFACTS_REPO_TOKEN` | Fine-grained PAT with write access to `onap-release-mapping-artifacts` |
+
+<!-- markdownlint-enable MD013 -->
 
 **Repository variables** (on the tool repo):
 
-| Variable | Value | Purpose |
-|----------|-------|---------|
-| `GERRIT_URL` | `https://gerrit.onap.org/r` | Gerrit base URL |
-| `OOM_BRANCH` | `master` | Default OOM branch |
+| Variable     | Value                       | Purpose            |
+| ------------ | --------------------------- | ------------------ |
+| `GERRIT_URL` | `https://gerrit.onap.org/r` | Gerrit base URL    |
+| `OOM_BRANCH` | `master`                    | Default OOM branch |
 
 ---
 
@@ -1443,12 +1479,16 @@ logging:
 
 ### 13.1 Test Pyramid
 
-| Level | Scope | Tools | Target |
-|-------|-------|-------|--------|
-| **Unit** | Individual functions/classes | pytest, fixtures | Parsers, mappers, models, collectors (mocked APIs) |
-| **Integration** | Multi-component flows | pytest, respx/responses | Full discover pipeline with fixture data |
-| **CLI** | Command-line interface | `typer.testing.CliRunner` | All subcommands with various option combinations |
-| **Schema** | Output validation | jsonschema | Generated manifests validate against the JSON Schema |
+<!-- markdownlint-disable MD013 -->
+
+| Level           | Scope                        | Tools                     | Target                                               |
+| --------------- | ---------------------------- | ------------------------- | ---------------------------------------------------- |
+| **Unit**        | Individual functions/classes | pytest, fixtures          | Parsers, mappers, models, collectors (mocked APIs)   |
+| **Integration** | Multi-component flows        | pytest, respx/responses   | Full discover pipeline with fixture data             |
+| **CLI**         | Command-line interface       | `typer.testing.CliRunner` | All subcommands with various option combinations     |
+| **Schema**      | Output validation            | jsonschema                | Generated manifests validate against the JSON Schema |
+
+<!-- markdownlint-enable MD013 -->
 
 ### 13.2 Fixture Strategy
 
@@ -1539,30 +1579,30 @@ expected output for the current **Rabat** release (OOM chart v18.0.0):
 
 ### 16.1 Top-Level Helm Components (23)
 
-| Component | Version | Default Enabled |
-|-----------|---------|-----------------|
-| `a1policymanagement` | ~13.x-0 | No |
-| `aai` | ~16.x-0 | No |
-| `authentication` | ~15.x-0 | No |
-| `cassandra` | ~16.x-0 | No |
-| `cds` | ~16.x-0 | No |
-| `common` | ~13.x-0 | Yes (always) |
-| `cps` | ~13.x-0 | No |
-| `dcaegen2-services` | ~16.x-0 | No |
-| `mariadb-galera` | ~16.x-0 | No |
-| `multicloud` | ~15.x-0 | No |
-| `platform` | ~13.x-0 | No |
-| `policy` | ~17.x-0 | No |
-| `portal-ng` | ~14.x-0 | No |
-| `postgres` | ~13.x-0 | No |
-| `repository-wrapper` | ~13.x-0 | Yes |
-| `robot` | ~13.x-0 | No |
-| `roles-wrapper` | ~13.x-0 | Yes |
-| `sdc` | ~13.x-0 | No |
-| `sdnc` | ~16.x-0 | No |
-| `so` | ~16.x-0 | No |
-| `strimzi` | ~16.x-0 | No |
-| `uui` | ~16.x-0 | No |
+| Component            | Version | Default Enabled |
+| -------------------- | ------- | --------------- |
+| `a1policymanagement` | ~13.x-0 | No              |
+| `aai`                | ~16.x-0 | No              |
+| `authentication`     | ~15.x-0 | No              |
+| `cassandra`          | ~16.x-0 | No              |
+| `cds`                | ~16.x-0 | No              |
+| `common`             | ~13.x-0 | Yes (always)    |
+| `cps`                | ~13.x-0 | No              |
+| `dcaegen2-services`  | ~16.x-0 | No              |
+| `mariadb-galera`     | ~16.x-0 | No              |
+| `multicloud`         | ~15.x-0 | No              |
+| `platform`           | ~13.x-0 | No              |
+| `policy`             | ~17.x-0 | No              |
+| `portal-ng`          | ~14.x-0 | No              |
+| `postgres`           | ~13.x-0 | No              |
+| `repository-wrapper` | ~13.x-0 | Yes             |
+| `robot`              | ~13.x-0 | No              |
+| `roles-wrapper`      | ~13.x-0 | Yes             |
+| `sdc`                | ~13.x-0 | No              |
+| `sdnc`               | ~16.x-0 | No              |
+| `so`                 | ~16.x-0 | No              |
+| `strimzi`            | ~16.x-0 | No              |
+| `uui`                | ~16.x-0 | No              |
 
 ### 16.2 Docker Images (94 ONAP-specific)
 
@@ -1571,27 +1611,35 @@ of 94 `onap/*` Docker images and their mapped Gerrit projects.
 
 ### 16.3 Estimated Repository Count by Category
 
-| Category | Count | Source |
-|----------|-------|--------|
-| Runtime (produce Docker images) | ~50-60 | OOM collector |
-| Build dependencies (parent POMs, shared libs) | ~15-20 | JJB collector |
-| Infrastructure (OOM, CI, integration) | ~10-15 | Known list |
-| Test/demo | ~10-15 | Integration CSVs |
-| Documentation | ~3-5 | Known list |
-| **Total estimated** | **~90-110** | |
+<!-- markdownlint-disable MD013 -->
+
+| Category                                      | Count       | Source           |
+| --------------------------------------------- | ----------- | ---------------- |
+| Runtime (produce Docker images)               | ~50-60      | OOM collector    |
+| Build dependencies (parent POMs, shared libs) | ~15-20      | JJB collector    |
+| Infrastructure (OOM, CI, integration)         | ~10-15      | Known list       |
+| Test/demo                                     | ~10-15      | Integration CSVs |
+| Documentation                                 | ~3-5        | Known list       |
+| **Total estimated**                           | **~90-110** |                  |
+
+<!-- markdownlint-enable MD013 -->
 
 ---
 
 ## 17. Glossary
 
-| Term | Definition |
-|------|-----------|
-| **OOM** | ONAP Operations Manager — Helm-based K8s deployment system |
-| **JJB** | Jenkins Job Builder — YAML-driven Jenkins job definitions |
-| **Gerrit** | Code review and Git hosting platform used by ONAP |
-| **Relman** | Release Management project in ONAP Gerrit |
-| **Nexus3** | Sonatype Nexus3 artifact repository hosting Docker images |
-| **Collector** | A plugin module that gathers data from a specific source |
-| **Manifest** | The JSON output artifact describing a release's components |
+<!-- markdownlint-disable MD013 -->
+
+| Term           | Definition                                                         |
+| -------------- | ------------------------------------------------------------------ |
+| **OOM**        | ONAP Operations Manager — Helm-based K8s deployment system         |
+| **JJB**        | Jenkins Job Builder — YAML-driven Jenkins job definitions          |
+| **Gerrit**     | Code review and Git hosting platform used by ONAP                  |
+| **Relman**     | Release Management project in ONAP Gerrit                          |
+| **Nexus3**     | Sonatype Nexus3 artifact repository hosting Docker images          |
+| **Collector**  | A plugin module that gathers data from a specific source           |
+| **Manifest**   | The JSON output artifact describing a release's components         |
 | **Confidence** | How certain we are that a repo is in the release (high/medium/low) |
-| **Rabat** | Current ONAP release code name (chart version 18.0.0) |
+| **Rabat**      | Current ONAP release code name (chart version 18.0.0)              |
+
+<!-- markdownlint-enable MD013 -->
