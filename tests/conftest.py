@@ -101,4 +101,16 @@ def sample_oom_path(tmp_path: Path) -> Path:
         encoding="utf-8",
     )
 
+    # repositoryGenerator (infrastructure images)
+    repo_gen_dir = kubernetes / "common" / "repositoryGenerator"
+    repo_gen_dir.mkdir(parents=True)
+    (repo_gen_dir / "values.yaml").write_text(
+        "global:\n"
+        "  repository: nexus3.onap.org:10001\n"
+        "  readinessImage: onap/oom/readiness:7.0.1\n"
+        "  jreImage: onap/integration-java11:10.0.0\n"
+        "  busyboxImage: busybox:1.37.0\n",
+        encoding="utf-8",
+    )
+
     return tmp_path

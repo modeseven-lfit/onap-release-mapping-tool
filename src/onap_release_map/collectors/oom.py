@@ -57,6 +57,12 @@ class OOMCollector(BaseCollector):
 
         helm_components_raw, docker_images_raw, _ = parser.parse_umbrella_chart()
 
+        # Parse the repositoryGenerator for infrastructure images
+        # (readiness probes, base JRE, etc.) that component charts
+        # consume via Helm template includes.
+        repo_gen_images = parser.parse_repository_generator()
+        docker_images_raw.extend(repo_gen_images)
+
         # Parse umbrella values.yaml for component enable flags.
         # Each top-level key matching a component name may contain
         # an ``enabled`` boolean (e.g. ``policy.enabled: false``).

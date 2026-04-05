@@ -41,6 +41,32 @@ class TestHelmChartParser:
         assert components == []
         assert images == []
 
+    def test_parse_repository_generator(self, sample_oom_path: Path) -> None:
+        """Test parsing repositoryGenerator for infrastructure images."""
+        parser = HelmChartParser(sample_oom_path)
+        images = parser.parse_repository_generator()
+
+        image_names = [img["image"] for img in images]
+        assert "onap/oom/readiness" in image_names
+        assert "onap/integration-java11" in image_names
+        # Non-ONAP images must be excluded
+        assert all(
+            isinstance(img["image"], str) and img["image"].startswith("onap/")
+            for img in images
+        )
+        # Registry should be applied from global.repository
+        for img in images:
+            assert img["registry"] == "nexus3.onap.org:10001"
+        # chart_name attribution
+        for img in images:
+            assert img["chart_name"] == "repositoryGenerator"
+
+    def test_repository_generator_missing(self, tmp_path: Path) -> None:
+        """Parser returns empty list when repositoryGenerator is absent."""
+        parser = HelmChartParser(tmp_path / "nonexistent")
+        images = parser.parse_repository_generator()
+        assert images == []
+
     def test_excludes_argo_dir(self, sample_oom_path: Path) -> None:
         """Test that argo directory is excluded from walking."""
         # Place argo under a component's components/ path where it would be walked
