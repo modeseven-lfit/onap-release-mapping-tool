@@ -385,3 +385,173 @@ class TestManifestBuilder:
         assert "relman" in repo.discovered_by
         assert "jjb" in repo.discovered_by
         assert "onap/policy-api" in repo.docker_images
+
+    def test_active_gerrit_repo_resolved_to_not_in_release(self) -> None:
+        """ACTIVE repo with known gerrit_state but no release signal resolves to False."""
+        builder = ManifestBuilder(
+            tool_version="0.1.0",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="1.0.0",
+            ),
+        )
+
+        result = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="vnfsdk/model",
+                    top_level_project="vnfsdk",
+                    confidence="medium",
+                    discovered_by=["gerrit"],
+                    gerrit_state="ACTIVE",
+                    in_current_release=None,
+                ),
+            ],
+        )
+        builder.add_result(result)
+        manifest = builder.build()
+
+        repo = manifest.repositories[0]
+        assert repo.in_current_release is False
+
+    def test_unknown_gerrit_state_stays_undetermined(self) -> None:
+        """Repo with no gerrit_state remains undetermined."""
+        builder = ManifestBuilder(
+            tool_version="0.1.0",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="1.0.0",
+            ),
+        )
+
+        result = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="mystery/project",
+                    top_level_project="mystery",
+                    confidence="low",
+                    discovered_by=["oom"],
+                    gerrit_state=None,
+                    in_current_release=None,
+                ),
+            ],
+        )
+        builder.add_result(result)
+        manifest = builder.build()
+
+        repo = manifest.repositories[0]
+        # OOM post-processing sets this to True
+        # because "oom" is in discovered_by
+        assert repo.in_current_release is True
+
+    def test_oom_repo_not_resolved_to_false(self) -> None:
+        """OOM-discovered repo stays in release even with ACTIVE gerrit_state."""
+        builder = ManifestBuilder(
+            tool_version="0.1.0",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="1.0.0",
+            ),
+        )
+
+        r1 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="policy/api",
+                    top_level_project="policy",
+                    confidence="high",
+                    discovered_by=["oom"],
+                ),
+            ],
+        )
+        r2 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="policy/api",
+                    top_level_project="policy",
+                    confidence="medium",
+                    discovered_by=["gerrit"],
+                    gerrit_state="ACTIVE",
+                ),
+            ],
+        )
+        builder.add_result(r1)
+        builder.add_result(r2)
+        manifest = builder.build()
+
+        repo = manifest.repositories[0]
+        assert repo.in_current_release is True
+
+    def test_gerrit_only_repos_resolved_to_false(self) -> None:
+        """Multiple Gerrit-only ACTIVE repos all resolve to not-in-release."""
+        builder = ManifestBuilder(
+            tool_version="0.1.0",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="1.0.0",
+            ),
+        )
+
+        result = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="vnfsdk/model",
+                    top_level_project="vnfsdk",
+                    confidence="medium",
+                    discovered_by=["gerrit"],
+                    gerrit_state="ACTIVE",
+                ),
+                OnapRepository(
+                    gerrit_project="music/core",
+                    top_level_project="music",
+                    confidence="medium",
+                    discovered_by=["gerrit"],
+                    gerrit_state="ACTIVE",
+                ),
+            ],
+        )
+        builder.add_result(result)
+        manifest = builder.build()
+
+        for repo in manifest.repositories:
+            assert repo.in_current_release is False
+
+    def test_relman_included_repo_not_overwritten(self) -> None:
+        """Repo marked in-release by relman stays True after resolution."""
+        builder = ManifestBuilder(
+            tool_version="0.1.0",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="1.0.0",
+            ),
+        )
+
+        r1 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="sdc/sdc-fe",
+                    top_level_project="sdc",
+                    confidence="medium",
+                    discovered_by=["relman"],
+                    gerrit_state="ACTIVE",
+                    in_current_release=True,
+                ),
+            ],
+        )
+        r2 = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="sdc/sdc-fe",
+                    top_level_project="sdc",
+                    confidence="medium",
+                    discovered_by=["gerrit"],
+                    gerrit_state="ACTIVE",
+                ),
+            ],
+        )
+        builder.add_result(r1)
+        builder.add_result(r2)
+        manifest = builder.build()
+
+        repo = manifest.repositories[0]
+        assert repo.in_current_release is True
