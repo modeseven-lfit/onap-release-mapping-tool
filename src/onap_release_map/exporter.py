@@ -262,8 +262,22 @@ def export_html(manifest: ReleaseManifest) -> str:
     md_text = export_markdown(safe_manifest)
     body_html = md_lib.markdown(md_text, extensions=["tables"])
 
-    # Add dt-enabled class to all tables for DataTables init
-    body_html = body_html.replace("<table>", '<table class="dt-enabled">')
+    # Add dt-enabled class to all tables for DataTables init,
+    # but skip the small Totals summary table which needs no
+    # search or sort controls.
+    _TOTALS_MARKER = "<h3>Totals</h3>"
+    parts = body_html.split(_TOTALS_MARKER, maxsplit=1)
+    parts[0] = parts[0].replace("<table>", '<table class="dt-enabled">')
+    if len(parts) == 2:
+        # Find the first <table> after the Totals heading — leave
+        # it plain — then enable DataTables on the rest.
+        before_tbl, sep, after_tbl = parts[1].partition("<table>")
+        parts[1] = (
+            before_tbl
+            + sep
+            + after_tbl.replace("<table>", '<table class="dt-enabled">')
+        )
+    body_html = _TOTALS_MARKER.join(parts)
 
     # Inject state legend between the Repositories heading and its table
     legend_lines = [
