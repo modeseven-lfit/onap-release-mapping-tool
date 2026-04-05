@@ -156,7 +156,8 @@ class OOMCollector(BaseCollector):
                     version=comp_data.get("umbrella_version")
                     or comp_data.get("version"),
                     enabled_by_default=component_enabled.get(
-                        comp_name, comp_data.get("enabled_by_default"),
+                        comp_name,
+                        comp_data.get("enabled_by_default"),
                     ),
                     condition_key=comp_data.get("condition"),
                     sub_charts=comp_sub_charts.get(comp_name, []),

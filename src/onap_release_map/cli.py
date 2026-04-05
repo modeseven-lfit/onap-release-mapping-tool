@@ -729,13 +729,9 @@ def verify(
                 updated.model_dump_json(indent=2) + "\n",
                 encoding="utf-8",
             )
-            console.print(
-                f"Manifest updated: [green]{manifest_path}[/]"
-            )
+            console.print(f"Manifest updated: [green]{manifest_path}[/]")
         except OSError as exc:
-            err_console.print(
-                f"[red]Error writing {manifest_path}:[/] {exc}"
-            )
+            err_console.print(f"[red]Error writing {manifest_path}:[/] {exc}")
 
     if failed > 0:
         raise typer.Exit(code=1)

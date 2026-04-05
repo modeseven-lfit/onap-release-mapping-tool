@@ -58,7 +58,8 @@ class HelmChartParser:
                 umbrella_registry = self._detect_global_registry(umbrella_data)
                 if umbrella_registry:
                     self._logger.info(
-                        "Umbrella global registry: %s", umbrella_registry,
+                        "Umbrella global registry: %s",
+                        umbrella_registry,
                     )
 
         umbrella = self._parse_chart_yaml(umbrella_chart_path)
