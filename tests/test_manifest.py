@@ -414,8 +414,8 @@ class TestManifestBuilder:
         repo = manifest.repositories[0]
         assert repo.in_current_release is False
 
-    def test_unknown_gerrit_state_stays_undetermined(self) -> None:
-        """Repo with no gerrit_state remains undetermined."""
+    def test_oom_repo_without_gerrit_state_in_release(self) -> None:
+        """OOM-discovered repo without gerrit_state is in the release."""
         builder = ManifestBuilder(
             tool_version="0.1.0",
             onap_release=OnapRelease(
@@ -443,6 +443,34 @@ class TestManifestBuilder:
         # OOM post-processing sets this to True
         # because "oom" is in discovered_by
         assert repo.in_current_release is True
+
+    def test_unknown_gerrit_state_stays_undetermined(self) -> None:
+        """Repo with no gerrit_state remains undetermined."""
+        builder = ManifestBuilder(
+            tool_version="0.1.0",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="1.0.0",
+            ),
+        )
+
+        result = CollectorResult(
+            repositories=[
+                OnapRepository(
+                    gerrit_project="mystery/project",
+                    top_level_project="mystery",
+                    confidence="low",
+                    discovered_by=["relman"],
+                    gerrit_state=None,
+                    in_current_release=None,
+                ),
+            ],
+        )
+        builder.add_result(result)
+        manifest = builder.build()
+
+        repo = manifest.repositories[0]
+        assert repo.in_current_release is None
 
     def test_oom_repo_not_resolved_to_false(self) -> None:
         """OOM-discovered repo stays in release even with ACTIVE gerrit_state."""

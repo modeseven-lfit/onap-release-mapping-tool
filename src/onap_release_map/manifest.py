@@ -205,17 +205,12 @@ class ManifestBuilder:
             ):
                 repo.in_current_release = True
 
-        # Resolve undetermined repos: when the Gerrit collector
-        # ran we have authoritative project state.  Any ACTIVE
-        # repo still without a release determination after all
-        # positive signals have been applied is definitively
-        # not in the current release.
+        # Resolve undetermined repos: when Gerrit project state
+        # is known, any ACTIVE repo still without a release
+        # determination after all positive signals have been
+        # applied is definitively not in the current release.
         for repo in repo_map.values():
-            if (
-                repo.in_current_release is None
-                and repo.gerrit_state is not None
-                and repo.gerrit_state != "READ_ONLY"
-            ):
+            if repo.in_current_release is None and repo.gerrit_state == "ACTIVE":
                 repo.in_current_release = False
 
         return sorted(repo_map.values(), key=lambda r: r.gerrit_project)

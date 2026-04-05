@@ -266,17 +266,15 @@ def export_html(manifest: ReleaseManifest) -> str:
     body_html = body_html.replace("<table>", '<table class="dt-enabled">')
 
     # Inject state legend between the Repositories heading and its table
-    legend_html = (
-        '<div class="state-legend">\n'
-        "    <p><strong>State Legend</strong></p>\n"
-        "    <p>\u2705 In current ONAP release</p>\n"
-        "    <p>\u2611\ufe0f Parent project"
-        " (children in release)</p>\n"
-        "    <p>\u274c Not in current ONAP release</p>\n"
-        "    <p>\u2753 Undetermined</p>\n"
-        "    <p>\U0001f4e6 Read-only / archived</p>\n"
-        "  </div>\n"
-    )
+    legend_lines = [
+        '<div class="state-legend">\n',
+        "    <p><strong>State Legend</strong></p>\n",
+    ]
+    for emoji in _STATE_ORDER:
+        desc = _STATE_DESCRIPTIONS[emoji]
+        legend_lines.append(f"    <p>{emoji} {desc}</p>\n")
+    legend_lines.append("  </div>\n")
+    legend_html = "".join(legend_lines)
     repos_heading = "<h2>Repositories</h2>"
     idx = body_html.find(repos_heading)
     if idx != -1:
@@ -833,6 +831,14 @@ def _state_emoji(repo: object) -> str:
     return "\u2753"  # ❓
 
 
+_STATE_ORDER: list[str] = [
+    "\u2705",
+    "\u2611\ufe0f",
+    "\u274c",
+    "\u2753",
+    "\U0001f4e6",
+]
+
 _STATE_DESCRIPTIONS: dict[str, str] = {
     "\u2705": "In current ONAP release",
     "\u2611\ufe0f": "Parent project (children in release)",
@@ -865,21 +871,13 @@ def _totals_section(repositories: Sequence[object]) -> list[str]:
         emoji = _state_emoji(repo)
         counts[emoji] = counts.get(emoji, 0) + 1
 
-    order = [
-        "\u2705",
-        "\u2611\ufe0f",
-        "\u274c",
-        "\u2753",
-        "\U0001f4e6",
-    ]
-
     lines: list[str] = [
         "### Totals",
         "",
         "| Total | State | Description |",
         "| ----: | :---: | ----------- |",
     ]
-    for emoji in order:
+    for emoji in _STATE_ORDER:
         count = counts.get(emoji, 0)
         if count > 0:
             desc = _STATE_DESCRIPTIONS[emoji]
