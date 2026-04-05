@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: 2025 The Linux Foundation
 -->
 
-# onap-release-map
+# ONAP Release Mapping Tool
 
 [![Build](https://github.com/modeseven-lfit/onap-release-mapping-tool/actions/workflows/build-test.yaml/badge.svg)](https://github.com/modeseven-lfit/onap-release-mapping-tool/actions/workflows/build-test.yaml)
 [![PyPI](https://img.shields.io/pypi/v/onap-release-map)](https://pypi.org/project/onap-release-map/)
