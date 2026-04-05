@@ -32,7 +32,7 @@ class NexusCollector(BaseCollector):
     def __init__(
         self,
         *,
-        nexus_url: str = "https://nexus3.onap.org",
+        nexus_url: str = "https://nexus3.onap.org:10001",
         timeout: int = 10,
         concurrent_workers: int = 4,
         max_retries: int = 3,

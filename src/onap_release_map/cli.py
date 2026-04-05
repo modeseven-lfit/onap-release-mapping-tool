@@ -629,7 +629,7 @@ def verify(
             "--nexus-url",
             help="Nexus3 registry URL.",
         ),
-    ] = "https://nexus3.onap.org",
+    ] = "https://nexus3.onap.org:10001",
     check_images: Annotated[
         bool,
         typer.Option(

@@ -39,7 +39,7 @@ DEFAULTS: dict[str, Any] = {
         "indent": 2,
     },
     "nexus": {
-        "url": "https://nexus3.onap.org",
+        "url": "https://nexus3.onap.org:10001",
         "timeout": 10,
         "max_retries": 3,
         "concurrent_workers": 4,
