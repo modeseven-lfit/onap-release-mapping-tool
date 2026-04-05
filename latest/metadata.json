@@ -1,9 +1,9 @@
 {
-  "run_id": "24001354166",
-  "run_url": "https://github.com/modeseven-lfit/onap-release-mapping-tool/actions/runs/24001354166",
+  "run_id": "24004402492",
+  "run_url": "https://github.com/modeseven-lfit/onap-release-mapping-tool/actions/runs/24004402492",
   "triggered_by": "ModeSevenIndustrialSolutions",
   "oom_branch": "master",
   "collectors": "oom,gerrit,relman,jjb",
-  "timestamp": "2026-04-05T12:18:40Z",
-  "tool_version": "onap-release-map 0.2.1"
+  "timestamp": "2026-04-05T15:18:53Z",
+  "tool_version": "onap-release-map 0.3.0"
 }

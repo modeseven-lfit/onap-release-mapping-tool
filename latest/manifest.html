@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ONAP Release Manifest: Master</title>
+  <!-- Simple-DataTables CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@9/dist/style.css" rel="stylesheet" type="text/css">
   <style>
     :root {
       --bg: #0d1117; --fg: #c9d1d9;
@@ -17,7 +19,7 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
                    Helvetica, Arial, sans-serif;
       background: var(--bg); color: var(--fg);
-      max-width: 960px; margin: 0 auto; padding: 2rem 1rem;
+      max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;
     }
     a { color: var(--accent); text-decoration: none; }
     a:hover { text-decoration: underline; }
@@ -48,7 +50,6 @@
       background: var(--border);
       color: var(--fg);
       font-weight: 600;
-      cursor: default;
     }
     tr:nth-child(even) td {
       background: rgba(99,110,123,0.08);
@@ -60,15 +61,111 @@
       margin-top: 3rem; color: #8b949e;
       font-size: 0.85rem;
     }
+    /* DataTables wrapper */
+    .dataTable-wrapper {
+      margin: 1.5em 0;
+    }
+    .dataTable-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .dataTable-search input {
+      width: 100%;
+      max-width: 300px;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 1rem;
+      background-color: var(--card-bg);
+      color: var(--fg);
+    }
+    .dataTable-search input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(88,166,255,0.2);
+    }
+    .dataTable-search input::placeholder {
+      color: #8b949e;
+    }
+    /* Sorting indicators */
+    .dataTable-sorter {
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+    }
+    .dataTable-sorter::before,
+    .dataTable-sorter::after {
+      content: '';
+      position: absolute;
+      right: 0.5rem;
+      width: 0; height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      opacity: 0.3;
+    }
+    .dataTable-sorter::before {
+      bottom: 50%; margin-bottom: 3px;
+      border-bottom: 4px solid #8b949e;
+    }
+    .dataTable-sorter::after {
+      top: 50%; margin-top: 3px;
+      border-top: 4px solid #8b949e;
+    }
+    .dataTable-sorter:hover::before,
+    .dataTable-sorter:hover::after {
+      opacity: 0.6;
+    }
+    .dataTable-ascending .dataTable-sorter::before {
+      opacity: 1;
+      border-bottom-color: var(--accent);
+    }
+    .dataTable-descending .dataTable-sorter::after {
+      opacity: 1;
+      border-top-color: var(--accent);
+    }
+    .dataTable-empty {
+      padding: 2rem;
+      text-align: center;
+      color: #8b949e;
+      font-style: italic;
+    }
+    /* Hide pagination and bottom bar */
+    .dataTable-bottom {
+      display: none !important;
+    }
+    /* State emoji legend */
+    .state-legend {
+      margin: 0.5rem 0 1rem 0;
+      padding: 1rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .state-legend p {
+      margin: 0.3rem 0;
+    }
+    /* Print: hide DataTables controls */
+    @media print {
+      .dataTable-top,
+      .dataTable-bottom {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 <body>
   <a class="back-link" href="../">&larr; Back to index</a>
   <h1>ONAP Release Manifest: Master</h1>
 <ul>
-<li><strong>Generated:</strong> 2026-04-05T12:18:34Z</li>
-<li><strong>Tool version:</strong> 0.2.1</li>
-<li><strong>Schema version:</strong> 1.0.0</li>
+<li><strong>Generated:</strong> 2026-04-05T15:18:47Z</li>
+<li><strong>Tool version:</strong> 0.3.0</li>
+<li><strong>Schema version:</strong> 1.1.0</li>
 <li><strong>OOM chart version:</strong> 18.0.0</li>
 </ul>
 <h2>Summary</h2>
@@ -78,7 +175,7 @@
 <li><strong>Total Helm components:</strong> 98</li>
 </ul>
 <h2>Repositories</h2>
-<table>
+<table class="dt-enabled">
 <thead>
 <tr>
 <th>Gerrit Project</th>
@@ -94,7 +191,7 @@
 <td>.github</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td></td>
 <td></td>
 </tr>
@@ -102,7 +199,7 @@
 <td>All-Projects</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td></td>
 <td></td>
 </tr>
@@ -110,7 +207,7 @@
 <td>All-Users</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td></td>
 <td></td>
 </tr>
@@ -118,7 +215,7 @@
 <td>aaf</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -126,7 +223,7 @@
 <td>aaf/authz</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -134,7 +231,7 @@
 <td>aaf/cadi</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -142,7 +239,7 @@
 <td>aaf/certservice</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -150,7 +247,7 @@
 <td>aaf/inno</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -158,7 +255,7 @@
 <td>aaf/luaplugin</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -166,7 +263,7 @@
 <td>aaf/oom</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -174,7 +271,7 @@
 <td>aaf/sms</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -182,7 +279,7 @@
 <td>aaf/sshsm</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -190,7 +287,7 @@
 <td>aai</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -198,7 +295,7 @@
 <td>aai/aai-common</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -206,7 +303,7 @@
 <td>aai/aai-config</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -214,7 +311,7 @@
 <td>aai/aai-data</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -222,7 +319,7 @@
 <td>aai/aai-service</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -230,7 +327,7 @@
 <td>aai/babel</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -238,7 +335,7 @@
 <td>aai/cacher</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -246,7 +343,7 @@
 <td>aai/chameleon</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -254,7 +351,7 @@
 <td>aai/champ</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -262,7 +359,7 @@
 <td>aai/data-router</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -270,7 +367,7 @@
 <td>aai/eis</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -278,7 +375,7 @@
 <td>aai/enricher</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -286,7 +383,7 @@
 <td>aai/esr-gui</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -294,7 +391,7 @@
 <td>aai/esr-server</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -302,7 +399,7 @@
 <td>aai/event-client</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -310,7 +407,7 @@
 <td>aai/gallifrey</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -318,7 +415,7 @@
 <td>aai/gap</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -326,7 +423,7 @@
 <td>aai/gizmo</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -334,7 +431,7 @@
 <td>aai/graphadmin</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -342,7 +439,7 @@
 <td>aai/graphgraph</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -350,7 +447,7 @@
 <td>aai/logging-service</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -358,7 +455,7 @@
 <td>aai/model-loader</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -366,7 +463,7 @@
 <td>aai/oom</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -374,7 +471,7 @@
 <td>aai/resources</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -382,7 +479,7 @@
 <td>aai/rest-client</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -390,7 +487,7 @@
 <td>aai/router-core</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -398,7 +495,7 @@
 <td>aai/schema-service</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -406,7 +503,7 @@
 <td>aai/search-data-service</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -414,7 +511,7 @@
 <td>aai/sparky-be</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -422,7 +519,7 @@
 <td>aai/sparky-fe</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -430,7 +527,7 @@
 <td>aai/spike</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -438,7 +535,7 @@
 <td>aai/tabular-data-service</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -446,7 +543,7 @@
 <td>aai/test-config</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -454,7 +551,7 @@
 <td>aai/traversal</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -462,7 +559,7 @@
 <td>aai/validation</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -470,7 +567,7 @@
 <td>appc</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -478,7 +575,7 @@
 <td>appc/cdt</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -486,7 +583,7 @@
 <td>appc/deployment</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -494,7 +591,7 @@
 <td>appc/parent</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -502,7 +599,7 @@
 <td>ccsdk</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -510,7 +607,7 @@
 <td>ccsdk/apps</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -518,7 +615,7 @@
 <td>ccsdk/cds</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -526,7 +623,7 @@
 <td>ccsdk/dashboard</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -534,7 +631,7 @@
 <td>ccsdk/distribution</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -542,7 +639,7 @@
 <td>ccsdk/features</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -550,7 +647,7 @@
 <td>ccsdk/oran</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -558,7 +655,7 @@
 <td>ccsdk/parent</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -566,7 +663,7 @@
 <td>ccsdk/platform/blueprints</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -574,7 +671,7 @@
 <td>ccsdk/platform/nbapi</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -582,7 +679,7 @@
 <td>ccsdk/platform/plugins</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -590,7 +687,7 @@
 <td>ccsdk/sli</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -598,7 +695,7 @@
 <td>ccsdk/sli/adaptors</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -606,7 +703,7 @@
 <td>ccsdk/sli/core</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -614,7 +711,7 @@
 <td>ccsdk/sli/northbound</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -622,7 +719,7 @@
 <td>ccsdk/sli/plugins</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -630,7 +727,7 @@
 <td>ccsdk/storage/esaas</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -638,7 +735,7 @@
 <td>ccsdk/storage/pgaas</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -646,7 +743,7 @@
 <td>ccsdk/utils</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -654,7 +751,7 @@
 <td>ci-management</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -662,7 +759,7 @@
 <td>clamp</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -670,7 +767,7 @@
 <td>clamp/dashboard</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -678,7 +775,7 @@
 <td>clamp/oom</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -686,7 +783,7 @@
 <td>clamp/ui</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -694,7 +791,7 @@
 <td>cli</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -702,7 +799,7 @@
 <td>cps</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -710,7 +807,7 @@
 <td>cps/cps-tbdmt</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -718,7 +815,7 @@
 <td>cps/cps-temporal</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -726,7 +823,7 @@
 <td>cps/ncmp-dmi-plugin</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -734,7 +831,7 @@
 <td>dcae</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -742,7 +839,7 @@
 <td>dcae/apod</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -750,7 +847,7 @@
 <td>dcae/apod/analytics</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -758,7 +855,7 @@
 <td>dcae/apod/buildtools</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -766,7 +863,7 @@
 <td>dcae/apod/cdap</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -774,7 +871,7 @@
 <td>dcae/collectors</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -782,7 +879,7 @@
 <td>dcae/collectors/ves</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -790,7 +887,7 @@
 <td>dcae/controller</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -798,7 +895,7 @@
 <td>dcae/controller/analytics</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -806,7 +903,7 @@
 <td>dcae/dcae-inventory</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -814,7 +911,7 @@
 <td>dcae/demo</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -822,7 +919,7 @@
 <td>dcae/demo/startup</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -830,7 +927,7 @@
 <td>dcae/demo/startup/aaf</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -838,7 +935,7 @@
 <td>dcae/demo/startup/controller</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -846,7 +943,7 @@
 <td>dcae/demo/startup/message-router</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -854,7 +951,7 @@
 <td>dcae/dmaapbc</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -862,7 +959,7 @@
 <td>dcae/operation</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -870,7 +967,7 @@
 <td>dcae/operation/utils</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -878,7 +975,7 @@
 <td>dcae/orch-dispatcher</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -886,7 +983,7 @@
 <td>dcae/pgaas</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -894,7 +991,7 @@
 <td>dcae/utils</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -902,7 +999,7 @@
 <td>dcae/utils/buildtools</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -910,7 +1007,7 @@
 <td>dcaegen2</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -918,7 +1015,7 @@
 <td>dcaegen2/analytics</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -926,7 +1023,7 @@
 <td>dcaegen2/analytics/flink</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -934,7 +1031,7 @@
 <td>dcaegen2/analytics/pnda</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -942,7 +1039,7 @@
 <td>dcaegen2/analytics/tca</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -950,7 +1047,7 @@
 <td>dcaegen2/analytics/tca-gen2</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -958,7 +1055,7 @@
 <td>dcaegen2/collectors</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -966,7 +1063,7 @@
 <td>dcaegen2/collectors/datafile</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -974,7 +1071,7 @@
 <td>dcaegen2/collectors/hv-ves</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -982,7 +1079,7 @@
 <td>dcaegen2/collectors/restconf</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -990,7 +1087,7 @@
 <td>dcaegen2/collectors/snmptrap</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -998,7 +1095,7 @@
 <td>dcaegen2/collectors/ves</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1006,7 +1103,7 @@
 <td>dcaegen2/deployments</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1014,7 +1111,7 @@
 <td>dcaegen2/platform</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1022,7 +1119,7 @@
 <td>dcaegen2/platform/blueprints</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1030,7 +1127,7 @@
 <td>dcaegen2/platform/cdapbroker</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1038,7 +1135,7 @@
 <td>dcaegen2/platform/cli</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1046,7 +1143,7 @@
 <td>dcaegen2/platform/configbinding</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1054,7 +1151,7 @@
 <td>dcaegen2/platform/deployment-handler</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1062,7 +1159,7 @@
 <td>dcaegen2/platform/inventory-api</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1070,7 +1167,7 @@
 <td>dcaegen2/platform/plugins</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1078,7 +1175,7 @@
 <td>dcaegen2/platform/policy-handler</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1086,7 +1183,7 @@
 <td>dcaegen2/platform/registrator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1094,7 +1191,7 @@
 <td>dcaegen2/platform/servicechange-handler</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1102,7 +1199,7 @@
 <td>dcaegen2/platform/ves-openapi-manager</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1110,7 +1207,7 @@
 <td>dcaegen2/services</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1118,7 +1215,7 @@
 <td>dcaegen2/services/heartbeat</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1126,7 +1223,7 @@
 <td>dcaegen2/services/mapper</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1134,7 +1231,7 @@
 <td>dcaegen2/services/pm-mapper</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1142,7 +1239,7 @@
 <td>dcaegen2/services/prh</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1150,7 +1247,7 @@
 <td>dcaegen2/services/sdk</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1158,7 +1255,7 @@
 <td>dcaegen2/services/son-handler</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1166,7 +1263,7 @@
 <td>dcaegen2/utils</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1174,7 +1271,7 @@
 <td>demo</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1182,7 +1279,7 @@
 <td>dmaap</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1190,7 +1287,7 @@
 <td>dmaap/buscontroller</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1198,7 +1295,7 @@
 <td>dmaap/datarouter</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1206,7 +1303,7 @@
 <td>dmaap/dbcapi</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1214,7 +1311,7 @@
 <td>dmaap/kafka11aaf</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1222,7 +1319,7 @@
 <td>dmaap/messagerouter/dmaapclient</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1230,7 +1327,7 @@
 <td>dmaap/messagerouter/messageservice</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1238,7 +1335,7 @@
 <td>dmaap/messagerouter/mirroragent</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1246,7 +1343,7 @@
 <td>dmaap/messagerouter/msgrtr</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1254,7 +1351,7 @@
 <td>dmaap/zookeeper</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1262,7 +1359,7 @@
 <td>doc</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1270,7 +1367,7 @@
 <td>doc/doc-best-practice</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td></td>
 <td></td>
 </tr>
@@ -1278,7 +1375,7 @@
 <td>ecompsdkos</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1286,7 +1383,7 @@
 <td>externalapi</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1294,7 +1391,7 @@
 <td>externalapi/nbi</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1302,7 +1399,7 @@
 <td>holmes</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1310,7 +1407,7 @@
 <td>holmes/common</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1318,7 +1415,7 @@
 <td>holmes/dsa</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1326,7 +1423,7 @@
 <td>holmes/engine-management</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1334,7 +1431,7 @@
 <td>holmes/rule-management</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1342,7 +1439,7 @@
 <td>integration</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1350,7 +1447,7 @@
 <td>integration/benchmark</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1358,7 +1455,7 @@
 <td>integration/csit</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1366,7 +1463,7 @@
 <td>integration/data-provider</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1374,7 +1471,7 @@
 <td>integration/devtool</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1382,7 +1479,7 @@
 <td>integration/docker/onap-java11</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1390,7 +1487,7 @@
 <td>integration/docker/onap-python</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1398,7 +1495,7 @@
 <td>integration/gating</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td></td>
 <td>Yes</td>
 </tr>
@@ -1406,7 +1503,7 @@
 <td>integration/ietf-actn-tools</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1414,7 +1511,7 @@
 <td>integration/onap-component-simulators</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td></td>
 <td>Yes</td>
 </tr>
@@ -1422,7 +1519,7 @@
 <td>integration/pipelines/build-integration</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td></td>
 <td></td>
 </tr>
@@ -1430,7 +1527,7 @@
 <td>integration/pipelines/chained-ci</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td></td>
 <td></td>
 </tr>
@@ -1438,7 +1535,7 @@
 <td>integration/pipelines/oom-automatic-installation</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td></td>
 <td></td>
 </tr>
@@ -1446,7 +1543,7 @@
 <td>integration/pipelines/xtesting-onap</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td></td>
 <td></td>
 </tr>
@@ -1454,7 +1551,7 @@
 <td>integration/python-onapsdk</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td></td>
 <td>Yes</td>
 </tr>
@@ -1462,7 +1559,7 @@
 <td>integration/seccom</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1470,7 +1567,7 @@
 <td>integration/simulators/5G-core-nf-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1478,7 +1575,7 @@
 <td>integration/simulators/A1-policy-enforcement-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1486,7 +1583,7 @@
 <td>integration/simulators/core-nssmf-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1494,7 +1591,7 @@
 <td>integration/simulators/dc-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1502,7 +1599,7 @@
 <td>integration/simulators/masspnf-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1510,7 +1607,7 @@
 <td>integration/simulators/nf-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1518,7 +1615,7 @@
 <td>integration/simulators/nf-simulator/avcn-manager</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1526,7 +1623,7 @@
 <td>integration/simulators/nf-simulator/netconf-server</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1534,7 +1631,7 @@
 <td>integration/simulators/nf-simulator/pm-https-server</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1542,7 +1639,7 @@
 <td>integration/simulators/nf-simulator/ves-client</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1550,7 +1647,7 @@
 <td>integration/simulators/pnf-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1558,7 +1655,7 @@
 <td>integration/simulators/ran-app</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td></td>
 <td></td>
 </tr>
@@ -1566,7 +1663,7 @@
 <td>integration/simulators/ran-nssmf-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1574,7 +1671,7 @@
 <td>integration/simulators/ran-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1582,7 +1679,7 @@
 <td>integration/terraform</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1590,7 +1687,7 @@
 <td>integration/terragrunt</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1598,7 +1695,7 @@
 <td>integration/usecases/A1-policy-enforcement</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1606,7 +1703,7 @@
 <td>integration/usecases/A1-policy-enforcement-r-apps</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1614,7 +1711,7 @@
 <td>integration/usecases/bbs</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1622,7 +1719,7 @@
 <td>integration/usecases/mdons</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1630,7 +1727,7 @@
 <td>integration/xtesting</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1638,7 +1735,7 @@
 <td>logging-analytics</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1646,7 +1743,7 @@
 <td>logging-analytics/pomba</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1654,7 +1751,7 @@
 <td>logging-analytics/pomba/pomba-aai-context-builder</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1662,7 +1759,7 @@
 <td>logging-analytics/pomba/pomba-audit-common</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1670,7 +1767,7 @@
 <td>logging-analytics/pomba/pomba-context-aggregator</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1678,7 +1775,7 @@
 <td>logging-analytics/pomba/pomba-network-discovery-context-builder</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1686,7 +1783,7 @@
 <td>logging-analytics/pomba/pomba-sdc-context-builder</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1694,7 +1791,7 @@
 <td>logging-analytics/pomba/pomba-sdnc-context-builder</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1702,7 +1799,7 @@
 <td>modeling/etsicatalog</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1710,7 +1807,7 @@
 <td>modeling/javatoscachecker</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1718,7 +1815,7 @@
 <td>modeling/modelspec</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1726,7 +1823,7 @@
 <td>modeling/toscaparsers</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1734,7 +1831,7 @@
 <td>msb</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1742,7 +1839,7 @@
 <td>msb/apigateway</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1750,7 +1847,7 @@
 <td>msb/discovery</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1758,7 +1855,7 @@
 <td>msb/java-sdk</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1766,7 +1863,7 @@
 <td>msb/service-mesh</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1774,7 +1871,7 @@
 <td>msb/swagger-sdk</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1782,7 +1879,7 @@
 <td>mso</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1790,7 +1887,7 @@
 <td>mso/chef-repo</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1798,7 +1895,7 @@
 <td>mso/docker-config</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1806,7 +1903,7 @@
 <td>mso/libs</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1814,7 +1911,7 @@
 <td>mso/mso-config</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1822,7 +1919,7 @@
 <td>multicloud</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1830,7 +1927,7 @@
 <td>multicloud/azure</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1838,7 +1935,7 @@
 <td>multicloud/framework</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1846,7 +1943,7 @@
 <td>multicloud/k8s</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1854,7 +1951,7 @@
 <td>multicloud/openstack</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1862,7 +1959,7 @@
 <td>multicloud/openstack/vmware</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1870,7 +1967,7 @@
 <td>multicloud/openstack/windriver</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1878,7 +1975,7 @@
 <td>music</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1886,7 +1983,7 @@
 <td>music/distributed-kv-store</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1894,7 +1991,7 @@
 <td>music/mdbc</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1902,7 +1999,7 @@
 <td>music/prom</td>
 <td>runtime</td>
 <td>high</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1910,7 +2007,7 @@
 <td>ncomp</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1918,7 +2015,7 @@
 <td>ncomp/cdap</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1926,7 +2023,7 @@
 <td>ncomp/core</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1934,7 +2031,7 @@
 <td>ncomp/docker</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1942,7 +2039,7 @@
 <td>ncomp/maven</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1950,7 +2047,7 @@
 <td>ncomp/openstack</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1958,7 +2055,7 @@
 <td>ncomp/sirius</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1966,7 +2063,7 @@
 <td>ncomp/sirius/manager</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1974,7 +2071,7 @@
 <td>ncomp/utils</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -1982,7 +2079,7 @@
 <td>oom</td>
 <td>infrastructure</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1990,7 +2087,7 @@
 <td>oom/consul</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1998,7 +2095,7 @@
 <td>oom/offline-installer</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2006,7 +2103,7 @@
 <td>oom/platform/cert-manager</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2014,7 +2111,7 @@
 <td>oom/platform/cert-service</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2022,7 +2119,7 @@
 <td>oom/platform/keycloak</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2030,7 +2127,7 @@
 <td>oom/readiness</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2038,7 +2135,7 @@
 <td>oom/registrator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2046,7 +2143,7 @@
 <td>oom/utils</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2054,7 +2151,7 @@
 <td>oparent</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2062,7 +2159,7 @@
 <td>oparent/cia</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2070,7 +2167,7 @@
 <td>optf</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2078,7 +2175,7 @@
 <td>optf/cmso</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2086,7 +2183,7 @@
 <td>optf/fgps</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2094,7 +2191,7 @@
 <td>optf/has</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2102,7 +2199,7 @@
 <td>optf/osdf</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2110,7 +2207,7 @@
 <td>osa</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2118,7 +2215,7 @@
 <td>policy</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2126,7 +2223,7 @@
 <td>policy/apex-pdp</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2134,7 +2231,7 @@
 <td>policy/api</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2142,7 +2239,7 @@
 <td>policy/clamp</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2150,7 +2247,7 @@
 <td>policy/common</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2158,7 +2255,7 @@
 <td>policy/core</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2166,7 +2263,7 @@
 <td>policy/distribution</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2174,7 +2271,7 @@
 <td>policy/docker</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2182,7 +2279,7 @@
 <td>policy/drools-applications</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2190,7 +2287,7 @@
 <td>policy/drools-pdp</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2198,7 +2295,7 @@
 <td>policy/engine</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2206,7 +2303,7 @@
 <td>policy/gui</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2214,7 +2311,7 @@
 <td>policy/models</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2222,7 +2319,7 @@
 <td>policy/opa-pdp</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td></td>
 <td></td>
 </tr>
@@ -2230,7 +2327,7 @@
 <td>policy/pap</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2238,7 +2335,7 @@
 <td>policy/parent</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2246,7 +2343,7 @@
 <td>policy/pdp</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2254,7 +2351,7 @@
 <td>policy/xacml-pdp</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2262,7 +2359,7 @@
 <td>portal</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -2270,7 +2367,7 @@
 <td>portal-ng</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td></td>
 <td></td>
 </tr>
@@ -2278,7 +2375,7 @@
 <td>portal-ng/bff</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td></td>
 <td>Yes</td>
 </tr>
@@ -2286,7 +2383,7 @@
 <td>portal-ng/e2e</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td></td>
 <td></td>
 </tr>
@@ -2294,7 +2391,7 @@
 <td>portal-ng/history</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td></td>
 <td>Yes</td>
 </tr>
@@ -2302,7 +2399,7 @@
 <td>portal-ng/preferences</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td></td>
 <td>Yes</td>
 </tr>
@@ -2310,7 +2407,7 @@
 <td>portal-ng/ui</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td></td>
 <td>Yes</td>
 </tr>
@@ -2318,7 +2415,7 @@
 <td>portal/sdk</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -2326,7 +2423,7 @@
 <td>relman</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2334,7 +2431,7 @@
 <td>sandbox-2</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2342,7 +2439,7 @@
 <td>sandbox-3</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2350,7 +2447,7 @@
 <td>sandbox-vid</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -2358,7 +2455,7 @@
 <td>sdc</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2366,7 +2463,7 @@
 <td>sdc/dcae-d/ci</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2374,7 +2471,7 @@
 <td>sdc/dcae-d/dt</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2382,7 +2479,7 @@
 <td>sdc/dcae-d/dt-be-main</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2390,7 +2487,7 @@
 <td>sdc/dcae-d/dt-be-property</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2398,7 +2495,7 @@
 <td>sdc/dcae-d/fe</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2406,7 +2503,7 @@
 <td>sdc/dcae-d/rule-engine</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2414,7 +2511,7 @@
 <td>sdc/dcae-d/tosca-lab</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2422,7 +2519,7 @@
 <td>sdc/jtosca</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2430,7 +2527,7 @@
 <td>sdc/microservices</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2438,7 +2535,7 @@
 <td>sdc/onap-ui</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2446,7 +2543,7 @@
 <td>sdc/onap-ui-angular</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2454,7 +2551,7 @@
 <td>sdc/onap-ui-common</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2462,7 +2559,7 @@
 <td>sdc/onap-ui-react</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2470,7 +2567,7 @@
 <td>sdc/sdc-be-common</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2478,7 +2575,7 @@
 <td>sdc/sdc-distribution-client</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2486,7 +2583,7 @@
 <td>sdc/sdc-docker-base</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2494,7 +2591,7 @@
 <td>sdc/sdc-helm-validator</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2502,7 +2599,7 @@
 <td>sdc/sdc-pubsub</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2510,7 +2607,7 @@
 <td>sdc/sdc-titan-cassandra</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2518,7 +2615,7 @@
 <td>sdc/sdc-tosca</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2526,7 +2623,7 @@
 <td>sdc/sdc-workflow-designer</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2534,7 +2631,7 @@
 <td>sdnc</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2542,7 +2639,7 @@
 <td>sdnc/adaptors</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2550,7 +2647,7 @@
 <td>sdnc/apps</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2558,7 +2655,7 @@
 <td>sdnc/architecture</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2566,7 +2663,7 @@
 <td>sdnc/core</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2574,7 +2671,7 @@
 <td>sdnc/features</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2582,7 +2679,7 @@
 <td>sdnc/northbound</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2590,7 +2687,7 @@
 <td>sdnc/oam</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2598,7 +2695,7 @@
 <td>sdnc/parent</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2606,7 +2703,7 @@
 <td>sdnc/plugins</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2614,7 +2711,7 @@
 <td>so</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2622,7 +2719,7 @@
 <td>so/adapters/so-cnf-adapter</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2630,7 +2727,7 @@
 <td>so/adapters/so-etsi-sol003-adapter</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2638,7 +2735,7 @@
 <td>so/adapters/so-etsi-sol005-adapter</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2646,7 +2743,7 @@
 <td>so/adapters/so-nssmf-adapter</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2654,7 +2751,7 @@
 <td>so/adapters/so-oof-adapter</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2662,7 +2759,7 @@
 <td>so/chef-repo</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2670,7 +2767,7 @@
 <td>so/docker-config</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2678,7 +2775,7 @@
 <td>so/libs</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2686,7 +2783,7 @@
 <td>so/so-admin-cockpit</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2694,7 +2791,7 @@
 <td>so/so-config</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2702,7 +2799,7 @@
 <td>so/so-etsi-nfvo</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2710,7 +2807,7 @@
 <td>spark-model-runner</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2718,7 +2815,7 @@
 <td>testsuite</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2726,7 +2823,7 @@
 <td>testsuite/cds</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2734,7 +2831,7 @@
 <td>testsuite/cds-mock-odl</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2742,7 +2839,7 @@
 <td>testsuite/cds-mock-server</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2750,7 +2847,7 @@
 <td>testsuite/cds-mock-ssh</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2758,7 +2855,7 @@
 <td>testsuite/cds-modk-odl</td>
 <td>runtime</td>
 <td>medium</td>
-<td></td>
+<td>❓</td>
 <td></td>
 <td>Yes</td>
 </tr>
@@ -2766,7 +2863,7 @@
 <td>testsuite/heatbridge</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2774,7 +2871,7 @@
 <td>testsuite/oom</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2782,7 +2879,7 @@
 <td>testsuite/python-testing-utils</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2790,7 +2887,7 @@
 <td>testsuite/pythonsdk-tests</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2798,7 +2895,7 @@
 <td>testsuite/robot-utils</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2806,7 +2903,7 @@
 <td>ui</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -2814,7 +2911,7 @@
 <td>ui/dmaapbc</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -2822,7 +2919,7 @@
 <td>university</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2830,7 +2927,7 @@
 <td>usecase-ui</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>☑️</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2838,7 +2935,7 @@
 <td>usecase-ui/intent-analysis</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td></td>
 <td>Yes</td>
 </tr>
@@ -2846,7 +2943,7 @@
 <td>usecase-ui/llm-adaptation</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td></td>
 <td>Yes</td>
 </tr>
@@ -2854,7 +2951,7 @@
 <td>usecase-ui/nlp</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2862,7 +2959,7 @@
 <td>usecase-ui/server</td>
 <td>runtime</td>
 <td>high</td>
-<td>ACTIVE</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -2870,7 +2967,7 @@
 <td>vfc</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2878,7 +2975,7 @@
 <td>vfc/gvnfm/vnflcm</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2886,7 +2983,7 @@
 <td>vfc/gvnfm/vnfmgr</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2894,7 +2991,7 @@
 <td>vfc/gvnfm/vnfres</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2902,7 +2999,7 @@
 <td>vfc/nfvo/catalog</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2910,7 +3007,7 @@
 <td>vfc/nfvo/db</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2918,7 +3015,7 @@
 <td>vfc/nfvo/driver/ems</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2926,7 +3023,7 @@
 <td>vfc/nfvo/driver/sfc</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2934,7 +3031,7 @@
 <td>vfc/nfvo/driver/vnfm/gvnfm</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2942,7 +3039,7 @@
 <td>vfc/nfvo/driver/vnfm/svnfm</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2950,7 +3047,7 @@
 <td>vfc/nfvo/lcm</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2958,7 +3055,7 @@
 <td>vfc/nfvo/multivimproxy</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2966,7 +3063,7 @@
 <td>vfc/nfvo/resmanagement</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2974,7 +3071,7 @@
 <td>vfc/nfvo/wfengine</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -2982,7 +3079,7 @@
 <td>vid</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -2990,7 +3087,7 @@
 <td>vid/asdcclient</td>
 <td>build-dependency</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>No</td>
 <td></td>
 </tr>
@@ -2998,7 +3095,7 @@
 <td>vnfrqts</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3006,7 +3103,7 @@
 <td>vnfrqts/epics</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3014,7 +3111,7 @@
 <td>vnfrqts/guidelines</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3022,7 +3119,7 @@
 <td>vnfrqts/requirements</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3030,7 +3127,7 @@
 <td>vnfrqts/testcases</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3038,7 +3135,7 @@
 <td>vnfrqts/usecases</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3046,7 +3143,7 @@
 <td>vnfsdk</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3054,7 +3151,7 @@
 <td>vnfsdk/compliance</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3062,7 +3159,7 @@
 <td>vnfsdk/dovetail-integration</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3070,7 +3167,7 @@
 <td>vnfsdk/functest</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3078,7 +3175,7 @@
 <td>vnfsdk/ice</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3086,7 +3183,7 @@
 <td>vnfsdk/lctest</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -3094,7 +3191,7 @@
 <td>vnfsdk/model</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3102,7 +3199,7 @@
 <td>vnfsdk/pkgtools</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -3110,7 +3207,7 @@
 <td>vnfsdk/refrepo</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3118,7 +3215,7 @@
 <td>vnfsdk/validation</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3126,7 +3223,7 @@
 <td>vnfsdk/ves-agent</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3134,7 +3231,7 @@
 <td>vvp</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3142,7 +3239,7 @@
 <td>vvp/ansible-ice-bootstrap</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3150,7 +3247,7 @@
 <td>vvp/cms</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3158,7 +3255,7 @@
 <td>vvp/devkit</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3166,7 +3263,7 @@
 <td>vvp/documentation</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3174,7 +3271,7 @@
 <td>vvp/engagementmgr</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3182,7 +3279,7 @@
 <td>vvp/gitlab</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3190,7 +3287,7 @@
 <td>vvp/image-scanner</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3198,7 +3295,7 @@
 <td>vvp/jenkins</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3206,7 +3303,7 @@
 <td>vvp/portal</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3214,7 +3311,7 @@
 <td>vvp/postgresql</td>
 <td>runtime</td>
 <td>medium</td>
-<td>READ_ONLY</td>
+<td>📦</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3222,7 +3319,7 @@
 <td>vvp/regression-tests</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3230,7 +3327,7 @@
 <td>vvp/test-engine</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -3238,14 +3335,14 @@
 <td>vvp/validation-scripts</td>
 <td>runtime</td>
 <td>medium</td>
-<td>ACTIVE</td>
+<td>❓</td>
 <td>Yes</td>
 <td></td>
 </tr>
 </tbody>
 </table>
 <h2>Docker Images</h2>
-<table>
+<table class="dt-enabled">
 <thead>
 <tr>
 <th>Image</th>
@@ -3854,7 +3951,7 @@
 </tbody>
 </table>
 <h2>Helm Components</h2>
-<table>
+<table class="dt-enabled">
 <thead>
 <tr>
 <th>Name</th>
@@ -4454,6 +4551,14 @@
 </tr>
 </tbody>
 </table>
+  <div class="state-legend">
+    <p><strong>State Legend:</strong></p>
+    <p>📦 Read-only / archived</p>
+    <p>✅ In current ONAP release</p>
+    <p>☑️ Parent project (children in release)</p>
+    <p>❌ Not in current ONAP release</p>
+    <p>❓ Undetermined</p>
+  </div>
   <footer>
     <p>Generated by
       <a href="https://github.com/modeseven-lfit/onap-release-mapping-tool">
@@ -4461,5 +4566,33 @@
       </a>
     </p>
   </footer>
+  <!-- Simple-DataTables JS -->
+  <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9" type="text/javascript"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('table.dt-enabled').forEach(function(table) {
+      var rows = table.querySelectorAll('tbody tr');
+      // Skip tables with fewer than 3 rows;
+      // search/sort add no value to tiny tables
+      if (rows.length < 3) return;
+      try {
+        new simpleDatatables.DataTable(table, {
+          searchable: true,
+          sortable: true,
+          paging: false,
+          perPage: 0,
+          perPageSelect: false,
+          labels: {
+            placeholder: "Filter table...",
+            noRows: "No entries found",
+            info: "Showing {start} to {end} of {rows}"
+          }
+        });
+      } catch (e) {
+        console.error('Failed to init DataTable:', e);
+      }
+    });
+  });
+  </script>
 </body>
 </html>
