@@ -63,6 +63,86 @@ def _write_manifest(path: Path, name: str = "TestRelease") -> None:
     path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
 
+def _write_filterable_manifest(path: Path) -> None:
+    """Write a manifest with repos suitable for filter testing."""
+    manifest = {
+        "schema_version": "1.0.0",
+        "tool_version": "0.1.0",
+        "generated_at": "2025-01-01T00:00:00Z",
+        "onap_release": {
+            "name": "Rabat",
+            "oom_chart_version": "18.0.0",
+        },
+        "summary": {
+            "total_repositories": 5,
+            "total_docker_images": 0,
+            "total_helm_components": 0,
+            "repositories_by_category": {
+                "runtime": 3,
+                "infrastructure": 2,
+            },
+            "repositories_by_confidence": {
+                "high": 1,
+                "medium": 2,
+                "low": 2,
+            },
+            "collectors_used": ["oom", "gerrit"],
+        },
+        "repositories": [
+            {
+                "gerrit_project": "policy/api",
+                "top_level_project": "policy",
+                "confidence": "high",
+                "category": "runtime",
+                "gerrit_state": "ACTIVE",
+                "in_current_release": True,
+                "discovered_by": ["oom"],
+            },
+            {
+                "gerrit_project": "cps",
+                "top_level_project": "cps",
+                "confidence": "medium",
+                "category": "runtime",
+                "gerrit_state": "ACTIVE",
+                "discovered_by": ["oom"],
+            },
+            {
+                "gerrit_project": "holmes/rule-management",
+                "top_level_project": "holmes",
+                "confidence": "medium",
+                "category": "runtime",
+                "gerrit_state": "READ_ONLY",
+                "discovered_by": ["gerrit"],
+            },
+            {
+                "gerrit_project": "All-Projects",
+                "top_level_project": "All-Projects",
+                "confidence": "low",
+                "category": "infrastructure",
+                "gerrit_state": "ACTIVE",
+                "in_current_release": False,
+                "discovered_by": ["gerrit"],
+            },
+            {
+                "gerrit_project": "All-Users",
+                "top_level_project": "All-Users",
+                "confidence": "low",
+                "category": "infrastructure",
+                "gerrit_state": "ACTIVE",
+                "in_current_release": False,
+                "discovered_by": ["gerrit"],
+            },
+        ],
+        "docker_images": [],
+        "helm_components": [],
+        "provenance": {
+            "data_sources": [],
+            "collectors_executed": [],
+        },
+    }
+    path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+
+
 class TestVersion:
     """Test version-related commands."""
 
@@ -487,6 +567,174 @@ class TestExport:
         """Test export with nonexistent manifest file."""
         result = runner.invoke(app, ["export", "/nonexistent/manifest.json"])
         assert result.exit_code != 0
+
+
+class TestExportFiltering:
+    """Test export subcommand with filtering options."""
+
+    def test_export_filter_repos_flag(self, tmp_path: Path) -> None:
+        """Export --filter-repos removes named repos from output."""
+        manifest_file = tmp_path / "manifest.json"
+        _write_filterable_manifest(manifest_file)
+        result = runner.invoke(
+            app,
+            [
+                "export",
+                str(manifest_file),
+                "--format",
+                "md",
+                "--filter-repos",
+                "All-Projects,All-Users",
+            ],
+        )
+        assert result.exit_code == 0
+        assert "All-Projects" not in result.output
+        assert "All-Users" not in result.output
+        assert "policy/api" in result.output
+
+    def test_export_exclude_readonly(self, tmp_path: Path) -> None:
+        """Export --exclude-readonly removes READ_ONLY repos."""
+        manifest_file = tmp_path / "manifest.json"
+        _write_filterable_manifest(manifest_file)
+        result = runner.invoke(
+            app,
+            [
+                "export",
+                str(manifest_file),
+                "--format",
+                "md",
+                "--exclude-readonly",
+            ],
+        )
+        assert result.exit_code == 0
+        assert "holmes/rule-management" not in result.output
+        assert "policy/api" in result.output
+
+    def test_export_no_exclude_readonly(self, tmp_path: Path) -> None:
+        """Export --no-exclude-readonly keeps READ_ONLY repos."""
+        manifest_file = tmp_path / "manifest.json"
+        _write_filterable_manifest(manifest_file)
+        result = runner.invoke(
+            app,
+            [
+                "export",
+                str(manifest_file),
+                "--format",
+                "md",
+                "--no-exclude-readonly",
+            ],
+        )
+        assert result.exit_code == 0
+        assert "holmes/rule-management" in result.output
+
+    def test_export_combined_filters(self, tmp_path: Path) -> None:
+        """Export with both filter flags removes all matched repos."""
+        manifest_file = tmp_path / "manifest.json"
+        _write_filterable_manifest(manifest_file)
+        result = runner.invoke(
+            app,
+            [
+                "export",
+                str(manifest_file),
+                "--format",
+                "md",
+                "--filter-repos",
+                "All-Projects,All-Users",
+                "--exclude-readonly",
+            ],
+        )
+        assert result.exit_code == 0
+        assert "All-Projects" not in result.output
+        assert "All-Users" not in result.output
+        assert "holmes/rule-management" not in result.output
+        assert "policy/api" in result.output
+        assert "cps" in result.output
+
+    def test_export_filter_to_file(self, tmp_path: Path) -> None:
+        """Export with filters writes filtered content to file."""
+        manifest_file = tmp_path / "manifest.json"
+        output_file = tmp_path / "output.md"
+        _write_filterable_manifest(manifest_file)
+        result = runner.invoke(
+            app,
+            [
+                "export",
+                str(manifest_file),
+                "--format",
+                "md",
+                "--output",
+                str(output_file),
+                "--filter-repos",
+                "All-Projects,All-Users",
+                "--exclude-readonly",
+            ],
+        )
+        assert result.exit_code == 0
+        assert output_file.exists()
+        content = output_file.read_text(encoding="utf-8")
+        assert "All-Projects" not in content
+        assert "holmes/rule-management" not in content
+        assert "policy/api" in content
+
+    def test_export_html_with_filters(self, tmp_path: Path) -> None:
+        """Export HTML with filters excludes filtered repos."""
+        manifest_file = tmp_path / "manifest.json"
+        _write_filterable_manifest(manifest_file)
+        result = runner.invoke(
+            app,
+            [
+                "export",
+                str(manifest_file),
+                "--format",
+                "html",
+                "--filter-repos",
+                "All-Projects,All-Users",
+                "--exclude-readonly",
+            ],
+        )
+        assert result.exit_code == 0
+        assert "All-Projects" not in result.output
+        assert "holmes/rule-management" not in result.output
+        assert "policy/api" in result.output
+
+    def test_export_csv_with_filters(self, tmp_path: Path) -> None:
+        """Export CSV with filters excludes filtered repos."""
+        manifest_file = tmp_path / "manifest.json"
+        _write_filterable_manifest(manifest_file)
+        result = runner.invoke(
+            app,
+            [
+                "export",
+                str(manifest_file),
+                "--format",
+                "csv",
+                "--filter-repos",
+                "All-Projects,All-Users",
+                "--exclude-readonly",
+            ],
+        )
+        assert result.exit_code == 0
+        assert "All-Projects" not in result.output
+        assert "holmes/rule-management" not in result.output
+        assert "policy/api" in result.output
+
+    def test_export_totals_in_markdown(self, tmp_path: Path) -> None:
+        """Export Markdown includes a Totals subsection."""
+        manifest_file = tmp_path / "manifest.json"
+        _write_filterable_manifest(manifest_file)
+        result = runner.invoke(
+            app,
+            [
+                "export",
+                str(manifest_file),
+                "--format",
+                "md",
+                "--no-exclude-readonly",
+            ],
+        )
+        assert result.exit_code == 0
+        assert "### Totals" in result.output
+        assert "Description" in result.output
 
 
 class TestVerify:

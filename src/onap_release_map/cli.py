@@ -154,6 +154,20 @@ def discover(
             help="Gerrit REST API base URL.",
         ),
     ] = None,
+    filter_repos: Annotated[
+        str | None,
+        typer.Option(
+            "--filter-repos",
+            help=("Comma-separated Gerrit project names to exclude from reports."),
+        ),
+    ] = None,
+    exclude_readonly: Annotated[
+        bool | None,
+        typer.Option(
+            "--exclude-readonly/--no-exclude-readonly",
+            help="Exclude read-only/archived Gerrit projects.",
+        ),
+    ] = None,
     output_dir: Annotated[
         Path,
         typer.Option(
@@ -351,6 +365,33 @@ def discover(
             builder.add_data_source(source)
 
     manifest = builder.build()
+
+    # Apply repository filtering
+    from onap_release_map.exporter import filter_repositories
+
+    # Merge CLI filter list with config defaults
+    config_filters = config.get("filter_repos", [])
+    if not isinstance(config_filters, list):
+        config_filters = []
+    cli_filters = (
+        [r.strip() for r in filter_repos.split(",") if r.strip()]
+        if filter_repos
+        else []
+    )
+    combined_filters = list(dict.fromkeys(config_filters + cli_filters))
+
+    # Honour config default for exclude_readonly unless CLI overrides
+    if exclude_readonly is None:
+        cfg_val = config.get("exclude_readonly", True)
+        resolved_readonly = bool(cfg_val)
+    else:
+        resolved_readonly = exclude_readonly
+
+    manifest = filter_repositories(
+        manifest,
+        filter_repos=combined_filters or None,
+        exclude_readonly=resolved_readonly,
+    )
 
     # Display summary
     _print_summary(manifest)
@@ -559,6 +600,20 @@ def export_cmd(
             help="Export only the Docker image list.",
         ),
     ] = False,
+    filter_repos: Annotated[
+        str | None,
+        typer.Option(
+            "--filter-repos",
+            help=("Comma-separated Gerrit project names to exclude from reports."),
+        ),
+    ] = None,
+    exclude_readonly: Annotated[
+        bool | None,
+        typer.Option(
+            "--exclude-readonly/--no-exclude-readonly",
+            help="Exclude read-only/archived Gerrit projects.",
+        ),
+    ] = None,
 ) -> None:
     """Convert a manifest to CSV, YAML, Markdown, HTML, or Gerrit list format."""
     import json
@@ -579,6 +634,19 @@ def export_cmd(
     except Exception as exc:
         err_console.print(f"[red]Error loading {manifest_path}:[/] {exc}")
         raise typer.Exit(code=1) from exc
+
+    from onap_release_map.exporter import filter_repositories
+
+    filter_list = (
+        [r.strip() for r in filter_repos.split(",") if r.strip()]
+        if filter_repos
+        else None
+    )
+    manifest = filter_repositories(
+        manifest,
+        filter_repos=filter_list,
+        exclude_readonly=exclude_readonly if exclude_readonly is not None else True,
+    )
 
     if repos_only:
         mode = "repos"

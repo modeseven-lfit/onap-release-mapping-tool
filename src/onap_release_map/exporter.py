@@ -9,7 +9,7 @@ import csv
 import html
 import io
 import logging
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from typing import TYPE_CHECKING
 
 import markdown as md_lib
@@ -30,6 +30,7 @@ __all__ = [
     "export_manifest",
     "export_markdown",
     "export_yaml",
+    "filter_repositories",
 ]
 
 
@@ -201,6 +202,8 @@ def export_markdown(manifest: ReleaseManifest) -> str:
             f"| {maintained} | {has_ci} |"
         )
     lines.append("")
+
+    lines.extend(_totals_section(manifest.repositories))
 
     # Docker images table
     lines.append("## Docker Images")
@@ -602,6 +605,69 @@ def export_manifest(
     return handler(manifest)
 
 
+def filter_repositories(
+    manifest: ReleaseManifest,
+    *,
+    filter_repos: Sequence[str] | None = None,
+    exclude_readonly: bool = False,
+) -> ReleaseManifest:
+    """Return a new manifest with repositories filtered.
+
+    Applies the requested filters to the repository list and
+    recalculates the summary statistics to match the reduced
+    set.
+
+    Parameters
+    ----------
+    manifest:
+        The release manifest to filter.
+    filter_repos:
+        Gerrit project names to **remove** from the manifest.
+        Matching is exact (case-sensitive).  ``None`` or an
+        empty sequence means no name-based filtering.
+    exclude_readonly:
+        When ``True``, drop every repository whose
+        ``gerrit_state`` is ``"READ_ONLY"``.
+
+    Returns
+    -------
+    ReleaseManifest
+        A shallow copy of *manifest* with the filtered
+        repository list and updated summary counts.
+    """
+    repos = list(manifest.repositories)
+
+    if filter_repos:
+        excluded = set(filter_repos)
+        repos = [r for r in repos if r.gerrit_project not in excluded]
+
+    if exclude_readonly:
+        repos = [r for r in repos if r.gerrit_state != "READ_ONLY"]
+
+    # Recalculate summary statistics
+    by_category: dict[str, int] = {}
+    by_confidence: dict[str, int] = {}
+    for repo in repos:
+        by_category[repo.category] = by_category.get(repo.category, 0) + 1
+        by_confidence[repo.confidence] = by_confidence.get(repo.confidence, 0) + 1
+
+    new_summary = manifest.summary.model_copy(
+        update={
+            "total_repositories": len(repos),
+            "repositories_by_category": by_category,
+            "repositories_by_confidence": by_confidence,
+        },
+    )
+
+    result: ReleaseManifest = manifest.model_copy(
+        update={
+            "repositories": repos,
+            "summary": new_summary,
+        },
+    )
+    return result
+
+
 # ------------------------------------------------------------------
 # Private helpers
 # ------------------------------------------------------------------
@@ -756,6 +822,62 @@ def _state_emoji(repo: object) -> str:
 
     # Unknown / undetermined
     return "\u2753"  # ❓
+
+
+_STATE_DESCRIPTIONS: dict[str, str] = {
+    "\u2705": "In current ONAP release",
+    "\u2611\ufe0f": "Parent project (children in release)",
+    "\u274c": "Not in current ONAP release",
+    "\u2753": "Undetermined",
+    "\U0001f4e6": "Read-only / archived",
+}
+
+
+def _totals_section(repositories: Sequence[object]) -> list[str]:
+    """Build a Markdown totals subsection for repository states.
+
+    Counts each repository by its emoji state indicator and
+    returns a small summary table with a key describing each
+    symbol.  Rows with a zero count are omitted.
+
+    Parameters
+    ----------
+    repositories:
+        Sequence of ``OnapRepository`` instances (or any objects
+        accepted by :func:`_state_emoji`).
+
+    Returns
+    -------
+    list[str]
+        Markdown lines forming a ``### Totals`` subsection.
+    """
+    counts: dict[str, int] = {}
+    for repo in repositories:
+        emoji = _state_emoji(repo)
+        counts[emoji] = counts.get(emoji, 0) + 1
+
+    order = [
+        "\u2705",
+        "\u2611\ufe0f",
+        "\u274c",
+        "\u2753",
+        "\U0001f4e6",
+    ]
+
+    lines: list[str] = [
+        "### Totals",
+        "",
+        "| Total | State | Description |",
+        "| ----: | :---: | ----------- |",
+    ]
+    for emoji in order:
+        count = counts.get(emoji, 0)
+        if count > 0:
+            desc = _STATE_DESCRIPTIONS[emoji]
+            lines.append(f"| {count} | {emoji} | {desc} |")
+    lines.append("")
+
+    return lines
 
 
 EXPORT_FORMATS: dict[str, Callable[[ReleaseManifest], str]] = {
