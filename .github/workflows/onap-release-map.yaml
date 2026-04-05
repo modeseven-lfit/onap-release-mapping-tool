@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # SPDX-FileCopyrightText: 2025 The Linux Foundation
 
-name: "Release Mapping Production"
+name: "ONAP Release Map"
 
 # yamllint disable-line rule:truthy
 on:
@@ -14,10 +14,18 @@ on:
         required: false
         default: "master"
       collectors:
-        description: "Collectors to enable"
+        # Available: oom, gerrit, relman, jjb
+        # Only oom and gerrit are defaulted; relman and jjb
+        # need local repo checkouts not cloned by this workflow.
+        description: "Collectors to enable (oom,gerrit,relman,jjb)"
         type: string
         required: false
         default: "oom,gerrit"
+      nexus_url:
+        description: "Nexus3 registry URL for image verification"
+        type: string
+        required: false
+        default: "https://nexus3.onap.org"
       skip_pages:
         description: "Skip GitHub Pages update"
         type: boolean
@@ -150,7 +158,8 @@ jobs:
           # Validate Docker images exist in Nexus registry
           MANIFEST="${{ runner.temp }}/output/manifest.json"
           if [ -f "$MANIFEST" ]; then
-            uvx "${TOOL_SPEC}" verify "$MANIFEST"
+            uvx "${TOOL_SPEC}" verify "$MANIFEST" \
+              --nexus-url "${{ inputs.nexus_url }}"
           fi
 
       - name: "Create metadata.json"
