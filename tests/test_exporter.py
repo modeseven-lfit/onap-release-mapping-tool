@@ -16,6 +16,7 @@ from onap_release_map.exporter import (
     export_manifest,
     export_markdown,
     export_yaml,
+    filter_repositories,
 )
 from onap_release_map.models import (
     DockerImage,
@@ -441,3 +442,319 @@ class TestHtmlXssSanitisation:
         result = export_html(safe)
         assert "<img onerror=" not in result
         assert "&lt;img onerror=" in result
+
+
+def _make_stateful_manifest() -> ReleaseManifest:
+    """Build a manifest with repos in every possible state."""
+    repos = [
+        OnapRepository(
+            gerrit_project="policy/api",
+            top_level_project="policy",
+            confidence="high",
+            category="runtime",
+            gerrit_state="ACTIVE",
+            in_current_release=True,
+            is_parent_project=False,
+        ),
+        OnapRepository(
+            gerrit_project="policy",
+            top_level_project="policy",
+            confidence="medium",
+            category="runtime",
+            gerrit_state="ACTIVE",
+            in_current_release=True,
+            is_parent_project=True,
+        ),
+        OnapRepository(
+            gerrit_project="vnfsdk/model",
+            top_level_project="vnfsdk",
+            confidence="low",
+            category="runtime",
+            gerrit_state="ACTIVE",
+            in_current_release=False,
+        ),
+        OnapRepository(
+            gerrit_project="holmes/rule-management",
+            top_level_project="holmes",
+            confidence="medium",
+            category="runtime",
+            gerrit_state="READ_ONLY",
+        ),
+        OnapRepository(
+            gerrit_project="unknown/project",
+            top_level_project="unknown",
+            confidence="low",
+            category="runtime",
+            gerrit_state="ACTIVE",
+            in_current_release=None,
+        ),
+        OnapRepository(
+            gerrit_project="All-Projects",
+            top_level_project="All-Projects",
+            confidence="low",
+            category="infrastructure",
+            gerrit_state="ACTIVE",
+            in_current_release=False,
+        ),
+        OnapRepository(
+            gerrit_project="All-Users",
+            top_level_project="All-Users",
+            confidence="low",
+            category="infrastructure",
+            gerrit_state="ACTIVE",
+            in_current_release=False,
+        ),
+        OnapRepository(
+            gerrit_project=".github",
+            top_level_project=".github",
+            confidence="low",
+            category="infrastructure",
+            gerrit_state="ACTIVE",
+            in_current_release=False,
+        ),
+    ]
+    return ReleaseManifest(
+        schema_version="1.0.0",
+        tool_version="0.1.0",
+        generated_at="2025-01-01T00:00:00Z",
+        onap_release=OnapRelease(
+            name="Rabat",
+            oom_chart_version="18.0.0",
+        ),
+        summary=ManifestSummary(
+            total_repositories=len(repos),
+            total_docker_images=0,
+            total_helm_components=0,
+        ),
+        repositories=repos,
+        provenance=ManifestProvenance(),
+    )
+
+
+class TestTotalsSection:
+    """Tests for the totals summary section in Markdown output."""
+
+    def test_totals_heading_present(self) -> None:
+        """Markdown output contains a Totals subsection heading."""
+        result = export_markdown(_make_stateful_manifest())
+        assert "### Totals" in result
+
+    def test_totals_table_header(self) -> None:
+        """Totals table has the correct header columns."""
+        result = export_markdown(_make_stateful_manifest())
+        assert "| Total | State | Description |" in result
+
+    def test_totals_contains_in_release(self) -> None:
+        """Totals table includes in-release count."""
+        result = export_markdown(_make_stateful_manifest())
+        assert "| 1 | \u2705 | In current ONAP release |" in result
+
+    def test_totals_contains_parent_project(self) -> None:
+        """Totals table includes parent-project count."""
+        result = export_markdown(_make_stateful_manifest())
+        assert "| 1 | \u2611\ufe0f | Parent project (children in release) |" in result
+
+    def test_totals_contains_not_in_release(self) -> None:
+        """Totals table includes not-in-release count."""
+        result = export_markdown(_make_stateful_manifest())
+        assert "\u274c" in result
+        assert "Not in current ONAP release" in result
+
+    def test_totals_contains_readonly(self) -> None:
+        """Totals table includes read-only count."""
+        result = export_markdown(_make_stateful_manifest())
+        assert "\U0001f4e6" in result
+        assert "Read-only / archived" in result
+
+    def test_totals_contains_undetermined(self) -> None:
+        """Totals table includes undetermined count."""
+        result = export_markdown(_make_stateful_manifest())
+        assert "\u2753" in result
+        assert "Undetermined" in result
+
+    def test_totals_before_docker_images(self) -> None:
+        """Totals section appears between Repositories and Docker Images."""
+        result = export_markdown(_make_stateful_manifest())
+        totals_pos = result.index("### Totals")
+        repos_pos = result.index("## Repositories")
+        images_pos = result.index("## Docker Images")
+        assert repos_pos < totals_pos < images_pos
+
+    def test_totals_omits_zero_counts(self) -> None:
+        """Totals table omits rows where the count is zero."""
+        manifest = _make_manifest()
+        result = export_markdown(manifest)
+        # _make_manifest has no READ_ONLY repos so 📦 row is absent
+        assert "### Totals" in result
+        lines = result.split("\n")
+        totals_lines = []
+        in_totals = False
+        for line in lines:
+            if "### Totals" in line:
+                in_totals = True
+                continue
+            if in_totals and line.startswith("##"):
+                break
+            if (
+                in_totals
+                and line.startswith("|")
+                and "Total" not in line
+                and "---" not in line
+            ):
+                totals_lines.append(line)
+        for line in totals_lines:
+            # Every data row must have a non-zero count
+            parts = [p.strip() for p in line.split("|") if p.strip()]
+            assert int(parts[0]) > 0
+
+    def test_totals_in_html_output(self) -> None:
+        """HTML export includes the totals heading."""
+        result = export_html(_make_stateful_manifest())
+        assert "Totals" in result
+
+
+class TestFilterRepositories:
+    """Tests for the filter_repositories function."""
+
+    def test_filter_by_name(self) -> None:
+        """Filtering by name removes the matching repository."""
+        manifest = _make_stateful_manifest()
+        filtered = filter_repositories(manifest, filter_repos=["All-Projects"])
+        names = [r.gerrit_project for r in filtered.repositories]
+        assert "All-Projects" not in names
+        assert "policy/api" in names
+
+    def test_filter_multiple_names(self) -> None:
+        """Filtering by multiple names removes all matches."""
+        manifest = _make_stateful_manifest()
+        filtered = filter_repositories(
+            manifest,
+            filter_repos=[".github", "All-Projects", "All-Users"],
+        )
+        names = [r.gerrit_project for r in filtered.repositories]
+        assert ".github" not in names
+        assert "All-Projects" not in names
+        assert "All-Users" not in names
+        assert len(filtered.repositories) == 5
+
+    def test_filter_readonly(self) -> None:
+        """Excluding read-only removes READ_ONLY repositories."""
+        manifest = _make_stateful_manifest()
+        filtered = filter_repositories(manifest, exclude_readonly=True)
+        states = [r.gerrit_state for r in filtered.repositories]
+        assert "READ_ONLY" not in states
+        assert "holmes/rule-management" not in [
+            r.gerrit_project for r in filtered.repositories
+        ]
+
+    def test_filter_combined(self) -> None:
+        """Combining name filter and read-only exclusion."""
+        manifest = _make_stateful_manifest()
+        filtered = filter_repositories(
+            manifest,
+            filter_repos=["All-Projects", "All-Users", ".github"],
+            exclude_readonly=True,
+        )
+        names = [r.gerrit_project for r in filtered.repositories]
+        assert "All-Projects" not in names
+        assert "holmes/rule-management" not in names
+        # Should keep: policy/api, policy, vnfsdk/model, unknown/project
+        assert len(filtered.repositories) == 4
+
+    def test_filter_updates_total(self) -> None:
+        """Filtering updates summary.total_repositories."""
+        manifest = _make_stateful_manifest()
+        filtered = filter_repositories(
+            manifest,
+            filter_repos=["All-Projects"],
+        )
+        assert filtered.summary.total_repositories == len(filtered.repositories)
+        assert filtered.summary.total_repositories == 7
+
+    def test_filter_updates_category_counts(self) -> None:
+        """Filtering recalculates repositories_by_category."""
+        manifest = _make_stateful_manifest()
+        filtered = filter_repositories(
+            manifest,
+            filter_repos=[".github", "All-Projects", "All-Users"],
+        )
+        total = sum(filtered.summary.repositories_by_category.values())
+        assert total == len(filtered.repositories)
+
+    def test_filter_updates_confidence_counts(self) -> None:
+        """Filtering recalculates repositories_by_confidence."""
+        manifest = _make_stateful_manifest()
+        filtered = filter_repositories(
+            manifest,
+            filter_repos=[".github", "All-Projects", "All-Users"],
+        )
+        total = sum(filtered.summary.repositories_by_confidence.values())
+        assert total == len(filtered.repositories)
+
+    def test_filter_none_is_noop(self) -> None:
+        """No filters returns equivalent manifest."""
+        manifest = _make_stateful_manifest()
+        filtered = filter_repositories(manifest)
+        assert len(filtered.repositories) == len(manifest.repositories)
+
+    def test_filter_empty_list_is_noop(self) -> None:
+        """Empty filter list returns equivalent manifest."""
+        manifest = _make_stateful_manifest()
+        filtered = filter_repositories(manifest, filter_repos=[])
+        assert len(filtered.repositories) == len(manifest.repositories)
+
+    def test_filter_preserves_other_fields(self) -> None:
+        """Filtering does not alter non-repository manifest fields."""
+        manifest = _make_stateful_manifest()
+        filtered = filter_repositories(
+            manifest,
+            filter_repos=["All-Projects"],
+        )
+        assert filtered.onap_release == manifest.onap_release
+        assert filtered.tool_version == manifest.tool_version
+        assert filtered.docker_images == manifest.docker_images
+        assert filtered.helm_components == manifest.helm_components
+
+    def test_filter_readonly_false_keeps_all(self) -> None:
+        """Setting exclude_readonly=False keeps READ_ONLY repos."""
+        manifest = _make_stateful_manifest()
+        filtered = filter_repositories(manifest, exclude_readonly=False)
+        states = [r.gerrit_state for r in filtered.repositories]
+        assert "READ_ONLY" in states
+
+    def test_filter_does_not_mutate_original(self) -> None:
+        """Filtering returns a new manifest without mutating input."""
+        manifest = _make_stateful_manifest()
+        original_count = len(manifest.repositories)
+        filter_repositories(
+            manifest,
+            filter_repos=["All-Projects", "All-Users", ".github"],
+            exclude_readonly=True,
+        )
+        assert len(manifest.repositories) == original_count
+
+    def test_filtered_markdown_excludes_repos(self) -> None:
+        """Markdown export after filtering omits excluded repos."""
+        manifest = _make_stateful_manifest()
+        filtered = filter_repositories(
+            manifest,
+            filter_repos=["All-Projects", "All-Users", ".github"],
+            exclude_readonly=True,
+        )
+        result = export_markdown(filtered)
+        assert "All-Projects" not in result
+        assert "All-Users" not in result
+        assert ".github" not in result
+        assert "holmes/rule-management" not in result
+        assert "policy/api" in result
+
+    def test_filtered_totals_exclude_readonly(self) -> None:
+        """Totals section after filtering omits read-only row."""
+        manifest = _make_stateful_manifest()
+        filtered = filter_repositories(
+            manifest,
+            exclude_readonly=True,
+        )
+        result = export_markdown(filtered)
+        assert "### Totals" in result
+        assert "Read-only / archived" not in result
