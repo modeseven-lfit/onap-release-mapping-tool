@@ -1,6 +1,6 @@
 # ONAP Release Manifest: Master
 
-- **Generated:** 2026-04-05T16:13:54Z
+- **Generated:** 2026-04-05T20:52:57Z
 - **Tool version:** 0.4.0
 - **Schema version:** 1.1.0
 - **OOM chart version:** 18.0.0
