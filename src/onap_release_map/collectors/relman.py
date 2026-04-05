@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Literal
 from urllib.parse import quote
@@ -38,8 +39,9 @@ def _parse_bool(value: object) -> bool:
 def _parse_included_in(value: object) -> list[str]:
     """Parse the ``included_in`` field from repos.yaml.
 
-    The field may be a YAML list, a string representation of a list
-    (e.g. ``'[]'`` or ``'[\"Montreal\"]'``), or ``None``.
+    The field may be a YAML list, a JSON-encoded string representation
+    of a list (e.g. ``'[]'`` or ``'["Montreal"]'``), a plain
+    string-formatted list, or ``None``.
 
     Args:
         value: Raw value from the YAML entry.
@@ -57,6 +59,14 @@ def _parse_included_in(value: object) -> list[str]:
             return []
         # Handle string like '["Montreal", "Rabat"]'
         if stripped.startswith("[") and stripped.endswith("]"):
+            # Prefer JSON parsing for proper handling of escaped quotes
+            try:
+                parsed = json.loads(stripped)
+                if isinstance(parsed, list):
+                    return [str(item) for item in parsed if item]
+            except ValueError:
+                pass
+            # Fall back to manual split/strip logic
             inner = stripped[1:-1]
             parts = [p.strip().strip("'\"") for p in inner.split(",") if p.strip()]
             return [p for p in parts if p]

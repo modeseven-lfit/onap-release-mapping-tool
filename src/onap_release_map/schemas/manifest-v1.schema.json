@@ -18,7 +18,7 @@
       "type": "string",
       "description": "Semantic version of the manifest schema",
       "pattern": "^\\d+\\.\\d+\\.\\d+$",
-      "examples": ["1.0.0"]
+      "examples": ["1.1.0"]
     },
     "tool_version": {
       "type": "string",

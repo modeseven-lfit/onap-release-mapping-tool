@@ -93,7 +93,7 @@ class ManifestBuilder:
             generated_at = self._timestamp.isoformat()
 
         return ReleaseManifest(
-            schema_version="1.0.0",
+            schema_version="1.1.0",
             tool_version=self.tool_version,
             generated_at=generated_at,
             onap_release=self.onap_release,
@@ -140,14 +140,25 @@ class ManifestBuilder:
                     # Fill in missing fields
                     if existing.gerrit_state is None:
                         existing.gerrit_state = repo.gerrit_state
+                    elif repo.gerrit_state == "READ_ONLY":
+                        existing.gerrit_state = "READ_ONLY"
+                    # READ_ONLY is definitively not in the
+                    # current release regardless of how the
+                    # state was set (first fill or override).
+                    if existing.gerrit_state == "READ_ONLY":
+                        existing.in_current_release = False
                     if existing.maintained is None:
                         existing.maintained = repo.maintained
                     if existing.has_ci is None:
                         existing.has_ci = repo.has_ci
                     # Merge in_current_release: True wins over
                     # None/False since any positive signal is
-                    # authoritative.
-                    if repo.in_current_release is True:
+                    # authoritative, except READ_ONLY is
+                    # definitively not in the current release.
+                    if (
+                        repo.in_current_release is True
+                        and existing.gerrit_state != "READ_ONLY"
+                    ):
                         existing.in_current_release = True
                     elif (
                         existing.in_current_release is None

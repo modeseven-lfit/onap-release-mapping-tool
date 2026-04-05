@@ -9,7 +9,6 @@ import csv
 import html
 import io
 import logging
-import re
 from collections.abc import Callable
 from typing import TYPE_CHECKING
 
@@ -234,13 +233,13 @@ def export_html(manifest: ReleaseManifest) -> str:
     """Export a release manifest as a styled HTML report.
 
     Converts the Markdown report produced by :func:`export_markdown`
-    into a self-contained HTML document with dark-theme styling that
+    into a single HTML document with dark-theme styling that
     matches the project's GitHub Pages index page.
 
-    The generated HTML includes inline CSS (no external dependencies
-    other than Simple-DataTables from CDN for interactive table
-    features), responsive tables with hover effects, and a
-    navigation link back to the parent index page.
+    The generated HTML includes inline CSS and CDN-hosted
+    Simple-DataTables for interactive table features, responsive
+    tables with hover effects, and a navigation link back to the
+    parent index page.
 
     All manifest-derived string values are HTML-escaped before
     Markdown generation to prevent cross-site scripting (XSS)
@@ -261,11 +260,7 @@ def export_html(manifest: ReleaseManifest) -> str:
     body_html = md_lib.markdown(md_text, extensions=["tables"])
 
     # Add dt-enabled class to all tables for DataTables init
-    body_html = re.sub(
-        r"<table>",
-        '<table class="dt-enabled">',
-        body_html,
-    )
+    body_html = body_html.replace("<table>", '<table class="dt-enabled">')
 
     title = f"ONAP Release Manifest: {manifest.onap_release.name}"
     return _html_wrapper(body_html, title)
@@ -579,7 +574,7 @@ def export_manifest(
         The release manifest to export.
     fmt:
         Output format name — one of ``yaml``, ``csv``, ``md``,
-        or ``gerrit-list``.
+        ``html``, or ``gerrit-list``.
     mode:
         Sub-mode for CSV export (``"repos"`` or ``"images"``).
 

@@ -191,12 +191,12 @@ onap-release-map export manifest.json --format csv --output images.csv
 
 <!-- markdownlint-disable MD013 -->
 
-| Option                     | Default      | Description                                       |
-| -------------------------- | ------------ | ------------------------------------------------- |
-| `MANIFEST_PATH`            | *(required)* | Path to manifest JSON file                        |
-| `--format FMT`             | `yaml`       | Output format: `yaml`, `csv`, `md`, `gerrit-list` |
-| `--output PATH`            | —            | Write to file instead of stdout                   |
-| `--repos-*` / `--images-*` | `false`      | Limit CSV scope to repos or images                |
+| Option                             | Default      | Description                                                |
+| ---------------------------------- | ------------ | ---------------------------------------------------------- |
+| `MANIFEST_PATH`                    | *(required)* | Path to manifest JSON file                                 |
+| `--format FMT`                     | `yaml`       | Output format: `yaml`, `csv`, `md`, `html`, `gerrit-list`  |
+| `--output PATH`                    | —            | Write to file instead of stdout                            |
+| `--repos-only` / `--images-only`   | `false`      | Limit CSV scope to repos or images (mutually exclusive)    |
 
 <!-- markdownlint-enable MD013 -->
 
@@ -220,12 +220,13 @@ onap-release-map verify manifest.json \
 
 <!-- markdownlint-disable MD013 -->
 
-| Option                               | Default                   | Description                             |
-| ------------------------------------ | ------------------------- | --------------------------------------- |
-| `MANIFEST_PATH`                      | *(required)*              | Path to manifest JSON file              |
-| `--nexus-url URL`                    | `https://nexus3.onap.org` | Nexus3 registry URL                     |
-| `--check-images / --no-check-images` | `true`                    | Verify Docker image:tag existence       |
-| `--workers N`                        | `4`                       | Number of concurrent validation threads |
+| Option                               | Default                         | Description                                   |
+| ------------------------------------ | ------------------------------- | --------------------------------------------- |
+| `MANIFEST_PATH`                      | *(required)*                    | Path to manifest JSON file                    |
+| `--nexus-url URL`                    | `https://nexus3.onap.org:10001` | Nexus3 registry URL                           |
+| `--check-images / --no-check-images` | `true`                          | Verify Docker image:tag existence             |
+| `--workers N`                        | `4`                             | Number of concurrent validation threads       |
+| `--update / --no-update`             | `true`                          | Write validation results back to the manifest |
 
 <!-- markdownlint-enable MD013 -->
 
@@ -325,8 +326,7 @@ jobs:
 | `release-name`   | `Rabat`                     | ONAP release code name                     |
 | `mapping-file`   | —                           | Custom image-to-repo mapping YAML override |
 | `python-version` | `3.12`                      | Python version to use                      |
-
-<!-- markdownlint-enable MD013 -->
+| `version`        | `latest`                    | Tool version (e.g. `0.1.0` or `latest`)    |
 
 | Output               | Description                              |
 | -------------------- | ---------------------------------------- |
@@ -348,15 +348,19 @@ jobs:
 | YAML        | `discover --output-format yaml` | Human-readable counterpart of the JSON manifest                        |
 | CSV         | `export --format csv`           | Tabular data suitable for spreadsheets (filterable by repos or images) |
 | Markdown    | `export --format md`            | Formatted tables for embedding in reports or wikis                     |
+| HTML        | `export --format html`          | Dark-themed interactive report with search, sort, and emoji indicators |
 | Gerrit list | `export --format gerrit-list`   | Flat newline-delimited list of Gerrit project names                    |
 
 <!-- markdownlint-enable MD013 -->
 
 ## HTML Report Features
 
-The HTML export (`export --format html`) produces a self-contained
-dark-themed report hosted on
+The HTML export (`export --format html`) produces a single dark-themed
+HTML report hosted on
 [GitHub Pages](https://modeseven-lfit.github.io/onap-release-mapping-tool/).
+CDN-hosted [Simple-DataTables](https://github.com/fiduswriter/Simple-DataTables)
+assets supply interactive table behaviour and styling, so the report
+requires network access for full functionality.
 
 ### Interactive Tables
 

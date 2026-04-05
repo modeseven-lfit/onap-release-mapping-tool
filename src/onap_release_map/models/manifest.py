@@ -122,7 +122,7 @@ class ReleaseManifest(BaseModel):
     summary statistics.
     """
 
-    schema_version: str = "1.0.0"
+    schema_version: str = "1.1.0"
     """Manifest schema version for forward compatibility."""
 
     tool_version: str
