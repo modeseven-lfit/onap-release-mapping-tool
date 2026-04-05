@@ -42,14 +42,12 @@ class OOMCrossRefProvider:
 
     This provider scans the OOM ``kubernetes/`` tree for mentions
     of Gerrit project names that are not yet classified as
-    in-release.  Three signal types are recognised:
+    in-release.  Two signal types are recognised:
 
     1. **Word-boundary matches** of the full ``gerrit_project``
        path (e.g. ``oom/readiness``, ``dmaap/datarouter``).
     2. **Explicit Gerrit URL references** matching
        ``gerrit.onap.org/r/<project>``.
-    3. **Umbrella enable flags** — projects that appear as
-       disabled component keys in ``onap/values.yaml``.
 
     Parameters
     ----------
@@ -58,7 +56,6 @@ class OOMCrossRefProvider:
     """
 
     def __init__(self, oom_path: Path) -> None:
-        self._oom_path = oom_path
         self._kubernetes_path = oom_path / "kubernetes"
         self._file_cache: dict[Path, str] | None = None
 
@@ -104,19 +101,20 @@ class OOMCrossRefProvider:
         if self._file_cache is None:
             self._file_cache = self._load_files()
 
-        # Collect all file contents into one pass per candidate.
+        # Scan files once for all candidates (inverted search).
+        found = self._search_all_candidates(candidates)
+
         promoted: set[str] = set()
-        for proj, repo in candidates.items():
-            reason = self._search_for_project(proj)
-            if reason:
-                repo.in_current_release = True
-                repo.confidence_reasons.append(reason)
-                promoted.add(proj)
-                logger.debug(
-                    "Promoted %s: %s",
-                    proj,
-                    reason,
-                )
+        for proj, reason in found.items():
+            repo = candidates[proj]
+            repo.in_current_release = True
+            repo.confidence_reasons.append(reason)
+            promoted.add(proj)
+            logger.debug(
+                "Promoted %s: %s",
+                proj,
+                reason,
+            )
 
         return promoted
 
@@ -151,46 +149,74 @@ class OOMCrossRefProvider:
         )
         return files
 
-    def _search_for_project(
+    def _search_all_candidates(
         self,
-        project: str,
-    ) -> str | None:
-        """Search cached OOM files for *project* references.
+        candidates: dict[str, OnapRepository],
+    ) -> dict[str, str]:
+        """Scan cached OOM files once for all candidate projects.
+
+        Instead of iterating files per candidate (O(candidates ×
+        files)), this method scans every file once and checks all
+        remaining candidates against it, removing matches as they
+        are found.
 
         Parameters
         ----------
-        project:
-            Gerrit project path (e.g. ``dmaap/datarouter``).
+        candidates:
+            Mapping of Gerrit project name to repository for
+            repos not yet in release.
 
         Returns
         -------
-        str | None
-            Human-readable reason string if found, else ``None``.
+        dict[str, str]
+            Mapping of promoted project name to human-readable
+            reason string.
         """
         assert self._file_cache is not None  # noqa: S101
 
-        # Skip very short names (< 4 chars) to avoid false
-        # positives from substring matches.
-        if len(project) < 4:
-            return None
+        found: dict[str, str] = {}
 
-        # Strategy 1: word-boundary match of the full project
-        # path in OOM files.
-        pattern = re.compile(
-            r"(?<![a-zA-Z0-9_/.-])" + re.escape(project) + r"(?![a-zA-Z0-9_/.-])",
-        )
-        for path, content in self._file_cache.items():
-            if pattern.search(content):
-                rel = path.relative_to(self._kubernetes_path)
-                return f"Referenced in OOM file {rel}"
+        # Filter to candidates with names long enough to
+        # avoid false-positive substring matches.
+        eligible = {p for p in candidates if len(p) >= 4}
 
-        # Strategy 2: explicit Gerrit URL reference.
+        # Strategy 1: extract all Gerrit URLs from files in a
+        # single pass and match against candidates.
+        remaining = set(eligible)
         for path, content in self._file_cache.items():
+            if not remaining:
+                break
             for match in _GERRIT_URL_RE.finditer(content):
-                if match.group(1) == project:
+                proj = match.group(1)
+                if proj in remaining:
                     rel = path.relative_to(
                         self._kubernetes_path,
                     )
-                    return f"Gerrit URL reference in OOM file {rel}"
+                    found[proj] = f"Gerrit URL reference in OOM file {rel}"
+                    remaining.discard(proj)
 
-        return None
+        # Strategy 2: word-boundary match — pre-compile one
+        # pattern per remaining candidate, then scan each file
+        # once against all patterns.
+        if remaining:
+            patterns: dict[str, re.Pattern[str]] = {
+                proj: re.compile(
+                    r"(?<![a-zA-Z0-9_/.-])" + re.escape(proj) + r"(?![a-zA-Z0-9_/.-])",
+                )
+                for proj in remaining
+            }
+            for path, content in self._file_cache.items():
+                if not patterns:
+                    break
+                newly_found: list[str] = []
+                for proj, pattern in patterns.items():
+                    if pattern.search(content):
+                        rel = path.relative_to(
+                            self._kubernetes_path,
+                        )
+                        found[proj] = f"Referenced in OOM file {rel}"
+                        newly_found.append(proj)
+                for proj in newly_found:
+                    del patterns[proj]
+
+        return found

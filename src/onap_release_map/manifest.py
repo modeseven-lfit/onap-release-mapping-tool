@@ -330,16 +330,30 @@ class ManifestBuilder:
             promoted_this_pass: set[str] = set()
 
             for provider in self._crossref_providers:
+                # Snapshot confidence_reasons on READ_ONLY repos
+                # so we can roll back if a provider mutates them.
+                readonly_snapshots: dict[str, list[str]] = {}
+                for name, repo in repo_map.items():
+                    if repo.gerrit_state == "READ_ONLY":
+                        readonly_snapshots[name] = list(
+                            repo.confidence_reasons,
+                        )
+
                 newly = provider.reconcile(repo_map)
 
-                # Safeguard: revert any READ_ONLY repos that a
-                # provider incorrectly promoted.  READ_ONLY is
-                # definitively not in the current release.
+                # Safeguard: revert in_current_release and
+                # confidence_reasons on any READ_ONLY repos that
+                # a provider incorrectly promoted.
                 reverted: set[str] = set()
                 for name in newly:
-                    repo = repo_map.get(name)
-                    if repo and repo.gerrit_state == "READ_ONLY":
-                        repo.in_current_release = False
+                    reverted_repo = repo_map.get(name)
+                    if (
+                        reverted_repo is not None
+                        and reverted_repo.gerrit_state == "READ_ONLY"
+                    ):
+                        reverted_repo.in_current_release = False
+                        if name in readonly_snapshots:
+                            reverted_repo.confidence_reasons = readonly_snapshots[name]
                         reverted.add(name)
                 newly -= reverted
                 if reverted:

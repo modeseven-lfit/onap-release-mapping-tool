@@ -152,8 +152,8 @@ class HelmChartParser:
         under well-known keys (``image``, ``imageName``), the
         repositoryGenerator uses arbitrary key names such as
         ``readinessImage`` or ``jreImage``.  This method scans
-        every string value under the ``global`` block for ONAP
-        image references.
+        top-level string values under the ``global`` block for
+        ONAP image references.
 
         Returns
         -------
@@ -188,13 +188,16 @@ class HelmChartParser:
                 continue
             match = _IMAGE_RE.match(value)
             if match:
+                has_explicit_registry = value.startswith("nexus3.onap.org:")
                 results.append(
                     self._build_image_record(
                         match.group(1),
                         match.group(2),
                         value,
                         "repositoryGenerator",
-                        registry_override=registry or None,
+                        registry_override=(registry or None)
+                        if not has_explicit_registry
+                        else None,
                     )
                 )
                 self._logger.debug(

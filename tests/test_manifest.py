@@ -834,6 +834,31 @@ class TestReconciliation:
         repo = manifest.repositories[0]
         assert repo.in_current_release is False
 
+    def test_readonly_reasons_rolled_back(self) -> None:
+        """Confidence reasons are rolled back for reverted READ_ONLY repos."""
+        builder = _make_builder_with_repos(
+            OnapRepository(
+                gerrit_project="old/archived",
+                top_level_project="old",
+                confidence="medium",
+                confidence_reasons=["Discovered via Gerrit REST API"],
+                discovered_by=["gerrit"],
+                gerrit_state="READ_ONLY",
+                in_current_release=False,
+            ),
+        )
+        provider = _StubProvider(
+            "test",
+            {"old/archived": "Bogus cross-ref reason"},
+        )
+        builder.add_crossref_provider(provider)
+        manifest = builder.build()
+
+        repo = manifest.repositories[0]
+        assert repo.in_current_release is False
+        assert "Bogus cross-ref reason" not in repo.confidence_reasons
+        assert "Discovered via Gerrit REST API" in repo.confidence_reasons
+
     def test_stub_satisfies_protocol(self) -> None:
         """_StubProvider satisfies the CrossRefProvider protocol."""
         provider = _StubProvider("x", {})
