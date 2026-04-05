@@ -254,9 +254,32 @@ class TestExportHtml:
         """The HTML includes a state legend explaining emoji meanings."""
         result = export_html(_make_manifest())
         assert "State Legend" in result
+        assert "State Legend:" not in result
         assert "\U0001f4e6" in result  # 📦
         assert "\u2705" in result  # ✅
         assert "\u274c" in result  # ❌
+
+    def test_html_state_legend_before_repos_table(self) -> None:
+        """The state legend appears between the Repositories heading and table."""
+        result = export_html(_make_manifest())
+        repos_heading_pos = result.index("Repositories</h2>")
+        legend_pos = result.index('<div class="state-legend">', repos_heading_pos)
+        first_table_after_repos = result.index("<table", legend_pos)
+        assert repos_heading_pos < legend_pos < first_table_after_repos
+
+    def test_html_state_legend_order(self) -> None:
+        """The state legend lists emojis in the correct order."""
+        result = export_html(_make_manifest())
+        repos_heading_pos = result.index("Repositories</h2>")
+        legend_start = result.index('<div class="state-legend">', repos_heading_pos)
+        legend_end = result.index("</div>", legend_start)
+        legend = result[legend_start:legend_end]
+        pos_check = legend.index("\u2705")
+        pos_parent = legend.index("\u2611\ufe0f")
+        pos_not = legend.index("\u274c")
+        pos_unknown = legend.index("\u2753")
+        pos_readonly = legend.index("\U0001f4e6")
+        assert pos_check < pos_parent < pos_not < pos_unknown < pos_readonly
 
     def test_html_datatables_search_enabled(self) -> None:
         """The DataTables init enables search."""
