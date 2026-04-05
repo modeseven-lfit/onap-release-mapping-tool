@@ -364,6 +364,14 @@ def discover(
         if source:
             builder.add_data_source(source)
 
+    # Register cross-reference reconciliation providers
+    if oom_path:
+        from onap_release_map.reconcilers.oom_crossref import (
+            OOMCrossRefProvider,
+        )
+
+        builder.add_crossref_provider(OOMCrossRefProvider(oom_path))
+
     manifest = builder.build()
 
     # Apply repository filtering
