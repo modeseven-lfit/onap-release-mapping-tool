@@ -18,7 +18,7 @@
       "type": "string",
       "description": "Semantic version of the manifest schema",
       "pattern": "^\\d+\\.\\d+\\.\\d+$",
-      "examples": ["1.0.0"]
+      "examples": ["1.1.0"]
     },
     "tool_version": {
       "type": "string",
@@ -161,6 +161,14 @@
           "type": ["string", "null"],
           "enum": ["ACTIVE", "READ_ONLY", null],
           "description": "From Gerrit REST API"
+        },
+        "in_current_release": {
+          "type": ["boolean", "null"],
+          "description": "Whether this repository is included in the current ONAP release"
+        },
+        "is_parent_project": {
+          "type": ["boolean", "null"],
+          "description": "Whether this Gerrit project is a parent containing sub-projects"
         },
         "maintained": {
           "type": ["boolean", "null"],

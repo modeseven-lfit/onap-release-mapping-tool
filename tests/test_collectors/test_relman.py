@@ -10,7 +10,11 @@ from pathlib import Path
 import pytest
 
 from onap_release_map.collectors import registry
-from onap_release_map.collectors.relman import RelmanCollector, _parse_bool
+from onap_release_map.collectors.relman import (
+    RelmanCollector,
+    _parse_bool,
+    _parse_included_in,
+)
 
 
 class TestRelmanCollector:
@@ -168,3 +172,113 @@ class TestRelmanCollector:
         assert result.execution.duration_seconds >= 0
         assert result.execution.items_collected == 1
         assert result.execution.errors == []
+
+
+class TestParseIncludedIn:
+    """Tests for the _parse_included_in helper."""
+
+    def test_none_returns_empty(self) -> None:
+        """Test that None produces an empty list."""
+        assert _parse_included_in(None) == []
+
+    def test_yaml_list(self) -> None:
+        """Test that a native YAML list passes through."""
+        assert _parse_included_in(["Montreal", "Rabat"]) == [
+            "Montreal",
+            "Rabat",
+        ]
+
+    def test_empty_string(self) -> None:
+        """Test that an empty string produces an empty list."""
+        assert _parse_included_in("") == []
+
+    def test_empty_bracket_string(self) -> None:
+        """Test that the string '[]' produces an empty list."""
+        assert _parse_included_in("[]") == []
+
+    def test_json_encoded_string(self) -> None:
+        """Test that a JSON-encoded list string is parsed."""
+        assert _parse_included_in('["Montreal", "Rabat"]') == [
+            "Montreal",
+            "Rabat",
+        ]
+
+    def test_json_single_entry(self) -> None:
+        """Test that a single-element JSON list string is parsed."""
+        assert _parse_included_in('["Montreal"]') == ["Montreal"]
+
+    def test_plain_string(self) -> None:
+        """Test that a plain string becomes a single-item list."""
+        assert _parse_included_in("Montreal") == ["Montreal"]
+
+    def test_non_string_non_list(self) -> None:
+        """Test that an unsupported type produces an empty list."""
+        assert _parse_included_in(42) == []
+
+    def test_yaml_list_filters_empty(self) -> None:
+        """Test that empty strings are filtered from a YAML list."""
+        assert _parse_included_in(["Montreal", ""]) == ["Montreal"]
+
+
+class TestRelmanTriState:
+    """Tests for in_current_release tri-state behaviour."""
+
+    def test_read_only_is_false(self, tmp_path: Path) -> None:
+        """Test that a read_only entry yields False."""
+        repos_yaml = tmp_path / "repos.yaml"
+        repos_yaml.write_text(
+            "policy:\n"
+            "  - repository: 'policy/old'\n"
+            "    unmaintained: 'true'\n"
+            "    read_only: 'true'\n"
+            "    included_in: '[]'\n",
+            encoding="utf-8",
+        )
+
+        collector = RelmanCollector(repos_yaml_path=repos_yaml)
+        result = collector.collect()
+
+        repo = result.repositories[0]
+        assert repo.in_current_release is False
+
+    def test_included_in_nonempty_is_true(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """Test that a non-empty included_in yields True."""
+        repos_yaml = tmp_path / "repos.yaml"
+        repos_yaml.write_text(
+            "policy:\n"
+            "  - repository: 'policy/api'\n"
+            "    unmaintained: 'false'\n"
+            "    read_only: 'false'\n"
+            "    included_in: '[\"Montreal\"]'\n",
+            encoding="utf-8",
+        )
+
+        collector = RelmanCollector(repos_yaml_path=repos_yaml)
+        result = collector.collect()
+
+        repo = result.repositories[0]
+        assert repo.in_current_release is True
+
+    def test_included_in_empty_is_none(
+        self,
+        tmp_path: Path,
+    ) -> None:
+        """Test that an empty included_in yields None."""
+        repos_yaml = tmp_path / "repos.yaml"
+        repos_yaml.write_text(
+            "policy:\n"
+            "  - repository: 'policy/api'\n"
+            "    unmaintained: 'false'\n"
+            "    read_only: 'false'\n"
+            "    included_in: '[]'\n",
+            encoding="utf-8",
+        )
+
+        collector = RelmanCollector(repos_yaml_path=repos_yaml)
+        result = collector.collect()
+
+        repo = result.repositories[0]
+        assert repo.in_current_release is None

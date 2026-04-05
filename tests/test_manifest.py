@@ -29,7 +29,7 @@ class TestManifestBuilder:
         )
         manifest = builder.build()
 
-        assert manifest.schema_version == "1.0.0"
+        assert manifest.schema_version == "1.1.0"
         assert manifest.tool_version == "0.1.0"
         assert manifest.onap_release.name == "Test"
         assert manifest.summary.total_repositories == 0

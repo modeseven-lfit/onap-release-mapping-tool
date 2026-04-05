@@ -122,20 +122,20 @@ onap-release-map discover \
 
 <!-- markdownlint-disable MD013 -->
 
-| Option | Default | Description |
-| --- | --- | --- |
-| `--oom-path PATH` | *(required)* | Path to a local OOM repository clone |
-| `--collectors LIST` | `oom` | Comma-separated collectors: `oom`, `gerrit`, `relman`, `jjb` |
-| `--release-name NAME` | `Rabat` | ONAP release code name |
-| `--output-dir DIR` | `./output` | Output directory for manifest files |
-| `--output-format FMT` | `json` | Output format: `json`, `yaml`, `all` |
-| `--repos-yaml PATH` | — | Path to relman `repos.yaml` (required for `relman` collector) |
-| `--jjb-path PATH` | — | Path to `ci-management/jjb/` directory (required for `jjb` collector) |
-| `--gerrit-url URL` | config | Gerrit REST API base URL |
-| `--mapping-file PATH` | — | Custom image-to-repo mapping YAML override |
-| `--config PATH` | — | Path to YAML configuration file |
-| `--deterministic` | `true` | Produce deterministic output (sorted keys, stable ordering) |
-| `-v / -vv / -vvv` | — | Increase verbosity |
+| Option                | Default      | Description                                                           |
+| --------------------- | ------------ | --------------------------------------------------------------------- |
+| `--oom-path PATH`     | *(required)* | Path to a local OOM repository clone                                  |
+| `--collectors LIST`   | `oom`        | Comma-separated collectors: `oom`, `gerrit`, `relman`, `jjb`          |
+| `--release-name NAME` | `Rabat`      | ONAP release code name                                                |
+| `--output-dir DIR`    | `./output`   | Output directory for manifest files                                   |
+| `--output-format FMT` | `json`       | Output format: `json`, `yaml`, `all`                                  |
+| `--repos-yaml PATH`   | —            | Path to relman `repos.yaml` (required for `relman` collector)         |
+| `--jjb-path PATH`     | —            | Path to `ci-management/jjb/` directory (required for `jjb` collector) |
+| `--gerrit-url URL`    | config       | Gerrit REST API base URL                                              |
+| `--mapping-file PATH` | —            | Custom image-to-repo mapping YAML override                            |
+| `--config PATH`       | —            | Path to YAML configuration file                                       |
+| `--deterministic`     | `true`       | Produce deterministic output (sorted keys, stable ordering)           |
+| `-v / -vv / -vvv`     | —            | Increase verbosity                                                    |
 
 <!-- markdownlint-enable MD013 -->
 
@@ -159,13 +159,13 @@ onap-release-map diff \
 
 <!-- markdownlint-disable MD013 -->
 
-| Option | Default | Description |
-| --- | --- | --- |
-| `MANIFEST_A` | *(required)* | Path to the baseline manifest (JSON) |
-| `MANIFEST_B` | *(required)* | Path to the comparison manifest (JSON) |
-| `--output-format FMT` | `text` | Output format: `text`, `json`, `md` |
-| `--output PATH` | — | Write diff to file instead of stdout |
-| `--ignore-timestamps` | `false` | Ignore `generated_at` when comparing |
+| Option                | Default      | Description                            |
+| --------------------- | ------------ | -------------------------------------- |
+| `MANIFEST_A`          | *(required)* | Path to the baseline manifest (JSON)   |
+| `MANIFEST_B`          | *(required)* | Path to the comparison manifest (JSON) |
+| `--output-format FMT` | `text`       | Output format: `text`, `json`, `md`    |
+| `--output PATH`       | —            | Write diff to file instead of stdout   |
+| `--ignore-timestamps` | `false`      | Ignore `generated_at` when comparing   |
 
 <!-- markdownlint-enable MD013 -->
 
@@ -191,12 +191,12 @@ onap-release-map export manifest.json --format csv --output images.csv
 
 <!-- markdownlint-disable MD013 -->
 
-| Option | Default | Description |
-| --- | --- | --- |
-| `MANIFEST_PATH` | *(required)* | Path to manifest JSON file |
-| `--format FMT` | `yaml` | Output format: `yaml`, `csv`, `md`, `gerrit-list` |
-| `--output PATH` | — | Write to file instead of stdout |
-| `--repos-*` / `--images-*` | `false` | Limit CSV scope to repos or images |
+| Option                             | Default      | Description                                                |
+| ---------------------------------- | ------------ | ---------------------------------------------------------- |
+| `MANIFEST_PATH`                    | *(required)* | Path to manifest JSON file                                 |
+| `--format FMT`                     | `yaml`       | Output format: `yaml`, `csv`, `md`, `html`, `gerrit-list`  |
+| `--output PATH`                    | —            | Write to file instead of stdout                            |
+| `--repos-only` / `--images-only`   | `false`      | Limit CSV scope to repos or images (mutually exclusive)    |
 
 <!-- markdownlint-enable MD013 -->
 
@@ -220,12 +220,13 @@ onap-release-map verify manifest.json \
 
 <!-- markdownlint-disable MD013 -->
 
-| Option | Default | Description |
-| --- | --- | --- |
-| `MANIFEST_PATH` | *(required)* | Path to manifest JSON file |
-| `--nexus-url URL` | `https://nexus3.onap.org` | Nexus3 registry URL |
-| `--check-images / --no-check-images` | `true` | Verify Docker image:tag existence |
-| `--workers N` | `4` | Number of concurrent validation threads |
+| Option                               | Default                         | Description                                   |
+| ------------------------------------ | ------------------------------- | --------------------------------------------- |
+| `MANIFEST_PATH`                      | *(required)*                    | Path to manifest JSON file                    |
+| `--nexus-url URL`                    | `https://nexus3.onap.org:10001` | Nexus3 registry URL                           |
+| `--check-images / --no-check-images` | `true`                          | Verify Docker image:tag existence             |
+| `--workers N`                        | `4`                             | Number of concurrent validation threads       |
+| `--update / --no-update`             | `true`                          | Write validation results back to the manifest |
 
 <!-- markdownlint-enable MD013 -->
 
@@ -314,25 +315,26 @@ jobs:
 
 <!-- markdownlint-disable MD013 -->
 
-| Input | Default | Description |
-| --- | --- | --- |
-| `oom-path` | *(empty — triggers clone)* | Path to pre-cloned OOM repo |
-| `oom-branch` | `master` | OOM branch to analyze |
-| `gerrit-url` | `https://gerrit.onap.org/r` | Gerrit base URL |
-| `collectors` | `oom,gerrit` | Comma-separated collector list |
-| `output-dir` | `$RUNNER_TEMP` | Output directory |
-| `output-format` | `json` | Output format: `json`, `yaml`, `all` |
-| `release-name` | `Rabat` | ONAP release code name |
-| `mapping-file` | — | Custom image-to-repo mapping YAML override |
-| `python-version` | `3.12` | Python version to use |
+| Input            | Default                     | Description                                |
+| ---------------- | --------------------------- | ------------------------------------------ |
+| `oom-path`       | *(empty — triggers clone)*  | Path to pre-cloned OOM repo                |
+| `oom-branch`     | `master`                    | OOM branch to analyze                      |
+| `gerrit-url`     | `https://gerrit.onap.org/r` | Gerrit base URL                            |
+| `collectors`     | `oom,gerrit`                | Comma-separated collector list             |
+| `output-dir`     | `$RUNNER_TEMP`              | Output directory                           |
+| `output-format`  | `json`                      | Output format: `json`, `yaml`, `all`       |
+| `release-name`   | `Rabat`                     | ONAP release code name                     |
+| `mapping-file`   | —                           | Custom image-to-repo mapping YAML override |
+| `python-version` | `3.12`                      | Python version to use                      |
+| `version`        | `latest`                    | Tool version (e.g. `0.1.0` or `latest`)    |
 
-| Output | Description |
-| --- | --- |
-| `manifest-path` | Path to the generated JSON manifest |
-| `manifest-version` | Schema version of the generated manifest |
-| `total-repositories` | Number of repositories found |
-| `total-images` | Number of Docker images found |
-| `onap-release` | ONAP release name |
+| Output               | Description                              |
+| -------------------- | ---------------------------------------- |
+| `manifest-path`      | Path to the generated JSON manifest      |
+| `manifest-version`   | Schema version of the generated manifest |
+| `total-repositories` | Number of repositories found             |
+| `total-images`       | Number of Docker images found            |
+| `onap-release`       | ONAP release name                        |
 
 <!-- markdownlint-enable MD013 -->
 
@@ -340,15 +342,70 @@ jobs:
 
 <!-- markdownlint-disable MD013 -->
 
-| Format | Command | Description |
-| --- | --- | --- |
-| JSON | `discover --output-format json` | Primary manifest format with full metadata and schema validation |
-| YAML | `discover --output-format yaml` | Human-readable counterpart of the JSON manifest |
-| CSV | `export --format csv` | Tabular data suitable for spreadsheets (filterable by repos or images) |
-| Markdown | `export --format md` | Formatted tables for embedding in reports or wikis |
-| Gerrit list | `export --format gerrit-list` | Flat newline-delimited list of Gerrit project names |
+| Format      | Command                         | Description                                                            |
+| ----------- | ------------------------------- | ---------------------------------------------------------------------- |
+| JSON        | `discover --output-format json` | Primary manifest format with full metadata and schema validation       |
+| YAML        | `discover --output-format yaml` | Human-readable counterpart of the JSON manifest                        |
+| CSV         | `export --format csv`           | Tabular data suitable for spreadsheets (filterable by repos or images) |
+| Markdown    | `export --format md`            | Formatted tables for embedding in reports or wikis                     |
+| HTML        | `export --format html`          | Dark-themed interactive report with search, sort, and emoji indicators |
+| Gerrit list | `export --format gerrit-list`   | Flat newline-delimited list of Gerrit project names                    |
 
 <!-- markdownlint-enable MD013 -->
+
+## HTML Report Features
+
+The HTML export (`export --format html`) produces a single dark-themed
+HTML report hosted on
+[GitHub Pages](https://modeseven-lfit.github.io/onap-release-mapping-tool/).
+CDN-hosted [Simple-DataTables](https://github.com/fiduswriter/Simple-DataTables)
+assets supply interactive table behaviour and styling, so the report
+requires network access for full functionality.
+
+### Interactive Tables
+
+Report tables include search/filter and column sorting powered by
+[Simple-DataTables](https://github.com/fiduswriter/Simple-DataTables):
+
+- **Search/filter** — a search box above each table for real-time
+  filtering
+- **Column sorting** — click any column header to sort
+  ascending/descending
+
+Tables with fewer than three rows skip interactivity, as search and
+sort add no value to small tables.
+
+### State Indicators
+
+<!-- markdownlint-disable MD013 -->
+
+The Repositories table uses emoji in the **State** column to convey
+release scope at a glance:
+
+<!-- markdownlint-disable MD060 -->
+
+| Emoji | Meaning                                                    |
+| ----- | ---------------------------------------------------------- |
+| 📦    | `READ_ONLY` — archived project                              |
+| ✅    | `ACTIVE` — project content is in the current ONAP release  |
+| ☑️    | `ACTIVE` — parent project with children in current release |
+| ❌    | `ACTIVE` — project is NOT in the current ONAP release      |
+| ❓    | Undetermined — tool could not resolve release scope        |
+
+<!-- markdownlint-enable MD060 -->
+
+<!-- markdownlint-enable MD013 -->
+
+The tool resolves state by cross-referencing four data sources:
+
+1. **OOM discovery** — repos found in OOM Helm charts are definitively
+   in the release (✅)
+2. **Relman `included_in`** — the release management `repos.yaml`
+   tracks which releases each project participates in
+3. **READ_ONLY status** — archived projects are definitively not in
+   the release (📦)
+4. **Parent project detection** — Gerrit parent projects whose children
+   ship in the release receive the parent indicator (☑️)
 
 ## Development
 

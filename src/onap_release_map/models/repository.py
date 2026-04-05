@@ -46,6 +46,23 @@ class OnapRepository(BaseModel):
     gerrit_state: Literal["ACTIVE", "READ_ONLY"] | None = None
     """Current state of the project in Gerrit, if known."""
 
+    in_current_release: bool | None = None
+    """Whether this repository is included in the current ONAP release.
+
+    Determined by cross-referencing OOM chart discovery, relman data,
+    and parent-project relationships.  ``True`` means the project (or
+    its sub-projects) ship in the release; ``False`` means it does
+    not; ``None`` means the status could not be determined.
+    """
+
+    is_parent_project: bool | None = None
+    """Whether this Gerrit project is a parent containing sub-projects.
+
+    Parent projects (e.g. ``"policy"``) group child repositories
+    (e.g. ``"policy/api"``, ``"policy/docker"``) and do not
+    themselves contain deployable code.
+    """
+
     maintained: bool | None = None
     """Whether the repository is actively maintained."""
 
@@ -75,13 +92,15 @@ class OnapRepository(BaseModel):
                     ],
                     "category": "runtime",
                     "gerrit_state": "ACTIVE",
+                    "in_current_release": True,
+                    "is_parent_project": False,
                     "maintained": True,
                     "has_ci": True,
                     "docker_images": ["onap/policy-api"],
                     "helm_charts": ["policy"],
                     "discovered_by": [
-                        "oom_chart_collector",
-                        "gerrit_project_collector",
+                        "oom",
+                        "gerrit",
                     ],
                 }
             ]

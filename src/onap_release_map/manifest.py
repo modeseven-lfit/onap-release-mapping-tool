@@ -93,7 +93,7 @@ class ManifestBuilder:
             generated_at = self._timestamp.isoformat()
 
         return ReleaseManifest(
-            schema_version="1.0.0",
+            schema_version="1.1.0",
             tool_version=self.tool_version,
             generated_at=generated_at,
             onap_release=self.onap_release,
@@ -140,12 +140,70 @@ class ManifestBuilder:
                     # Fill in missing fields
                     if existing.gerrit_state is None:
                         existing.gerrit_state = repo.gerrit_state
+                    elif repo.gerrit_state == "READ_ONLY":
+                        existing.gerrit_state = "READ_ONLY"
+                    # READ_ONLY is definitively not in the
+                    # current release regardless of how the
+                    # state was set (first fill or override).
+                    if existing.gerrit_state == "READ_ONLY":
+                        existing.in_current_release = False
                     if existing.maintained is None:
                         existing.maintained = repo.maintained
                     if existing.has_ci is None:
                         existing.has_ci = repo.has_ci
+                    # Merge in_current_release: True wins over
+                    # None/False since any positive signal is
+                    # authoritative, except READ_ONLY is
+                    # definitively not in the current release.
+                    if (
+                        repo.in_current_release is True
+                        and existing.gerrit_state != "READ_ONLY"
+                    ):
+                        existing.in_current_release = True
+                    elif (
+                        existing.in_current_release is None
+                        and repo.in_current_release is not None
+                    ):
+                        existing.in_current_release = repo.in_current_release
+                    # Merge is_parent_project: True wins
+                    if repo.is_parent_project is True:
+                        existing.is_parent_project = True
+                    elif (
+                        existing.is_parent_project is None
+                        and repo.is_parent_project is not None
+                    ):
+                        existing.is_parent_project = repo.is_parent_project
                 else:
                     repo_map[repo.gerrit_project] = repo
+
+        # Post-processing: OOM-discovered repos are in the current
+        # release unless they were already definitively excluded.
+        for repo in repo_map.values():
+            if (
+                "oom" in repo.discovered_by
+                and repo.gerrit_state != "READ_ONLY"
+                and repo.in_current_release is not False
+            ):
+                repo.in_current_release = True
+
+        # Parent projects whose children are in the release
+        # are themselves considered in the release.
+        # Precompute parent paths for repos in the release to
+        # avoid an O(n^2) scan.
+        release_parents: set[str] = set()
+        for name, repo in repo_map.items():
+            if repo.in_current_release is True:
+                parts = name.split("/")
+                for i in range(1, len(parts)):
+                    release_parents.add("/".join(parts[:i]))
+        for repo in repo_map.values():
+            if (
+                repo.is_parent_project
+                and repo.gerrit_project in release_parents
+                and repo.gerrit_state != "READ_ONLY"
+                and repo.in_current_release is not False
+            ):
+                repo.in_current_release = True
 
         return sorted(repo_map.values(), key=lambda r: r.gerrit_project)
 

@@ -99,6 +99,7 @@ def export_csv(manifest: ReleaseManifest, *, mode: str = "repos") -> str:
                 "category",
                 "confidence",
                 "gerrit_state",
+                "in_current_release",
                 "maintained",
                 "has_ci",
                 "discovered_by",
@@ -112,6 +113,7 @@ def export_csv(manifest: ReleaseManifest, *, mode: str = "repos") -> str:
                     repo.category,
                     repo.confidence,
                     repo.gerrit_state or "",
+                    _bool_str(repo.in_current_release),
                     _bool_str(repo.maintained),
                     _bool_str(repo.has_ci),
                     ";".join(repo.discovered_by),
@@ -190,7 +192,7 @@ def export_markdown(manifest: ReleaseManifest) -> str:
         "| -------------- | -------- | ---------- | ----- | ---------- | ------ |"
     )
     for repo in manifest.repositories:
-        state = repo.gerrit_state or ""
+        state = _state_emoji(repo)
         maintained = _bool_display(repo.maintained)
         has_ci = _bool_display(repo.has_ci)
         lines.append(
@@ -231,12 +233,13 @@ def export_html(manifest: ReleaseManifest) -> str:
     """Export a release manifest as a styled HTML report.
 
     Converts the Markdown report produced by :func:`export_markdown`
-    into a self-contained HTML document with dark-theme styling that
+    into a single HTML document with dark-theme styling that
     matches the project's GitHub Pages index page.
 
-    The generated HTML includes inline CSS (no external dependencies),
-    responsive tables with hover effects, and a navigation link back
-    to the parent index page.
+    The generated HTML includes inline CSS and CDN-hosted
+    Simple-DataTables for interactive table features, responsive
+    tables with hover effects, and a navigation link back to the
+    parent index page.
 
     All manifest-derived string values are HTML-escaped before
     Markdown generation to prevent cross-site scripting (XSS)
@@ -255,6 +258,10 @@ def export_html(manifest: ReleaseManifest) -> str:
     safe_manifest = _sanitise_manifest(manifest)
     md_text = export_markdown(safe_manifest)
     body_html = md_lib.markdown(md_text, extensions=["tables"])
+
+    # Add dt-enabled class to all tables for DataTables init
+    body_html = body_html.replace("<table>", '<table class="dt-enabled">')
+
     title = f"ONAP Release Manifest: {manifest.onap_release.name}"
     return _html_wrapper(body_html, title)
 
@@ -263,8 +270,9 @@ def _html_wrapper(body_html: str, title: str) -> str:
     """Wrap an HTML fragment in a full dark-themed HTML document.
 
     Provides the ``<!DOCTYPE html>`` scaffold, inline CSS using the
-    same design tokens as the GitHub Pages index, and table-specific
-    styling for borders, padding, striped rows, and hover effects.
+    same design tokens as the GitHub Pages index, table-specific
+    styling for borders, padding, striped rows, and hover effects,
+    and Simple-DataTables integration for search and column sorting.
 
     Parameters
     ----------
@@ -286,6 +294,10 @@ def _html_wrapper(body_html: str, title: str) -> str:
         '  <meta name="viewport"'
         ' content="width=device-width, initial-scale=1">\n'
         f"  <title>{html.escape(title)}</title>\n"
+        "  <!-- Simple-DataTables CSS -->\n"
+        '  <link href="https://cdn.jsdelivr.net/npm/'
+        'simple-datatables@9/dist/style.css"'
+        ' rel="stylesheet" type="text/css">\n'
         "  <style>\n"
         "    :root {\n"
         "      --bg: #0d1117; --fg: #c9d1d9;\n"
@@ -304,7 +316,7 @@ def _html_wrapper(body_html: str, title: str) -> str:
         " sans-serif;\n"
         "      background: var(--bg);"
         " color: var(--fg);\n"
-        "      max-width: 960px;"
+        "      max-width: 1200px;"
         " margin: 0 auto; padding: 2rem 1rem;\n"
         "    }\n"
         "    a { color: var(--accent);"
@@ -341,7 +353,6 @@ def _html_wrapper(body_html: str, title: str) -> str:
         "      background: var(--border);\n"
         "      color: var(--fg);\n"
         "      font-weight: 600;\n"
-        "      cursor: default;\n"
         "    }\n"
         "    tr:nth-child(even) td {\n"
         "      background: rgba(99,110,123,0.08);\n"
@@ -353,12 +364,124 @@ def _html_wrapper(body_html: str, title: str) -> str:
         "      margin-top: 3rem; color: #8b949e;\n"
         "      font-size: 0.85rem;\n"
         "    }\n"
+        #
+        # DataTables dark-theme overrides
+        #
+        "    /* DataTables wrapper */\n"
+        "    .dataTable-wrapper {\n"
+        "      margin: 1.5em 0;\n"
+        "    }\n"
+        "    .dataTable-top {\n"
+        "      display: flex;\n"
+        "      justify-content: space-between;\n"
+        "      align-items: center;\n"
+        "      gap: 1rem;\n"
+        "      padding: 1rem 0;\n"
+        "      margin-bottom: 1rem;\n"
+        "      flex-wrap: wrap;\n"
+        "    }\n"
+        "    .dataTable-search input {\n"
+        "      width: 100%;\n"
+        "      max-width: 300px;\n"
+        "      padding: 0.5rem 0.75rem;\n"
+        "      border: 1px solid var(--border);\n"
+        "      border-radius: 6px;\n"
+        "      font-size: 1rem;\n"
+        "      background-color: var(--card-bg);\n"
+        "      color: var(--fg);\n"
+        "    }\n"
+        "    .dataTable-search input:focus {\n"
+        "      outline: none;\n"
+        "      border-color: var(--accent);\n"
+        "      box-shadow:"
+        " 0 0 0 3px rgba(88,166,255,0.2);\n"
+        "    }\n"
+        "    .dataTable-search input::placeholder {\n"
+        "      color: #8b949e;\n"
+        "    }\n"
+        "    /* Sorting indicators */\n"
+        "    .dataTable-sorter {\n"
+        "      position: relative;\n"
+        "      cursor: pointer;\n"
+        "      user-select: none;\n"
+        "    }\n"
+        "    .dataTable-sorter::before,\n"
+        "    .dataTable-sorter::after {\n"
+        "      content: '';\n"
+        "      position: absolute;\n"
+        "      right: 0.5rem;\n"
+        "      width: 0; height: 0;\n"
+        "      border-left: 4px solid transparent;\n"
+        "      border-right:"
+        " 4px solid transparent;\n"
+        "      opacity: 0.3;\n"
+        "    }\n"
+        "    .dataTable-sorter::before {\n"
+        "      bottom: 50%; margin-bottom: 3px;\n"
+        "      border-bottom: 4px solid #8b949e;\n"
+        "    }\n"
+        "    .dataTable-sorter::after {\n"
+        "      top: 50%; margin-top: 3px;\n"
+        "      border-top: 4px solid #8b949e;\n"
+        "    }\n"
+        "    .dataTable-sorter:hover::before,\n"
+        "    .dataTable-sorter:hover::after {\n"
+        "      opacity: 0.6;\n"
+        "    }\n"
+        "    .dataTable-ascending"
+        " .dataTable-sorter::before {\n"
+        "      opacity: 1;\n"
+        "      border-bottom-color: var(--accent);\n"
+        "    }\n"
+        "    .dataTable-descending"
+        " .dataTable-sorter::after {\n"
+        "      opacity: 1;\n"
+        "      border-top-color: var(--accent);\n"
+        "    }\n"
+        "    .dataTable-empty {\n"
+        "      padding: 2rem;\n"
+        "      text-align: center;\n"
+        "      color: #8b949e;\n"
+        "      font-style: italic;\n"
+        "    }\n"
+        "    /* Hide pagination and bottom bar */\n"
+        "    .dataTable-bottom {\n"
+        "      display: none !important;\n"
+        "    }\n"
+        "    /* State emoji legend */\n"
+        "    .state-legend {\n"
+        "      margin: 0.5rem 0 1rem 0;\n"
+        "      padding: 1rem;\n"
+        "      background: var(--card-bg);\n"
+        "      border: 1px solid var(--border);\n"
+        "      border-radius: 6px;\n"
+        "      font-size: 0.9rem;\n"
+        "    }\n"
+        "    .state-legend p {\n"
+        "      margin: 0.3rem 0;\n"
+        "    }\n"
+        "    /* Print: hide DataTables controls */\n"
+        "    @media print {\n"
+        "      .dataTable-top,\n"
+        "      .dataTable-bottom {\n"
+        "        display: none !important;\n"
+        "      }\n"
+        "    }\n"
         "  </style>\n"
         "</head>\n"
         "<body>\n"
         '  <a class="back-link"'
         ' href="../">&larr; Back to index</a>\n'
         f"  {body_html}\n"
+        '  <div class="state-legend">\n'
+        "    <p><strong>State Legend:</strong></p>\n"
+        "    <p>\U0001f4e6 Read-only / archived</p>\n"
+        "    <p>\u2705 In current ONAP release</p>\n"
+        "    <p>\u2611\ufe0f Parent project"
+        " (children in release)</p>\n"
+        "    <p>\u274c Not in current ONAP release</p>\n"
+        "    <p>\u2753 Undetermined</p>\n"
+        "  </div>\n"
         "  <footer>\n"
         "    <p>Generated by\n"
         '      <a href="https://github.com/'
@@ -368,6 +491,42 @@ def _html_wrapper(body_html: str, title: str) -> str:
         "      </a>\n"
         "    </p>\n"
         "  </footer>\n"
+        "  <!-- Simple-DataTables JS -->\n"
+        '  <script src="https://cdn.jsdelivr.net/npm/'
+        'simple-datatables@9"'
+        ' type="text/javascript"></script>\n'
+        "  <script>\n"
+        "  document.addEventListener('DOMContentLoaded',"
+        " function() {\n"
+        "    document.querySelectorAll("
+        "'table.dt-enabled').forEach("
+        "function(table) {\n"
+        "      var rows ="
+        " table.querySelectorAll('tbody tr');\n"
+        "      // Skip tables with fewer than 3 rows;\n"
+        "      // search/sort add no value to tiny tables\n"
+        "      if (rows.length < 3) return;\n"
+        "      try {\n"
+        "        new simpleDatatables.DataTable(table, {\n"
+        "          searchable: true,\n"
+        "          sortable: true,\n"
+        "          paging: false,\n"
+        "          perPage: 0,\n"
+        "          perPageSelect: false,\n"
+        "          labels: {\n"
+        '            placeholder: "Filter table...",\n'
+        '            noRows: "No entries found",\n'
+        "            info: "
+        '"Showing {start} to {end} of {rows}"\n'
+        "          }\n"
+        "        });\n"
+        "      } catch (e) {\n"
+        "        console.error("
+        "'Failed to init DataTable:', e);\n"
+        "      }\n"
+        "    });\n"
+        "  });\n"
+        "  </script>\n"
         "</body>\n"
         "</html>\n"
     )
@@ -415,7 +574,7 @@ def export_manifest(
         The release manifest to export.
     fmt:
         Output format name — one of ``yaml``, ``csv``, ``md``,
-        or ``gerrit-list``.
+        ``html``, or ``gerrit-list``.
     mode:
         Sub-mode for CSV export (``"repos"`` or ``"images"``).
 
@@ -557,10 +716,51 @@ def _bool_display(value: bool | None) -> str:
     return "Yes" if value else "No"
 
 
+def _state_emoji(repo: object) -> str:
+    """Convert repository state fields to an emoji indicator.
+
+    Uses the ``gerrit_state``, ``in_current_release``, and
+    ``is_parent_project`` attributes to produce a visual status:
+
+    * 📦 — ``READ_ONLY`` (archived / read-only)
+    * ✅ — ``ACTIVE`` and in the current ONAP release
+    * ☑️ — ``ACTIVE`` parent project with children in release
+    * ❌ — ``ACTIVE`` but NOT in the current ONAP release
+    * ❓ — Undetermined (release scope unknown)
+
+    Parameters
+    ----------
+    repo:
+        An ``OnapRepository`` instance (or any object with the
+        relevant attributes).
+
+    Returns
+    -------
+    str
+        An emoji string representing the repository state.
+    """
+    gerrit_state = getattr(repo, "gerrit_state", None)
+    in_release = getattr(repo, "in_current_release", None)
+    is_parent = getattr(repo, "is_parent_project", None)
+
+    if gerrit_state == "READ_ONLY":
+        return "\U0001f4e6"  # 📦
+
+    if in_release is True:
+        if is_parent is True:
+            return "\u2611\ufe0f"  # ☑️
+        return "\u2705"  # ✅
+
+    if in_release is False:
+        return "\u274c"  # ❌
+
+    # Unknown / undetermined
+    return "\u2753"  # ❓
+
+
 EXPORT_FORMATS: dict[str, Callable[[ReleaseManifest], str]] = {
-    "gerrit-list": export_gerrit_list,
-    "html": export_html,
-    "md": export_markdown,
     "yaml": export_yaml,
+    "md": export_markdown,
+    "html": export_html,
+    "gerrit-list": export_gerrit_list,
 }
-"""Mapping of format names to their export functions."""
