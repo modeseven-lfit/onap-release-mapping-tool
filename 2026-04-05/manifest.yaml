@@ -594,7 +594,7 @@ docker_images:
   nexus_validated: null
   registry: nexus3.onap.org:10001
   tag: 16.0.1
-generated_at: '2026-04-05T15:18:47Z'
+generated_at: '2026-04-05T16:13:54Z'
 helm_components:
 - condition_key: a1policymanagement.enabled
   docker_images:
@@ -1666,19 +1666,19 @@ onap_release:
   oom_commit: 4ad36579a06b56ed10b819d7a453d5040f75040d
 provenance:
   collectors_executed:
-  - duration_seconds: 1.201
+  - duration_seconds: 1.238
     errors: []
     items_collected: 238
     name: oom
-  - duration_seconds: 0.374
+  - duration_seconds: 0.365
     errors: []
     items_collected: 181
     name: gerrit
-  - duration_seconds: 0.102
+  - duration_seconds: 0.104
     errors: []
     items_collected: 372
     name: relman
-  - duration_seconds: 0.981
+  - duration_seconds: 0.998
     errors: []
     items_collected: 114
     name: jjb
@@ -1704,198 +1704,6 @@ provenance:
     type: file
     url: /home/runner/work/_temp/ci-management/jjb
 repositories:
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Discovered via Gerrit REST API
-  discovered_by:
-  - gerrit
-  docker_images: []
-  gerrit_project: .github
-  gerrit_state: ACTIVE
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/.github
-  has_ci: null
-  helm_charts: []
-  in_current_release: null
-  is_parent_project: null
-  maintained: null
-  top_level_project: .github
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Discovered via Gerrit REST API
-  discovered_by:
-  - gerrit
-  docker_images: []
-  gerrit_project: All-Projects
-  gerrit_state: ACTIVE
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/All-Projects
-  has_ci: null
-  helm_charts: []
-  in_current_release: null
-  is_parent_project: null
-  maintained: null
-  top_level_project: All-Projects
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Discovered via Gerrit REST API
-  discovered_by:
-  - gerrit
-  docker_images: []
-  gerrit_project: All-Users
-  gerrit_state: ACTIVE
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/All-Users
-  has_ci: null
-  helm_charts: []
-  in_current_release: null
-  is_parent_project: null
-  maintained: null
-  top_level_project: All-Users
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aaf
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aaf
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: aaf
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aaf/authz
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aaf%2Fauthz
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: aaf
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aaf/cadi
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aaf%2Fcadi
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: aaf
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aaf/certservice
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aaf%2Fcertservice
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: aaf
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aaf/inno
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aaf%2Finno
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: aaf
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aaf/luaplugin
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aaf%2Fluaplugin
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: aaf
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aaf/oom
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aaf%2Foom
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: aaf
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aaf/sms
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aaf%2Fsms
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: aaf
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aaf/sshsm
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aaf%2Fsshsm
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: aaf
 - category: runtime
   confidence: medium
   confidence_reasons:
@@ -1939,54 +1747,6 @@ repositories:
   maintained: true
   top_level_project: aai
 - category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/aai-config
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Faai-config
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/aai-data
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Faai-data
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/aai-service
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Faai-service
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
   confidence: high
   confidence_reasons:
   - Docker image referenced in OOM Helm charts
@@ -2007,198 +1767,6 @@ repositories:
   helm_charts:
   - aai/aai-babel
   in_current_release: true
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/cacher
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fcacher
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/chameleon
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fchameleon
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/champ
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fchamp
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/data-router
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fdata-router
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/eis
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Feis
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/enricher
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fenricher
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/esr-gui
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fesr-gui
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/esr-server
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fesr-server
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/event-client
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fevent-client
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/gallifrey
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fgallifrey
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/gap
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fgap
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/gizmo
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fgizmo
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: aai
@@ -2353,22 +1921,6 @@ repositories:
   maintained: true
   top_level_project: aai
 - category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/router-core
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Frouter-core
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
   confidence: high
   confidence_reasons:
   - Docker image referenced in OOM Helm charts
@@ -2389,22 +1941,6 @@ repositories:
   helm_charts:
   - aai/aai-schema-service
   in_current_release: true
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/search-data-service
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fsearch-data-service
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: aai
@@ -2455,38 +1991,6 @@ repositories:
 - category: runtime
   confidence: medium
   confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/spike
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fspike
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/tabular-data-service
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Ftabular-data-service
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   discovered_by:
@@ -2526,86 +2030,6 @@ repositories:
   is_parent_project: null
   maintained: true
   top_level_project: aai
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: aai/validation
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fvalidation
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: aai
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: appc
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/appc
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: appc
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: appc/cdt
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/appc%2Fcdt
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: appc
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: appc/deployment
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/appc%2Fdeployment
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: appc
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: appc/parent
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/appc%2Fparent
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: appc
 - category: runtime
   confidence: medium
   confidence_reasons:
@@ -2677,22 +2101,6 @@ repositories:
   - cds/cds-sdc-listener
   - cds/cds-ui
   in_current_release: true
-  is_parent_project: null
-  maintained: true
-  top_level_project: ccsdk
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ccsdk/dashboard
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Fdashboard
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: ccsdk
@@ -2803,38 +2211,6 @@ repositories:
 - category: runtime
   confidence: medium
   confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ccsdk/platform/nbapi
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Fplatform%2Fnbapi
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: ccsdk
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ccsdk/platform/plugins
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Fplatform%2Fplugins
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: ccsdk
-- category: runtime
-  confidence: medium
-  confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   - Has CI jobs in ci-management JJB
@@ -2859,108 +2235,12 @@ repositories:
   discovered_by:
   - relman
   docker_images: []
-  gerrit_project: ccsdk/sli/adaptors
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Fsli%2Fadaptors
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: ccsdk
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ccsdk/sli/core
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Fsli%2Fcore
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: ccsdk
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ccsdk/sli/northbound
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Fsli%2Fnorthbound
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: ccsdk
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ccsdk/sli/plugins
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Fsli%2Fplugins
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: ccsdk
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
   gerrit_project: ccsdk/storage/esaas
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Fstorage%2Fesaas
   has_ci: null
   helm_charts: []
   in_current_release: null
-  is_parent_project: null
-  maintained: true
-  top_level_project: ccsdk
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ccsdk/storage/pgaas
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Fstorage%2Fpgaas
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: ccsdk
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ccsdk/utils
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Futils
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: ccsdk
@@ -2984,70 +2264,6 @@ repositories:
   is_parent_project: null
   maintained: true
   top_level_project: ci-management
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: clamp
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/clamp
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: clamp
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: clamp/dashboard
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/clamp%2Fdashboard
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: clamp
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: clamp/oom
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/clamp%2Foom
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: clamp
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: clamp/ui
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/clamp%2Fui
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: clamp
 - category: runtime
   confidence: medium
   confidence_reasons:
@@ -3146,358 +2362,6 @@ repositories:
   is_parent_project: null
   maintained: true
   top_level_project: cps
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/apod
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fapod
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/apod/analytics
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fapod%2Fanalytics
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/apod/buildtools
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fapod%2Fbuildtools
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/apod/cdap
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fapod%2Fcdap
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/collectors
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fcollectors
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/collectors/ves
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fcollectors%2Fves
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/controller
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fcontroller
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/controller/analytics
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fcontroller%2Fanalytics
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/dcae-inventory
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fdcae-inventory
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/demo
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fdemo
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/demo/startup
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fdemo%2Fstartup
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/demo/startup/aaf
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fdemo%2Fstartup%2Faaf
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/demo/startup/controller
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fdemo%2Fstartup%2Fcontroller
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/demo/startup/message-router
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fdemo%2Fstartup%2Fmessage-router
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/dmaapbc
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fdmaapbc
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/operation
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Foperation
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/operation/utils
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Foperation%2Futils
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/orch-dispatcher
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Forch-dispatcher
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/pgaas
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Fpgaas
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/utils
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Futils
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: dcae
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcae/utils/buildtools
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcae%2Futils%2Fbuildtools
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: dcae
 - category: runtime
   confidence: medium
   confidence_reasons:
@@ -3519,70 +2383,6 @@ repositories:
 - category: runtime
   confidence: medium
   confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcaegen2/analytics
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fanalytics
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: true
-  top_level_project: dcaegen2
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcaegen2/analytics/flink
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fanalytics%2Fflink
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: dcaegen2
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcaegen2/analytics/pnda
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fanalytics%2Fpnda
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: dcaegen2
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcaegen2/analytics/tca
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fanalytics%2Ftca
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: dcaegen2
-- category: runtime
-  confidence: medium
-  confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   discovered_by:
@@ -3596,22 +2396,6 @@ repositories:
   helm_charts: []
   in_current_release: null
   is_parent_project: null
-  maintained: true
-  top_level_project: dcaegen2
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcaegen2/collectors
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fcollectors
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
   maintained: true
   top_level_project: dcaegen2
 - category: runtime
@@ -3765,150 +2549,6 @@ repositories:
   has_ci: null
   helm_charts: []
   in_current_release: null
-  is_parent_project: null
-  maintained: true
-  top_level_project: dcaegen2
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcaegen2/platform/cdapbroker
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fplatform%2Fcdapbroker
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: dcaegen2
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcaegen2/platform/cli
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fplatform%2Fcli
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: dcaegen2
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcaegen2/platform/configbinding
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fplatform%2Fconfigbinding
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: dcaegen2
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcaegen2/platform/deployment-handler
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fplatform%2Fdeployment-handler
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: dcaegen2
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcaegen2/platform/inventory-api
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fplatform%2Finventory-api
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: dcaegen2
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcaegen2/platform/plugins
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fplatform%2Fplugins
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: dcaegen2
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcaegen2/platform/policy-handler
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fplatform%2Fpolicy-handler
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: dcaegen2
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcaegen2/platform/registrator
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fplatform%2Fregistrator
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: dcaegen2
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dcaegen2/platform/servicechange-handler
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fplatform%2Fservicechange-handler
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dcaegen2
@@ -4171,22 +2811,6 @@ repositories:
 - category: runtime
   confidence: medium
   confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dmaap/dbcapi
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dmaap%2Fdbcapi
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: dmaap
-- category: runtime
-  confidence: medium
-  confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   discovered_by:
@@ -4241,38 +2865,6 @@ repositories:
   discovered_by:
   - relman
   docker_images: []
-  gerrit_project: dmaap/messagerouter/mirroragent
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dmaap%2Fmessagerouter%2Fmirroragent
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: dmaap
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: dmaap/messagerouter/msgrtr
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/dmaap%2Fmessagerouter%2Fmsgrtr
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: dmaap
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
   gerrit_project: dmaap/zookeeper
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dmaap%2Fzookeeper
@@ -4316,54 +2908,6 @@ repositories:
   is_parent_project: null
   maintained: null
   top_level_project: doc
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ecompsdkos
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ecompsdkos
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: ecompsdkos
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: externalapi
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/externalapi
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: externalapi
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: externalapi/nbi
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/externalapi%2Fnbi
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: externalapi
 - category: runtime
   confidence: medium
   confidence_reasons:
@@ -4395,22 +2939,6 @@ repositories:
   has_ci: null
   helm_charts: []
   in_current_release: null
-  is_parent_project: null
-  maintained: true
-  top_level_project: holmes
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: holmes/dsa
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/holmes%2Fdsa
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: holmes
@@ -4469,22 +2997,6 @@ repositories:
 - category: runtime
   confidence: medium
   confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: integration/benchmark
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fbenchmark
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: integration
-- category: runtime
-  confidence: medium
-  confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   discovered_by:
@@ -4517,22 +3029,6 @@ repositories:
   has_ci: true
   helm_charts: []
   in_current_release: null
-  is_parent_project: null
-  maintained: true
-  top_level_project: integration
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: integration/devtool
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fdevtool
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -4797,38 +3293,6 @@ repositories:
 - category: runtime
   confidence: medium
   confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: integration/simulators/dc-simulator
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fsimulators%2Fdc-simulator
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: integration
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: integration/simulators/masspnf-simulator
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fsimulators%2Fmasspnf-simulator
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: integration
-- category: runtime
-  confidence: medium
-  confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   - Has CI jobs in ci-management JJB
@@ -5005,38 +3469,6 @@ repositories:
 - category: runtime
   confidence: medium
   confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: integration/terraform
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fterraform
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: integration
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: integration/terragrunt
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fterragrunt
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: integration
-- category: runtime
-  confidence: medium
-  confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   - Has CI jobs in ci-management JJB
@@ -5077,38 +3509,6 @@ repositories:
 - category: runtime
   confidence: medium
   confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: integration/usecases/bbs
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fusecases%2Fbbs
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: integration
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: integration/usecases/mdons
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fusecases%2Fmdons
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: integration
-- category: runtime
-  confidence: medium
-  confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   - Has CI jobs in ci-management JJB
@@ -5129,136 +3529,6 @@ repositories:
 - category: runtime
   confidence: medium
   confidence_reasons:
-  - Discovered via Gerrit REST API
-  - Listed in relman repos.yaml
-  discovered_by:
-  - gerrit
-  - relman
-  docker_images: []
-  gerrit_project: logging-analytics
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/logging-analytics
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: logging-analytics
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: logging-analytics/pomba
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/logging-analytics%2Fpomba
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: logging-analytics
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: logging-analytics/pomba/pomba-aai-context-builder
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/logging-analytics%2Fpomba%2Fpomba-aai-context-builder
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: logging-analytics
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: logging-analytics/pomba/pomba-audit-common
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/logging-analytics%2Fpomba%2Fpomba-audit-common
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: logging-analytics
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: logging-analytics/pomba/pomba-context-aggregator
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/logging-analytics%2Fpomba%2Fpomba-context-aggregator
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: logging-analytics
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: logging-analytics/pomba/pomba-network-discovery-context-builder
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/logging-analytics%2Fpomba%2Fpomba-network-discovery-context-builder
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: logging-analytics
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: logging-analytics/pomba/pomba-sdc-context-builder
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/logging-analytics%2Fpomba%2Fpomba-sdc-context-builder
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: logging-analytics
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: logging-analytics/pomba/pomba-sdnc-context-builder
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/logging-analytics%2Fpomba%2Fpomba-sdnc-context-builder
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: logging-analytics
-- category: runtime
-  confidence: medium
-  confidence_reasons:
   - Listed in relman repos.yaml
   discovered_by:
   - relman
@@ -5269,22 +3539,6 @@ repositories:
   has_ci: null
   helm_charts: []
   in_current_release: null
-  is_parent_project: null
-  maintained: true
-  top_level_project: modeling
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: modeling/javatoscachecker
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/modeling%2Fjavatoscachecker
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: modeling
@@ -5430,86 +3684,6 @@ repositories:
   is_parent_project: null
   maintained: true
   top_level_project: msb
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: mso
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/mso
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: mso
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: mso/chef-repo
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/mso%2Fchef-repo
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: mso
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: mso/docker-config
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/mso%2Fdocker-config
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: mso
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: mso/libs
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/mso%2Flibs
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: mso
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: mso/mso-config
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/mso%2Fmso-config
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: mso
 - category: runtime
   confidence: medium
   confidence_reasons:
@@ -5528,22 +3702,6 @@ repositories:
   helm_charts: []
   in_current_release: true
   is_parent_project: true
-  maintained: true
-  top_level_project: multicloud
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: multicloud/azure
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/multicloud%2Fazure
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
   maintained: true
   top_level_project: multicloud
 - category: runtime
@@ -5656,218 +3814,6 @@ repositories:
   is_parent_project: null
   maintained: true
   top_level_project: multicloud
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: music
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/music
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: music
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: music/distributed-kv-store
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/music%2Fdistributed-kv-store
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: music
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: music/mdbc
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/music%2Fmdbc
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: music
-- category: runtime
-  confidence: high
-  confidence_reasons:
-  - Docker image referenced in OOM Helm charts
-  - Listed in relman repos.yaml
-  discovered_by:
-  - oom
-  - relman
-  docker_images:
-  - onap/music/prom
-  gerrit_project: music/prom
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/music%2Fprom
-  has_ci: null
-  helm_charts:
-  - sdnc/sdnc-prom
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: music
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ncomp
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ncomp
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: ncomp
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ncomp/cdap
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ncomp%2Fcdap
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: ncomp
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ncomp/core
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ncomp%2Fcore
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: ncomp
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ncomp/docker
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ncomp%2Fdocker
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: ncomp
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ncomp/maven
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ncomp%2Fmaven
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: ncomp
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ncomp/openstack
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ncomp%2Fopenstack
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: ncomp
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ncomp/sirius
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ncomp%2Fsirius
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: ncomp
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ncomp/sirius/manager
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ncomp%2Fsirius%2Fmanager
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: ncomp
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ncomp/utils
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ncomp%2Futils
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: ncomp
 - category: infrastructure
   confidence: high
   confidence_reasons:
@@ -6109,38 +4055,6 @@ repositories:
   discovered_by:
   - relman
   docker_images: []
-  gerrit_project: optf/cmso
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/optf%2Fcmso
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: optf
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: optf/fgps
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/optf%2Ffgps
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: optf
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
   gerrit_project: optf/has
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/optf%2Fhas
@@ -6305,22 +4219,6 @@ repositories:
   maintained: true
   top_level_project: policy
 - category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: policy/core
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/policy%2Fcore
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: policy
-- category: runtime
   confidence: high
   confidence_reasons:
   - Docker image referenced in OOM Helm charts
@@ -6409,22 +4307,6 @@ repositories:
   helm_charts:
   - policy/policy-drools-pdp
   in_current_release: true
-  is_parent_project: null
-  maintained: true
-  top_level_project: policy
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: policy/engine
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/policy%2Fengine
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: policy
@@ -6529,22 +4411,6 @@ repositories:
   maintained: true
   top_level_project: policy
 - category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: policy/pdp
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/policy%2Fpdp
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: policy
-- category: runtime
   confidence: high
   confidence_reasons:
   - Docker image referenced in OOM Helm charts
@@ -6568,22 +4434,6 @@ repositories:
   is_parent_project: null
   maintained: true
   top_level_project: policy
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: portal
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/portal
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: portal
 - category: runtime
   confidence: medium
   confidence_reasons:
@@ -6704,22 +4554,6 @@ repositories:
   is_parent_project: null
   maintained: null
   top_level_project: portal-ng
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: portal/sdk
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/portal%2Fsdk
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: portal
 - category: runtime
   confidence: medium
   confidence_reasons:
@@ -6774,22 +4608,6 @@ repositories:
   is_parent_project: null
   maintained: true
   top_level_project: sandbox-3
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sandbox-vid
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sandbox-vid
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: sandbox-vid
 - category: runtime
   confidence: high
   confidence_reasons:
@@ -6818,166 +4636,6 @@ repositories:
   - sdc/sdc-onboarding-be
   in_current_release: true
   is_parent_project: true
-  maintained: true
-  top_level_project: sdc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdc/dcae-d/ci
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fdcae-d%2Fci
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdc/dcae-d/dt
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fdcae-d%2Fdt
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdc/dcae-d/dt-be-main
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fdcae-d%2Fdt-be-main
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdc/dcae-d/dt-be-property
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fdcae-d%2Fdt-be-property
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdc/dcae-d/fe
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fdcae-d%2Ffe
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdc/dcae-d/rule-engine
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fdcae-d%2Frule-engine
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdc/dcae-d/tosca-lab
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fdcae-d%2Ftosca-lab
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdc/jtosca
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fjtosca
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdc/microservices
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fmicroservices
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdc/onap-ui
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fonap-ui
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
   maintained: true
   top_level_project: sdc
 - category: runtime
@@ -7017,22 +4675,6 @@ repositories:
   has_ci: true
   helm_charts: []
   in_current_release: null
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdc/onap-ui-react
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fonap-ui-react
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: sdc
@@ -7141,22 +4783,6 @@ repositories:
 - category: runtime
   confidence: medium
   confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdc/sdc-titan-cassandra
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fsdc-titan-cassandra
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   - Has CI jobs in ci-management JJB
@@ -7221,22 +4847,6 @@ repositories:
 - category: runtime
   confidence: medium
   confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdnc/adaptors
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdnc%2Fadaptors
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdnc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   - Has CI jobs in ci-management JJB
@@ -7251,54 +4861,6 @@ repositories:
   has_ci: true
   helm_charts: []
   in_current_release: null
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdnc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdnc/architecture
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdnc%2Farchitecture
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdnc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdnc/core
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdnc%2Fcore
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdnc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdnc/features
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdnc%2Ffeatures
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: sdnc
@@ -7349,38 +4911,6 @@ repositories:
   - sdnc/sdnc-web
   - sdnc/ueb-listener
   in_current_release: true
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdnc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdnc/parent
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdnc%2Fparent
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: sdnc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: sdnc/plugins
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/sdnc%2Fplugins
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: sdnc
@@ -7799,22 +5329,6 @@ repositories:
 - category: runtime
   confidence: medium
   confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: testsuite/heatbridge
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/testsuite%2Fheatbridge
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: testsuite
-- category: runtime
-  confidence: medium
-  confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   discovered_by:
@@ -7888,38 +5402,6 @@ repositories:
   is_parent_project: null
   maintained: true
   top_level_project: testsuite
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ui
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ui
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: ui
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: ui/dmaapbc
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ui%2Fdmaapbc
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: ui
 - category: runtime
   confidence: medium
   confidence_reasons:
@@ -8123,22 +5605,6 @@ repositories:
 - category: runtime
   confidence: medium
   confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vfc/nfvo/catalog
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc%2Fnfvo%2Fcatalog
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: vfc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   discovered_by:
@@ -8151,38 +5617,6 @@ repositories:
   has_ci: null
   helm_charts: []
   in_current_release: null
-  is_parent_project: null
-  maintained: true
-  top_level_project: vfc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vfc/nfvo/driver/ems
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc%2Fnfvo%2Fdriver%2Fems
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: vfc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vfc/nfvo/driver/sfc
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc%2Fnfvo%2Fdriver%2Fsfc
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vfc
@@ -8234,86 +5668,6 @@ repositories:
   is_parent_project: null
   maintained: true
   top_level_project: vfc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vfc/nfvo/multivimproxy
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc%2Fnfvo%2Fmultivimproxy
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: vfc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vfc/nfvo/resmanagement
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc%2Fnfvo%2Fresmanagement
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: vfc
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vfc/nfvo/wfengine
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc%2Fnfvo%2Fwfengine
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: vfc
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vid
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vid
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: true
-  maintained: false
-  top_level_project: vid
-- category: build-dependency
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vid/asdcclient
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vid%2Fasdcclient
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: false
-  top_level_project: vid
 - category: runtime
   confidence: medium
   confidence_reasons:
@@ -8447,22 +5801,6 @@ repositories:
   discovered_by:
   - relman
   docker_images: []
-  gerrit_project: vnfsdk/compliance
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfsdk%2Fcompliance
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: vnfsdk
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
   gerrit_project: vnfsdk/dovetail-integration
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfsdk%2Fdovetail-integration
@@ -8485,22 +5823,6 @@ repositories:
   has_ci: null
   helm_charts: []
   in_current_release: null
-  is_parent_project: null
-  maintained: true
-  top_level_project: vnfsdk
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vnfsdk/ice
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfsdk%2Fice
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vnfsdk
@@ -8601,22 +5923,6 @@ repositories:
   discovered_by:
   - relman
   docker_images: []
-  gerrit_project: vnfsdk/ves-agent
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfsdk%2Fves-agent
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: vnfsdk
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
   gerrit_project: vvp
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp
@@ -8624,54 +5930,6 @@ repositories:
   helm_charts: []
   in_current_release: null
   is_parent_project: true
-  maintained: true
-  top_level_project: vvp
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vvp/ansible-ice-bootstrap
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp%2Fansible-ice-bootstrap
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: vvp
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vvp/cms
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp%2Fcms
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: vvp
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vvp/devkit
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp%2Fdevkit
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
   maintained: true
   top_level_project: vvp
 - category: runtime
@@ -8703,86 +5961,6 @@ repositories:
   has_ci: null
   helm_charts: []
   in_current_release: null
-  is_parent_project: null
-  maintained: true
-  top_level_project: vvp
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vvp/gitlab
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp%2Fgitlab
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: vvp
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vvp/image-scanner
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp%2Fimage-scanner
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: vvp
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vvp/jenkins
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp%2Fjenkins
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: vvp
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vvp/portal
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp%2Fportal
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
-  is_parent_project: null
-  maintained: true
-  top_level_project: vvp
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Listed in relman repos.yaml
-  discovered_by:
-  - relman
-  docker_images: []
-  gerrit_project: vvp/postgresql
-  gerrit_state: READ_ONLY
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp%2Fpostgresql
-  has_ci: null
-  helm_charts: []
-  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vvp
@@ -8842,13 +6020,12 @@ summary:
   - oom
   - relman
   repositories_by_category:
-    build-dependency: 73
     infrastructure: 1
-    runtime: 320
+    runtime: 217
   repositories_by_confidence:
-    high: 55
-    medium: 339
+    high: 54
+    medium: 164
   total_docker_images: 85
   total_helm_components: 98
-  total_repositories: 394
-tool_version: 0.3.0
+  total_repositories: 218
+tool_version: 0.4.0
