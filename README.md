@@ -50,6 +50,9 @@ captures the complete state of the analysis, including:
   pair in the manifest actually exists in the ONAP Nexus3 registry
 - **Manifest diffing** — compares two manifests to identify added,
   removed, and changed repositories or images across releases
+- **Repository filtering** — excludes infrastructure repos (e.g.
+  `All-Projects`, `All-Users`, `.github`) and read-only/archived
+  projects from reports by default, with full CLI override support
 - **Multi-format export** — converts manifests to YAML, CSV, Markdown,
   or a flat Gerrit repository list
 - **JSON Schema validation** — every manifest conforms to a versioned
@@ -121,22 +124,26 @@ onap-release-map discover \
 ```
 
 <!-- markdownlint-disable MD013 -->
+<!-- markdownlint-disable MD060 -->
 
-| Option                | Default      | Description                                                           |
-| --------------------- | ------------ | --------------------------------------------------------------------- |
-| `--oom-path PATH`     | *(required)* | Path to a local OOM repository clone                                  |
-| `--collectors LIST`   | `oom`        | Comma-separated collectors: `oom`, `gerrit`, `relman`, `jjb`          |
-| `--release-name NAME` | `Rabat`      | ONAP release code name                                                |
-| `--output-dir DIR`    | `./output`   | Output directory for manifest files                                   |
-| `--output-format FMT` | `json`       | Output format: `json`, `yaml`, `all`                                  |
-| `--repos-yaml PATH`   | —            | Path to relman `repos.yaml` (required for `relman` collector)         |
-| `--jjb-path PATH`     | —            | Path to `ci-management/jjb/` directory (required for `jjb` collector) |
-| `--gerrit-url URL`    | config       | Gerrit REST API base URL                                              |
-| `--mapping-file PATH` | —            | Custom image-to-repo mapping YAML override                            |
-| `--config PATH`       | —            | Path to YAML configuration file                                       |
-| `--deterministic`     | `true`       | Produce deterministic output (sorted keys, stable ordering)           |
-| `-v / -vv / -vvv`     | —            | Increase verbosity                                                    |
+| Option                                       | Default      | Description                                                           |
+| -------------------------------------------- | ------------ | --------------------------------------------------------------------- |
+| `--oom-path PATH`                            | *(required)* | Path to a local OOM repository clone                                  |
+| `--collectors LIST`                          | `oom`        | Comma-separated collectors: `oom`, `gerrit`, `relman`, `jjb`          |
+| `--release-name NAME`                        | `Rabat`      | ONAP release code name                                                |
+| `--output-dir DIR`                           | `./output`   | Output directory for manifest files                                   |
+| `--output-format FMT`                        | `json`       | Output format: `json`, `yaml`, `all`                                  |
+| `--repos-yaml PATH`                          | —            | Path to relman `repos.yaml` (required for `relman` collector)         |
+| `--jjb-path PATH`                            | —            | Path to `ci-management/jjb/` directory (required for `jjb` collector) |
+| `--gerrit-url URL`                           | config       | Gerrit REST API base URL                                              |
+| `--filter-repos LIST`                        | config       | Comma-separated Gerrit project names to exclude from reports          |
+| `--exclude-readonly / --no-exclude-readonly` | `true`       | Exclude read-only/archived Gerrit projects from reports               |
+| `--mapping-file PATH`                        | —            | Custom image-to-repo mapping YAML override                            |
+| `--config PATH`                              | —            | Path to YAML configuration file                                       |
+| `--deterministic`                            | `true`       | Produce deterministic output (sorted keys, stable ordering)           |
+| `-v / -vv / -vvv`                            | —            | Increase verbosity                                                    |
 
+<!-- markdownlint-enable MD060 -->
 <!-- markdownlint-enable MD013 -->
 
 ### diff
@@ -190,14 +197,18 @@ onap-release-map export manifest.json --format csv --output images.csv
 ```
 
 <!-- markdownlint-disable MD013 -->
+<!-- markdownlint-disable MD060 -->
 
-| Option                             | Default      | Description                                                |
-| ---------------------------------- | ------------ | ---------------------------------------------------------- |
-| `MANIFEST_PATH`                    | *(required)* | Path to manifest JSON file                                 |
-| `--format FMT`                     | `yaml`       | Output format: `yaml`, `csv`, `md`, `html`, `gerrit-list`  |
-| `--output PATH`                    | —            | Write to file instead of stdout                            |
-| `--repos-only` / `--images-only`   | `false`      | Limit CSV scope to repos or images (mutually exclusive)    |
+| Option                                       | Default      | Description                                               |
+| -------------------------------------------- | ------------ | --------------------------------------------------------- |
+| `MANIFEST_PATH`                              | *(required)* | Path to manifest JSON file                                |
+| `--format FMT`                               | `yaml`       | Output format: `yaml`, `csv`, `md`, `html`, `gerrit-list` |
+| `--output PATH`                              | —            | Write to file instead of stdout                           |
+| `--repos-only` / `--images-only`             | `false`      | Limit CSV scope to repos or images (mutually exclusive)   |
+| `--filter-repos LIST`                        | —            | Comma-separated Gerrit project names to exclude           |
+| `--exclude-readonly / --no-exclude-readonly` | `true`       | Exclude read-only/archived Gerrit projects                |
 
+<!-- markdownlint-enable MD060 -->
 <!-- markdownlint-enable MD013 -->
 
 ### verify
@@ -261,7 +272,7 @@ flag on the `discover` command.
 
 Key configuration sections:
 
-```/dev/null/example.yaml#L1-20
+```/dev/null/example.yaml#L1-32
 # ONAP Gerrit server
 gerrit:
   url: "https://gerrit.onap.org/r"
@@ -275,6 +286,15 @@ oom:
     - "argo"
     - "archive"
 
+# Repository filtering — repos excluded from reports
+filter_repos:
+  - ".github"
+  - "All-Projects"
+  - "All-Users"
+
+# Exclude read-only/archived Gerrit projects from reports
+exclude_readonly: true
+
 # Nexus registry for validation
 nexus:
   url: "https://nexus3.onap.org"
@@ -282,6 +302,12 @@ nexus:
   max_retries: 3
   concurrent_workers: 4
 ```
+
+The `filter_repos` list and `exclude_readonly` flag control which
+repositories appear in exported reports. Infrastructure repositories
+(`.github`, `All-Projects`, `All-Users`) and read-only/archived Gerrit
+projects do not appear by default. Override either setting via CLI flags
+(`--filter-repos`, `--no-exclude-readonly`) or a custom config file.
 
 ## GitHub Action
 
@@ -315,18 +341,20 @@ jobs:
 
 <!-- markdownlint-disable MD013 -->
 
-| Input            | Default                     | Description                                |
-| ---------------- | --------------------------- | ------------------------------------------ |
-| `oom-path`       | *(empty — triggers clone)*  | Path to pre-cloned OOM repo                |
-| `oom-branch`     | `master`                    | OOM branch to analyze                      |
-| `gerrit-url`     | `https://gerrit.onap.org/r` | Gerrit base URL                            |
-| `collectors`     | `oom,gerrit`                | Comma-separated collector list             |
-| `output-dir`     | `$RUNNER_TEMP`              | Output directory                           |
-| `output-format`  | `json`                      | Output format: `json`, `yaml`, `all`       |
-| `release-name`   | `Rabat`                     | ONAP release code name                     |
-| `mapping-file`   | —                           | Custom image-to-repo mapping YAML override |
-| `python-version` | `3.12`                      | Python version to use                      |
-| `version`        | `latest`                    | Tool version (e.g. `0.1.0` or `latest`)    |
+| Input              | Default                     | Description                                             |
+| ------------------ | --------------------------- | ------------------------------------------------------- |
+| `oom-path`         | *(empty — triggers clone)*  | Path to pre-cloned OOM repo                             |
+| `oom-branch`       | `master`                    | OOM branch to analyze                                   |
+| `gerrit-url`       | `https://gerrit.onap.org/r` | Gerrit base URL                                         |
+| `collectors`       | `oom,gerrit`                | Comma-separated collector list                          |
+| `output-dir`       | `$RUNNER_TEMP`              | Output directory                                        |
+| `output-format`    | `json`                      | Output format: `json`, `yaml`, `all`                    |
+| `release-name`     | `Rabat`                     | ONAP release code name                                  |
+| `mapping-file`     | —                           | Custom image-to-repo mapping YAML override              |
+| `filter-repos`     | —                           | Comma-separated Gerrit projects to exclude              |
+| `exclude-readonly` | `true`                      | Exclude read-only/archived Gerrit projects              |
+| `python-version`   | `3.12`                      | Python version to use                                   |
+| `version`          | `latest`                    | Tool version (e.g. `0.1.0` or `latest`)                 |
 
 | Output               | Description                              |
 | -------------------- | ---------------------------------------- |
@@ -395,6 +423,28 @@ release scope at a glance:
 <!-- markdownlint-enable MD060 -->
 
 <!-- markdownlint-enable MD013 -->
+
+### Totals Summary
+
+The Markdown and HTML reports include a **Totals** subsection directly
+below the Repositories table. This table provides a numerical count of
+repositories in each state category alongside the emoji key:
+
+<!-- markdownlint-disable MD013 -->
+
+| Total | State | Description                            |
+| ----: | :---: | -------------------------------------- |
+|    90 | ✅    | In current ONAP release                |
+|    11 | ☑️    | Parent project (children in release)   |
+|     5 | ❌    | Not in current ONAP release            |
+|     3 | ❓    | Undetermined                           |
+|    20 | 📦    | Read-only / archived                   |
+
+<!-- markdownlint-enable MD013 -->
+
+The table omits rows with a zero count automatically. When repository
+filtering is active (e.g. `--exclude-readonly`), the totals reflect the
+filtered set.
 
 The tool resolves state by cross-referencing four data sources:
 
