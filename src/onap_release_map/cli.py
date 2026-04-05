@@ -162,12 +162,12 @@ def discover(
         ),
     ] = None,
     exclude_readonly: Annotated[
-        bool,
+        bool | None,
         typer.Option(
             "--exclude-readonly/--no-exclude-readonly",
             help="Exclude read-only/archived Gerrit projects.",
         ),
-    ] = True,
+    ] = None,
     output_dir: Annotated[
         Path,
         typer.Option(
@@ -381,10 +381,16 @@ def discover(
     combined_filters = list(dict.fromkeys(config_filters + cli_filters))
 
     # Honour config default for exclude_readonly unless CLI overrides
+    if exclude_readonly is None:
+        cfg_val = config.get("exclude_readonly", True)
+        resolved_readonly = bool(cfg_val)
+    else:
+        resolved_readonly = exclude_readonly
+
     manifest = filter_repositories(
         manifest,
         filter_repos=combined_filters or None,
-        exclude_readonly=exclude_readonly,
+        exclude_readonly=resolved_readonly,
     )
 
     # Display summary
@@ -602,12 +608,12 @@ def export_cmd(
         ),
     ] = None,
     exclude_readonly: Annotated[
-        bool,
+        bool | None,
         typer.Option(
             "--exclude-readonly/--no-exclude-readonly",
             help="Exclude read-only/archived Gerrit projects.",
         ),
-    ] = True,
+    ] = None,
 ) -> None:
     """Convert a manifest to CSV, YAML, Markdown, HTML, or Gerrit list format."""
     import json
@@ -639,7 +645,7 @@ def export_cmd(
     manifest = filter_repositories(
         manifest,
         filter_repos=filter_list,
-        exclude_readonly=exclude_readonly,
+        exclude_readonly=exclude_readonly if exclude_readonly is not None else True,
     )
 
     if repos_only:
