@@ -9,6 +9,7 @@ import json
 import logging
 from collections import Counter
 from datetime import datetime, timezone
+from typing import Protocol, runtime_checkable
 
 from onap_release_map.collectors import CollectorResult
 from onap_release_map.models import (
@@ -25,8 +26,53 @@ from onap_release_map.models import (
 logger = logging.getLogger(__name__)
 
 __all__ = [
+    "CrossRefProvider",
     "ManifestBuilder",
 ]
+
+_MAX_RECONCILIATION_PASSES: int = 10
+
+
+@runtime_checkable
+class CrossRefProvider(Protocol):
+    """Protocol for cross-reference reconciliation providers.
+
+    Providers examine the current repository map and promote
+    repos to in-release status when cross-reference evidence
+    warrants it.  Each provider is called repeatedly inside a
+    convergence loop until no further promotions occur.
+    """
+
+    @property
+    def name(self) -> str:
+        """Short identifier used in log messages."""
+        ...  # pragma: no cover
+
+    def reconcile(
+        self,
+        repo_map: dict[str, OnapRepository],
+    ) -> set[str]:
+        """Examine *repo_map* and promote repos to in-release.
+
+        The provider **mutates** repository objects directly
+        (setting ``in_current_release``, appending to
+        ``confidence_reasons``, etc.) and returns the set of
+        ``gerrit_project`` names that were promoted during
+        this call.
+
+        Parameters
+        ----------
+        repo_map:
+            Mutable mapping of Gerrit project name to repository
+            object.  The provider must only promote repos whose
+            ``in_current_release`` is not already ``True``.
+
+        Returns
+        -------
+        set[str]
+            Gerrit project names promoted during this pass.
+        """
+        ...  # pragma: no cover
 
 
 class ManifestBuilder:
@@ -44,6 +90,7 @@ class ManifestBuilder:
         self._timestamp = datetime.now(tz=timezone.utc)
         self._results: list[CollectorResult] = []
         self._data_sources: list[DataSource] = []
+        self._crossref_providers: list[CrossRefProvider] = []
 
     def add_result(self, result: CollectorResult) -> None:
         """Add a collector result to the manifest."""
@@ -52,6 +99,21 @@ class ManifestBuilder:
     def add_data_source(self, source: DataSource) -> None:
         """Record a data source used during collection."""
         self._data_sources.append(source)
+
+    def add_crossref_provider(self, provider: CrossRefProvider) -> None:
+        """Register a cross-reference reconciliation provider.
+
+        Providers run after the initial merge and OOM promotion
+        phases, inside a convergence loop that repeats until no
+        provider promotes additional repositories.
+
+        Parameters
+        ----------
+        provider:
+            Object implementing the :class:`CrossRefProvider`
+            protocol.
+        """
+        self._crossref_providers.append(provider)
 
     def build(self) -> ReleaseManifest:
         """Build the final release manifest from all collected data."""
@@ -188,22 +250,11 @@ class ManifestBuilder:
 
         # Parent projects whose children are in the release
         # are themselves considered in the release.
-        # Precompute parent paths for repos in the release to
-        # avoid an O(n^2) scan.
-        release_parents: set[str] = set()
-        for name, repo in repo_map.items():
-            if repo.in_current_release is True:
-                parts = name.split("/")
-                for i in range(1, len(parts)):
-                    release_parents.add("/".join(parts[:i]))
-        for repo in repo_map.values():
-            if (
-                repo.is_parent_project
-                and repo.gerrit_project in release_parents
-                and repo.gerrit_state != "READ_ONLY"
-                and repo.in_current_release is not False
-            ):
-                repo.in_current_release = True
+        self._promote_parents(repo_map)
+
+        # Cross-reference reconciliation: iteratively promote
+        # repos that are referenced by in-release components.
+        self._run_reconciliation(repo_map)
 
         # Resolve undetermined repos: when Gerrit project state
         # is known, any ACTIVE repo still without a release
@@ -214,6 +265,129 @@ class ManifestBuilder:
                 repo.in_current_release = False
 
         return sorted(repo_map.values(), key=lambda r: r.gerrit_project)
+
+    @staticmethod
+    def _promote_parents(
+        repo_map: dict[str, OnapRepository],
+    ) -> set[str]:
+        """Promote parent projects whose children are in-release.
+
+        Parameters
+        ----------
+        repo_map:
+            Mutable mapping of Gerrit project name to repository.
+
+        Returns
+        -------
+        set[str]
+            Gerrit project names that were newly promoted.
+        """
+        release_parents: set[str] = set()
+        for name, repo in repo_map.items():
+            if repo.in_current_release is True:
+                parts = name.split("/")
+                for i in range(1, len(parts)):
+                    release_parents.add("/".join(parts[:i]))
+
+        promoted: set[str] = set()
+        for repo in repo_map.values():
+            if (
+                repo.is_parent_project
+                and repo.gerrit_project in release_parents
+                and repo.gerrit_state != "READ_ONLY"
+                and repo.in_current_release is not False
+            ):
+                if repo.in_current_release is not True:
+                    promoted.add(repo.gerrit_project)
+                repo.in_current_release = True
+
+        return promoted
+
+    def _run_reconciliation(
+        self,
+        repo_map: dict[str, OnapRepository],
+    ) -> None:
+        """Run cross-reference providers in a convergence loop.
+
+        Each registered provider is called once per pass.  After
+        every pass that promotes at least one repository, parent
+        promotion is re-run so that newly discovered children
+        can lift their parent projects.  The loop terminates when
+        a full pass produces no new promotions, or after
+        :data:`_MAX_RECONCILIATION_PASSES` iterations.
+
+        Parameters
+        ----------
+        repo_map:
+            Mutable mapping of Gerrit project name to repository.
+        """
+        if not self._crossref_providers:
+            return
+
+        total_promoted: set[str] = set()
+
+        for iteration in range(1, _MAX_RECONCILIATION_PASSES + 1):
+            promoted_this_pass: set[str] = set()
+
+            for provider in self._crossref_providers:
+                newly = provider.reconcile(repo_map)
+
+                # Safeguard: revert any READ_ONLY repos that a
+                # provider incorrectly promoted.  READ_ONLY is
+                # definitively not in the current release.
+                reverted: set[str] = set()
+                for name in newly:
+                    repo = repo_map.get(name)
+                    if repo and repo.gerrit_state == "READ_ONLY":
+                        repo.in_current_release = False
+                        reverted.add(name)
+                newly -= reverted
+                if reverted:
+                    logger.debug(
+                        "Reverted %d READ_ONLY repo(s) incorrectly promoted by %s: %s",
+                        len(reverted),
+                        provider.name,
+                        ", ".join(sorted(reverted)),
+                    )
+
+                promoted_this_pass.update(newly)
+                if newly:
+                    logger.info(
+                        "Reconciliation pass %d: %s promoted %d repo(s): %s",
+                        iteration,
+                        provider.name,
+                        len(newly),
+                        ", ".join(sorted(newly)),
+                    )
+
+            if not promoted_this_pass:
+                logger.info(
+                    "Reconciliation converged after %d "
+                    "pass(es); %d repo(s) promoted total",
+                    iteration,
+                    len(total_promoted),
+                )
+                break
+
+            total_promoted.update(promoted_this_pass)
+
+            # Re-run parent promotion so newly discovered
+            # children can lift their parent projects.
+            parent_promoted = self._promote_parents(repo_map)
+            if parent_promoted:
+                logger.info(
+                    "Parent promotion after pass %d: %s",
+                    iteration,
+                    ", ".join(sorted(parent_promoted)),
+                )
+                total_promoted.update(parent_promoted)
+        else:
+            logger.warning(
+                "Reconciliation did not converge after "
+                "%d passes; %d repo(s) promoted total",
+                _MAX_RECONCILIATION_PASSES,
+                len(total_promoted),
+            )
 
     def _merge_docker_images(self) -> list[DockerImage]:
         """Merge Docker images from all collectors."""

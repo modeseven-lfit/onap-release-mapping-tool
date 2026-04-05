@@ -29,6 +29,9 @@ filter_repos:
   - ".github"
   - "All-Projects"
   - "All-Users"
+  # ci-management contains JJB (Jenkins Job Builder) CI job definitions
+  # for the ONAP Jenkins instance, not runtime release content.
+  - "ci-management"
 
 # Exclude read-only/archived Gerrit projects
 exclude_readonly: true

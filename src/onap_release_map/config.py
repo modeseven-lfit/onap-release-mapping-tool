@@ -32,7 +32,7 @@ DEFAULTS: dict[str, Any] = {
         "exclude_dirs": ["argo", "archive"],
     },
     "collectors": ["oom"],
-    "filter_repos": [".github", "All-Projects", "All-Users"],
+    "filter_repos": [".github", "All-Projects", "All-Users", "ci-management"],
     "exclude_readonly": True,
     "output": {
         "formats": ["json"],

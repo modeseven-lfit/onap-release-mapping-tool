@@ -46,6 +46,17 @@ Default Configuration
    collectors:
      - oom
 
+   # Repository filtering — repos excluded from reports
+   filter_repos:
+     - ".github"
+     - "All-Projects"
+     - "All-Users"
+     # JJB CI job definitions for the ONAP Jenkins instance
+     - "ci-management"
+
+   # Exclude read-only/archived Gerrit projects
+   exclude_readonly: true
+
    # Output settings
    output:
      formats:
@@ -125,6 +136,31 @@ Collectors
      - ``["oom"]``
      - List of collector names to run. Available collectors:
        ``oom``, ``gerrit``, ``relman``, ``jjb``.
+
+Filtering Settings
+~~~~~~~~~~~~~~~~~~
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 15 55
+
+   * - Key
+     - Default
+     - Description
+   * - ``filter_repos``
+     - ``[".github", "All-Projects", "All-Users", "ci-management"]``
+     - List of Gerrit project names to exclude from exported
+       reports. Infrastructure repositories and projects that do
+       not contain runtime release content (such as
+       ``ci-management``, which holds JJB CI job definitions for
+       the ONAP Jenkins instance) are excluded by default.
+       Override via the ``--filter-repos`` CLI flag or a custom
+       config file.
+   * - ``exclude_readonly``
+     - ``true``
+     - When enabled, repositories in ``READ_ONLY`` state are
+       removed from exported reports. Override with
+       ``--no-exclude-readonly``.
 
 Output Settings
 ~~~~~~~~~~~~~~~
@@ -279,7 +315,7 @@ The resulting effective configuration will still include
 ``gerrit.url``, ``gerrit.max_retries``, and all other default values.
 The tool overrides ``gerrit.timeout`` to ``60`` and nothing else.
 
-List values (such as ``collectors`` and ``oom.exclude_dirs``) are
-**replaced** entirely rather than merged. If you specify
-``collectors: [oom, gerrit]`` in your file, it replaces the default
-``[oom]`` rather than appending to it.
+List values (such as ``collectors``, ``filter_repos``, and
+``oom.exclude_dirs``) are **replaced** entirely rather than merged.
+If you specify ``collectors: [oom, gerrit]`` in your file, it replaces
+the default ``[oom]`` rather than appending to it.
