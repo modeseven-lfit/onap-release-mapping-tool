@@ -163,18 +163,27 @@
   <a class="back-link" href="../">&larr; Back to index</a>
   <h1>ONAP Release Manifest: Master</h1>
 <ul>
-<li><strong>Generated:</strong> 2026-04-05T20:52:57Z</li>
-<li><strong>Tool version:</strong> 0.4.0</li>
+<li><strong>Generated:</strong> 2026-04-05T21:47:06Z</li>
+<li><strong>Tool version:</strong> 0.5.0</li>
 <li><strong>Schema version:</strong> 1.1.0</li>
 <li><strong>OOM chart version:</strong> 18.0.0</li>
 </ul>
 <h2>Summary</h2>
 <ul>
-<li><strong>Total repositories:</strong> 218</li>
-<li><strong>Total Docker images:</strong> 85</li>
+<li><strong>Total repositories:</strong> 217</li>
+<li><strong>Total Docker images:</strong> 89</li>
 <li><strong>Total Helm components:</strong> 98</li>
 </ul>
 <h2>Repositories</h2>
+  <div class="state-legend">
+    <p><strong>State Legend</strong></p>
+    <p>✅ In current ONAP release</p>
+    <p>☑️ Parent project (children in release)</p>
+    <p>❌ Not in current ONAP release</p>
+    <p>❓ Undetermined</p>
+    <p>📦 Read-only / archived</p>
+  </div>
+
 <table class="dt-enabled">
 <thead>
 <tr>
@@ -223,7 +232,7 @@
 <td>aai/graphgraph</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -231,7 +240,7 @@
 <td>aai/logging-service</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -247,7 +256,7 @@
 <td>aai/oom</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -263,7 +272,7 @@
 <td>aai/rest-client</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -287,7 +296,7 @@
 <td>aai/sparky-fe</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -295,7 +304,7 @@
 <td>aai/test-config</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>✅</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -343,7 +352,7 @@
 <td>ccsdk/features</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -359,7 +368,7 @@
 <td>ccsdk/parent</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -367,7 +376,7 @@
 <td>ccsdk/platform/blueprints</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -375,7 +384,7 @@
 <td>ccsdk/sli</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -383,23 +392,15 @@
 <td>ccsdk/storage/esaas</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
-</tr>
-<tr>
-<td>ci-management</td>
-<td>runtime</td>
-<td>medium</td>
-<td>❓</td>
-<td>Yes</td>
-<td>Yes</td>
 </tr>
 <tr>
 <td>cli</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -415,7 +416,7 @@
 <td>cps/cps-tbdmt</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -423,7 +424,7 @@
 <td>cps/cps-temporal</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -447,7 +448,7 @@
 <td>dcaegen2/analytics/tca-gen2</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -455,7 +456,7 @@
 <td>dcaegen2/collectors/datafile</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -471,7 +472,7 @@
 <td>dcaegen2/collectors/restconf</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -479,7 +480,7 @@
 <td>dcaegen2/collectors/snmptrap</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -511,7 +512,7 @@
 <td>dcaegen2/platform/blueprints</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -535,7 +536,7 @@
 <td>dcaegen2/services/heartbeat</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -543,7 +544,7 @@
 <td>dcaegen2/services/mapper</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -551,7 +552,7 @@
 <td>dcaegen2/services/pm-mapper</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -567,7 +568,7 @@
 <td>dcaegen2/services/sdk</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -575,7 +576,7 @@
 <td>dcaegen2/services/son-handler</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -583,7 +584,7 @@
 <td>dcaegen2/utils</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -591,7 +592,7 @@
 <td>demo</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -599,7 +600,7 @@
 <td>dmaap</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>☑️</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -607,15 +608,15 @@
 <td>dmaap/buscontroller</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
 <tr>
 <td>dmaap/datarouter</td>
 <td>runtime</td>
-<td>medium</td>
-<td>❓</td>
+<td>high</td>
+<td>✅</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -623,7 +624,7 @@
 <td>dmaap/kafka11aaf</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -631,7 +632,7 @@
 <td>dmaap/messagerouter/dmaapclient</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -639,7 +640,7 @@
 <td>dmaap/messagerouter/messageservice</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -647,7 +648,7 @@
 <td>dmaap/zookeeper</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -655,7 +656,7 @@
 <td>doc</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -663,7 +664,7 @@
 <td>doc/doc-best-practice</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td></td>
 <td></td>
 </tr>
@@ -671,7 +672,7 @@
 <td>holmes</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>☑️</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -679,7 +680,7 @@
 <td>holmes/common</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -687,7 +688,7 @@
 <td>holmes/engine-management</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -695,7 +696,7 @@
 <td>holmes/rule-management</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -703,7 +704,7 @@
 <td>integration</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>☑️</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -711,7 +712,7 @@
 <td>integration/csit</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -719,15 +720,15 @@
 <td>integration/data-provider</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
 <tr>
 <td>integration/docker/onap-java11</td>
 <td>runtime</td>
-<td>medium</td>
-<td>❓</td>
+<td>high</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -735,7 +736,7 @@
 <td>integration/docker/onap-python</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -743,7 +744,7 @@
 <td>integration/gating</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td></td>
 <td>Yes</td>
 </tr>
@@ -751,7 +752,7 @@
 <td>integration/ietf-actn-tools</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -759,7 +760,7 @@
 <td>integration/onap-component-simulators</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td></td>
 <td>Yes</td>
 </tr>
@@ -767,7 +768,7 @@
 <td>integration/pipelines/build-integration</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td></td>
 <td></td>
 </tr>
@@ -775,7 +776,7 @@
 <td>integration/pipelines/chained-ci</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td></td>
 <td></td>
 </tr>
@@ -783,7 +784,7 @@
 <td>integration/pipelines/oom-automatic-installation</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td></td>
 <td></td>
 </tr>
@@ -791,7 +792,7 @@
 <td>integration/pipelines/xtesting-onap</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td></td>
 <td></td>
 </tr>
@@ -799,7 +800,7 @@
 <td>integration/python-onapsdk</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td></td>
 <td>Yes</td>
 </tr>
@@ -807,7 +808,7 @@
 <td>integration/seccom</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -815,7 +816,7 @@
 <td>integration/simulators/5G-core-nf-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -823,7 +824,7 @@
 <td>integration/simulators/A1-policy-enforcement-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -831,7 +832,7 @@
 <td>integration/simulators/core-nssmf-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -839,7 +840,7 @@
 <td>integration/simulators/nf-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -847,7 +848,7 @@
 <td>integration/simulators/nf-simulator/avcn-manager</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -855,7 +856,7 @@
 <td>integration/simulators/nf-simulator/netconf-server</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -863,7 +864,7 @@
 <td>integration/simulators/nf-simulator/pm-https-server</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -871,7 +872,7 @@
 <td>integration/simulators/nf-simulator/ves-client</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -879,7 +880,7 @@
 <td>integration/simulators/pnf-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -887,7 +888,7 @@
 <td>integration/simulators/ran-app</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td></td>
 <td></td>
 </tr>
@@ -895,7 +896,7 @@
 <td>integration/simulators/ran-nssmf-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -903,7 +904,7 @@
 <td>integration/simulators/ran-simulator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -911,7 +912,7 @@
 <td>integration/usecases/A1-policy-enforcement</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -919,7 +920,7 @@
 <td>integration/usecases/A1-policy-enforcement-r-apps</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -927,7 +928,7 @@
 <td>integration/xtesting</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -935,7 +936,7 @@
 <td>modeling/etsicatalog</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -943,7 +944,7 @@
 <td>modeling/modelspec</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -951,7 +952,7 @@
 <td>modeling/toscaparsers</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -959,7 +960,7 @@
 <td>msb</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -967,7 +968,7 @@
 <td>msb/apigateway</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -975,7 +976,7 @@
 <td>msb/discovery</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -983,7 +984,7 @@
 <td>msb/java-sdk</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -991,7 +992,7 @@
 <td>msb/service-mesh</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -999,7 +1000,7 @@
 <td>msb/swagger-sdk</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1039,7 +1040,7 @@
 <td>multicloud/openstack/vmware</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1047,7 +1048,7 @@
 <td>multicloud/openstack/windriver</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1063,7 +1064,7 @@
 <td>oom/consul</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1071,7 +1072,7 @@
 <td>oom/offline-installer</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1079,7 +1080,7 @@
 <td>oom/platform/cert-manager</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1095,15 +1096,15 @@
 <td>oom/platform/keycloak</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
 <tr>
 <td>oom/readiness</td>
 <td>runtime</td>
-<td>medium</td>
-<td>❓</td>
+<td>high</td>
+<td>✅</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1111,7 +1112,7 @@
 <td>oom/registrator</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1119,7 +1120,7 @@
 <td>oom/utils</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1127,7 +1128,7 @@
 <td>oparent</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1135,7 +1136,7 @@
 <td>oparent/cia</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1143,7 +1144,7 @@
 <td>optf</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1151,7 +1152,7 @@
 <td>optf/has</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1159,7 +1160,7 @@
 <td>optf/osdf</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1167,7 +1168,7 @@
 <td>osa</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1207,7 +1208,7 @@
 <td>policy/common</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1231,7 +1232,7 @@
 <td>policy/drools-applications</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1247,7 +1248,7 @@
 <td>policy/gui</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1255,7 +1256,7 @@
 <td>policy/models</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1279,7 +1280,7 @@
 <td>policy/parent</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1295,7 +1296,7 @@
 <td>portal-ng</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>✅</td>
 <td></td>
 <td></td>
 </tr>
@@ -1311,7 +1312,7 @@
 <td>portal-ng/e2e</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td></td>
 <td></td>
 </tr>
@@ -1343,7 +1344,7 @@
 <td>relman</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1351,7 +1352,7 @@
 <td>sandbox-2</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1359,7 +1360,7 @@
 <td>sandbox-3</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1375,7 +1376,7 @@
 <td>sdc/onap-ui-angular</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1383,7 +1384,7 @@
 <td>sdc/onap-ui-common</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1391,7 +1392,7 @@
 <td>sdc/sdc-be-common</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1399,7 +1400,7 @@
 <td>sdc/sdc-distribution-client</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1407,7 +1408,7 @@
 <td>sdc/sdc-docker-base</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1423,7 +1424,7 @@
 <td>sdc/sdc-pubsub</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1431,7 +1432,7 @@
 <td>sdc/sdc-tosca</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1455,7 +1456,7 @@
 <td>sdnc/apps</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1463,7 +1464,7 @@
 <td>sdnc/northbound</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1487,7 +1488,7 @@
 <td>so/adapters/so-cnf-adapter</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1527,7 +1528,7 @@
 <td>so/chef-repo</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1535,7 +1536,7 @@
 <td>so/docker-config</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>✅</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1543,7 +1544,7 @@
 <td>so/libs</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1559,7 +1560,7 @@
 <td>so/so-config</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1567,7 +1568,7 @@
 <td>so/so-etsi-nfvo</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1575,7 +1576,7 @@
 <td>spark-model-runner</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1591,7 +1592,7 @@
 <td>testsuite/cds</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1599,7 +1600,7 @@
 <td>testsuite/cds-mock-odl</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1607,7 +1608,7 @@
 <td>testsuite/cds-mock-server</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1615,7 +1616,7 @@
 <td>testsuite/cds-mock-ssh</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1631,7 +1632,7 @@
 <td>testsuite/oom</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1639,7 +1640,7 @@
 <td>testsuite/python-testing-utils</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1647,7 +1648,7 @@
 <td>testsuite/pythonsdk-tests</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1655,7 +1656,7 @@
 <td>testsuite/robot-utils</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1663,7 +1664,7 @@
 <td>university</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1711,7 +1712,7 @@
 <td>vfc</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1719,7 +1720,7 @@
 <td>vfc/gvnfm/vnflcm</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1727,7 +1728,7 @@
 <td>vfc/gvnfm/vnfmgr</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1735,7 +1736,7 @@
 <td>vfc/gvnfm/vnfres</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1743,7 +1744,7 @@
 <td>vfc/nfvo/db</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1751,7 +1752,7 @@
 <td>vfc/nfvo/driver/vnfm/gvnfm</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1759,7 +1760,7 @@
 <td>vfc/nfvo/driver/vnfm/svnfm</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1767,7 +1768,7 @@
 <td>vfc/nfvo/lcm</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1775,7 +1776,7 @@
 <td>vnfrqts</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1783,7 +1784,7 @@
 <td>vnfrqts/epics</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1791,7 +1792,7 @@
 <td>vnfrqts/guidelines</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1799,7 +1800,7 @@
 <td>vnfrqts/requirements</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1807,7 +1808,7 @@
 <td>vnfrqts/testcases</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1815,7 +1816,7 @@
 <td>vnfrqts/usecases</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1823,7 +1824,7 @@
 <td>vnfsdk</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>☑️</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1831,7 +1832,7 @@
 <td>vnfsdk/dovetail-integration</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1839,7 +1840,7 @@
 <td>vnfsdk/functest</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1847,7 +1848,7 @@
 <td>vnfsdk/lctest</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1855,7 +1856,7 @@
 <td>vnfsdk/model</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1863,7 +1864,7 @@
 <td>vnfsdk/pkgtools</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td>Yes</td>
 </tr>
@@ -1871,7 +1872,7 @@
 <td>vnfsdk/refrepo</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1879,7 +1880,7 @@
 <td>vnfsdk/validation</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1887,7 +1888,7 @@
 <td>vvp</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1895,7 +1896,7 @@
 <td>vvp/documentation</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1903,7 +1904,7 @@
 <td>vvp/engagementmgr</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1911,7 +1912,7 @@
 <td>vvp/regression-tests</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1919,7 +1920,7 @@
 <td>vvp/test-engine</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
@@ -1927,14 +1928,14 @@
 <td>vvp/validation-scripts</td>
 <td>runtime</td>
 <td>medium</td>
-<td>❓</td>
+<td>❌</td>
 <td>Yes</td>
 <td></td>
 </tr>
 </tbody>
 </table>
 <h3>Totals</h3>
-<table class="dt-enabled">
+<table>
 <thead>
 <tr>
 <th style="text-align: right;">Total</th>
@@ -1944,17 +1945,22 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align: right;">46</td>
+<td style="text-align: right;">53</td>
 <td style="text-align: center;">✅</td>
 <td>In current ONAP release</td>
 </tr>
 <tr>
-<td style="text-align: right;">15</td>
+<td style="text-align: right;">19</td>
 <td style="text-align: center;">☑️</td>
 <td>Parent project (children in release)</td>
 </tr>
 <tr>
-<td style="text-align: right;">157</td>
+<td style="text-align: right;">144</td>
+<td style="text-align: center;">❌</td>
+<td>Not in current ONAP release</td>
+</tr>
+<tr>
+<td style="text-align: right;">1</td>
 <td style="text-align: center;">❓</td>
 <td>Undetermined</td>
 </tr>
@@ -2085,6 +2091,20 @@
 <td>Yes</td>
 </tr>
 <tr>
+<td>onap/dmaap/datarouter-prov-client</td>
+<td>2.1.15</td>
+<td>dmaap/datarouter</td>
+<td>nexus3.onap.org:10001</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>onap/integration-java11</td>
+<td>10.0.0</td>
+<td>integration/docker/onap-java11</td>
+<td>nexus3.onap.org:10001</td>
+<td>Yes</td>
+</tr>
+<tr>
 <td>onap/model-loader</td>
 <td>1.14.3</td>
 <td>aai/model-loader</td>
@@ -2134,6 +2154,13 @@
 <td>Yes</td>
 </tr>
 <tr>
+<td>onap/oom/readiness</td>
+<td>7.0.1</td>
+<td>oom/readiness</td>
+<td>nexus3.onap.org:10001</td>
+<td>Yes</td>
+</tr>
+<tr>
 <td>onap/org.onap.dcaegen2.collectors.hv-ves.hv-collector-main</td>
 <td>1.11.0</td>
 <td>dcaegen2/collectors/hv-ves</td>
@@ -2144,6 +2171,13 @@
 <td>onap/org.onap.dcaegen2.collectors.ves.vescollector</td>
 <td>1.12.4</td>
 <td>dcaegen2/collectors/ves</td>
+<td>nexus3.onap.org:10001</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>onap/org.onap.dcaegen2.deployments.dcae-services-policy-sync</td>
+<td>1.0.1</td>
+<td>dcaegen2/deployments</td>
 <td>nexus3.onap.org:10001</td>
 <td>Yes</td>
 </tr>
@@ -3170,14 +3204,6 @@
 </tr>
 </tbody>
 </table>
-  <div class="state-legend">
-    <p><strong>State Legend:</strong></p>
-    <p>📦 Read-only / archived</p>
-    <p>✅ In current ONAP release</p>
-    <p>☑️ Parent project (children in release)</p>
-    <p>❌ Not in current ONAP release</p>
-    <p>❓ Undetermined</p>
-  </div>
   <footer>
     <p>Generated by
       <a href="https://github.com/modeseven-lfit/onap-release-mapping-tool">

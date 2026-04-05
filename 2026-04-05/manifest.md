@@ -1,14 +1,14 @@
 # ONAP Release Manifest: Master
 
-- **Generated:** 2026-04-05T20:52:57Z
-- **Tool version:** 0.4.0
+- **Generated:** 2026-04-05T21:47:06Z
+- **Tool version:** 0.5.0
 - **Schema version:** 1.1.0
 - **OOM chart version:** 18.0.0
 
 ## Summary
 
-- **Total repositories:** 218
-- **Total Docker images:** 85
+- **Total repositories:** 217
+- **Total Docker images:** 89
 - **Total Helm components:** 98
 
 ## Repositories
@@ -19,228 +19,228 @@
 | aai/aai-common | runtime | high | ✅ | Yes | Yes |
 | aai/babel | runtime | high | ✅ | Yes | Yes |
 | aai/graphadmin | runtime | high | ✅ | Yes | Yes |
-| aai/graphgraph | runtime | medium | ❓ | Yes | Yes |
-| aai/logging-service | runtime | medium | ❓ | Yes | Yes |
+| aai/graphgraph | runtime | medium | ❌ | Yes | Yes |
+| aai/logging-service | runtime | medium | ❌ | Yes | Yes |
 | aai/model-loader | runtime | high | ✅ | Yes | Yes |
-| aai/oom | runtime | medium | ❓ | Yes |  |
+| aai/oom | runtime | medium | ❌ | Yes |  |
 | aai/resources | runtime | high | ✅ | Yes | Yes |
-| aai/rest-client | runtime | medium | ❓ | Yes | Yes |
+| aai/rest-client | runtime | medium | ❌ | Yes | Yes |
 | aai/schema-service | runtime | high | ✅ | Yes | Yes |
 | aai/sparky-be | runtime | high | ✅ | Yes | Yes |
-| aai/sparky-fe | runtime | medium | ❓ | Yes | Yes |
-| aai/test-config | runtime | medium | ❓ | Yes |  |
+| aai/sparky-fe | runtime | medium | ❌ | Yes | Yes |
+| aai/test-config | runtime | medium | ✅ | Yes |  |
 | aai/traversal | runtime | high | ✅ | Yes | Yes |
 | ccsdk | runtime | medium | ☑️ | Yes |  |
 | ccsdk/apps | runtime | high | ✅ | Yes | Yes |
 | ccsdk/cds | runtime | high | ✅ | Yes | Yes |
 | ccsdk/distribution | runtime | high | ✅ | Yes | Yes |
-| ccsdk/features | runtime | medium | ❓ | Yes | Yes |
+| ccsdk/features | runtime | medium | ❌ | Yes | Yes |
 | ccsdk/oran | runtime | high | ✅ | Yes | Yes |
-| ccsdk/parent | runtime | medium | ❓ | Yes | Yes |
-| ccsdk/platform/blueprints | runtime | medium | ❓ | Yes |  |
-| ccsdk/sli | runtime | medium | ❓ | Yes | Yes |
-| ccsdk/storage/esaas | runtime | medium | ❓ | Yes |  |
-| ci-management | runtime | medium | ❓ | Yes | Yes |
-| cli | runtime | medium | ❓ | Yes |  |
+| ccsdk/parent | runtime | medium | ❌ | Yes | Yes |
+| ccsdk/platform/blueprints | runtime | medium | ❌ | Yes |  |
+| ccsdk/sli | runtime | medium | ❌ | Yes | Yes |
+| ccsdk/storage/esaas | runtime | medium | ❌ | Yes |  |
+| cli | runtime | medium | ❌ | Yes |  |
 | cps | runtime | high | ☑️ | Yes | Yes |
-| cps/cps-tbdmt | runtime | medium | ❓ | Yes |  |
-| cps/cps-temporal | runtime | medium | ❓ | Yes |  |
+| cps/cps-tbdmt | runtime | medium | ❌ | Yes |  |
+| cps/cps-temporal | runtime | medium | ❌ | Yes |  |
 | cps/ncmp-dmi-plugin | runtime | high | ✅ | Yes | Yes |
 | dcaegen2 | runtime | medium | ☑️ | Yes |  |
-| dcaegen2/analytics/tca-gen2 | runtime | medium | ❓ | Yes |  |
-| dcaegen2/collectors/datafile | runtime | medium | ❓ | Yes |  |
+| dcaegen2/analytics/tca-gen2 | runtime | medium | ❌ | Yes |  |
+| dcaegen2/collectors/datafile | runtime | medium | ❌ | Yes |  |
 | dcaegen2/collectors/hv-ves | runtime | high | ✅ | Yes |  |
-| dcaegen2/collectors/restconf | runtime | medium | ❓ | Yes |  |
-| dcaegen2/collectors/snmptrap | runtime | medium | ❓ | Yes |  |
+| dcaegen2/collectors/restconf | runtime | medium | ❌ | Yes |  |
+| dcaegen2/collectors/snmptrap | runtime | medium | ❌ | Yes |  |
 | dcaegen2/collectors/ves | runtime | high | ✅ | Yes |  |
 | dcaegen2/deployments | runtime | high | ✅ | Yes |  |
 | dcaegen2/platform | runtime | medium | ☑️ | Yes | Yes |
-| dcaegen2/platform/blueprints | runtime | medium | ❓ | Yes |  |
+| dcaegen2/platform/blueprints | runtime | medium | ❌ | Yes |  |
 | dcaegen2/platform/ves-openapi-manager | runtime | high | ✅ | Yes |  |
 | dcaegen2/services | runtime | high | ☑️ | Yes | Yes |
-| dcaegen2/services/heartbeat | runtime | medium | ❓ | Yes |  |
-| dcaegen2/services/mapper | runtime | medium | ❓ | Yes |  |
-| dcaegen2/services/pm-mapper | runtime | medium | ❓ | Yes | Yes |
+| dcaegen2/services/heartbeat | runtime | medium | ❌ | Yes |  |
+| dcaegen2/services/mapper | runtime | medium | ❌ | Yes |  |
+| dcaegen2/services/pm-mapper | runtime | medium | ❌ | Yes | Yes |
 | dcaegen2/services/prh | runtime | high | ✅ | Yes |  |
-| dcaegen2/services/sdk | runtime | medium | ❓ | Yes |  |
-| dcaegen2/services/son-handler | runtime | medium | ❓ | Yes |  |
-| dcaegen2/utils | runtime | medium | ❓ | Yes |  |
-| demo | runtime | medium | ❓ | Yes | Yes |
-| dmaap | runtime | medium | ❓ | Yes |  |
-| dmaap/buscontroller | runtime | medium | ❓ | Yes |  |
-| dmaap/datarouter | runtime | medium | ❓ | Yes |  |
-| dmaap/kafka11aaf | runtime | medium | ❓ | Yes |  |
-| dmaap/messagerouter/dmaapclient | runtime | medium | ❓ | Yes |  |
-| dmaap/messagerouter/messageservice | runtime | medium | ❓ | Yes |  |
-| dmaap/zookeeper | runtime | medium | ❓ | Yes |  |
-| doc | runtime | medium | ❓ | Yes |  |
-| doc/doc-best-practice | runtime | medium | ❓ |  |  |
-| holmes | runtime | medium | ❓ | Yes |  |
-| holmes/common | runtime | medium | ❓ | Yes |  |
-| holmes/engine-management | runtime | medium | ❓ | Yes |  |
-| holmes/rule-management | runtime | medium | ❓ | Yes |  |
-| integration | runtime | medium | ❓ | Yes | Yes |
-| integration/csit | runtime | medium | ❓ | Yes |  |
-| integration/data-provider | runtime | medium | ❓ | Yes | Yes |
-| integration/docker/onap-java11 | runtime | medium | ❓ | Yes | Yes |
-| integration/docker/onap-python | runtime | medium | ❓ | Yes | Yes |
-| integration/gating | runtime | medium | ❓ |  | Yes |
-| integration/ietf-actn-tools | runtime | medium | ❓ | Yes | Yes |
-| integration/onap-component-simulators | runtime | medium | ❓ |  | Yes |
-| integration/pipelines/build-integration | runtime | medium | ❓ |  |  |
-| integration/pipelines/chained-ci | runtime | medium | ❓ |  |  |
-| integration/pipelines/oom-automatic-installation | runtime | medium | ❓ |  |  |
-| integration/pipelines/xtesting-onap | runtime | medium | ❓ |  |  |
-| integration/python-onapsdk | runtime | medium | ❓ |  | Yes |
-| integration/seccom | runtime | medium | ❓ | Yes | Yes |
-| integration/simulators/5G-core-nf-simulator | runtime | medium | ❓ | Yes | Yes |
-| integration/simulators/A1-policy-enforcement-simulator | runtime | medium | ❓ | Yes | Yes |
-| integration/simulators/core-nssmf-simulator | runtime | medium | ❓ | Yes | Yes |
-| integration/simulators/nf-simulator | runtime | medium | ❓ | Yes | Yes |
-| integration/simulators/nf-simulator/avcn-manager | runtime | medium | ❓ | Yes | Yes |
-| integration/simulators/nf-simulator/netconf-server | runtime | medium | ❓ | Yes | Yes |
-| integration/simulators/nf-simulator/pm-https-server | runtime | medium | ❓ | Yes | Yes |
-| integration/simulators/nf-simulator/ves-client | runtime | medium | ❓ | Yes | Yes |
-| integration/simulators/pnf-simulator | runtime | medium | ❓ | Yes | Yes |
-| integration/simulators/ran-app | runtime | medium | ❓ |  |  |
-| integration/simulators/ran-nssmf-simulator | runtime | medium | ❓ | Yes | Yes |
-| integration/simulators/ran-simulator | runtime | medium | ❓ | Yes | Yes |
-| integration/usecases/A1-policy-enforcement | runtime | medium | ❓ | Yes | Yes |
-| integration/usecases/A1-policy-enforcement-r-apps | runtime | medium | ❓ | Yes | Yes |
-| integration/xtesting | runtime | medium | ❓ | Yes | Yes |
-| modeling/etsicatalog | runtime | medium | ❓ | Yes |  |
-| modeling/modelspec | runtime | medium | ❓ | Yes |  |
-| modeling/toscaparsers | runtime | medium | ❓ | Yes |  |
-| msb | runtime | medium | ❓ | Yes |  |
-| msb/apigateway | runtime | medium | ❓ | Yes | Yes |
-| msb/discovery | runtime | medium | ❓ | Yes | Yes |
-| msb/java-sdk | runtime | medium | ❓ | Yes | Yes |
-| msb/service-mesh | runtime | medium | ❓ | Yes |  |
-| msb/swagger-sdk | runtime | medium | ❓ | Yes | Yes |
+| dcaegen2/services/sdk | runtime | medium | ❌ | Yes |  |
+| dcaegen2/services/son-handler | runtime | medium | ❌ | Yes |  |
+| dcaegen2/utils | runtime | medium | ❌ | Yes |  |
+| demo | runtime | medium | ✅ | Yes | Yes |
+| dmaap | runtime | medium | ☑️ | Yes |  |
+| dmaap/buscontroller | runtime | medium | ❌ | Yes |  |
+| dmaap/datarouter | runtime | high | ✅ | Yes |  |
+| dmaap/kafka11aaf | runtime | medium | ❌ | Yes |  |
+| dmaap/messagerouter/dmaapclient | runtime | medium | ❌ | Yes |  |
+| dmaap/messagerouter/messageservice | runtime | medium | ❌ | Yes |  |
+| dmaap/zookeeper | runtime | medium | ❌ | Yes |  |
+| doc | runtime | medium | ❌ | Yes |  |
+| doc/doc-best-practice | runtime | medium | ❌ |  |  |
+| holmes | runtime | medium | ☑️ | Yes |  |
+| holmes/common | runtime | medium | ❌ | Yes |  |
+| holmes/engine-management | runtime | medium | ❌ | Yes |  |
+| holmes/rule-management | runtime | medium | ❌ | Yes |  |
+| integration | runtime | medium | ☑️ | Yes | Yes |
+| integration/csit | runtime | medium | ❌ | Yes |  |
+| integration/data-provider | runtime | medium | ❌ | Yes | Yes |
+| integration/docker/onap-java11 | runtime | high | ✅ | Yes | Yes |
+| integration/docker/onap-python | runtime | medium | ❌ | Yes | Yes |
+| integration/gating | runtime | medium | ❌ |  | Yes |
+| integration/ietf-actn-tools | runtime | medium | ❌ | Yes | Yes |
+| integration/onap-component-simulators | runtime | medium | ❌ |  | Yes |
+| integration/pipelines/build-integration | runtime | medium | ❌ |  |  |
+| integration/pipelines/chained-ci | runtime | medium | ❌ |  |  |
+| integration/pipelines/oom-automatic-installation | runtime | medium | ❌ |  |  |
+| integration/pipelines/xtesting-onap | runtime | medium | ❌ |  |  |
+| integration/python-onapsdk | runtime | medium | ❌ |  | Yes |
+| integration/seccom | runtime | medium | ❌ | Yes | Yes |
+| integration/simulators/5G-core-nf-simulator | runtime | medium | ❌ | Yes | Yes |
+| integration/simulators/A1-policy-enforcement-simulator | runtime | medium | ❌ | Yes | Yes |
+| integration/simulators/core-nssmf-simulator | runtime | medium | ❌ | Yes | Yes |
+| integration/simulators/nf-simulator | runtime | medium | ❌ | Yes | Yes |
+| integration/simulators/nf-simulator/avcn-manager | runtime | medium | ❌ | Yes | Yes |
+| integration/simulators/nf-simulator/netconf-server | runtime | medium | ❌ | Yes | Yes |
+| integration/simulators/nf-simulator/pm-https-server | runtime | medium | ❌ | Yes | Yes |
+| integration/simulators/nf-simulator/ves-client | runtime | medium | ❌ | Yes | Yes |
+| integration/simulators/pnf-simulator | runtime | medium | ❌ | Yes | Yes |
+| integration/simulators/ran-app | runtime | medium | ❌ |  |  |
+| integration/simulators/ran-nssmf-simulator | runtime | medium | ❌ | Yes | Yes |
+| integration/simulators/ran-simulator | runtime | medium | ❌ | Yes | Yes |
+| integration/usecases/A1-policy-enforcement | runtime | medium | ❌ | Yes | Yes |
+| integration/usecases/A1-policy-enforcement-r-apps | runtime | medium | ❌ | Yes | Yes |
+| integration/xtesting | runtime | medium | ❌ | Yes | Yes |
+| modeling/etsicatalog | runtime | medium | ❌ | Yes |  |
+| modeling/modelspec | runtime | medium | ❌ | Yes |  |
+| modeling/toscaparsers | runtime | medium | ❌ | Yes |  |
+| msb | runtime | medium | ❌ | Yes |  |
+| msb/apigateway | runtime | medium | ❌ | Yes | Yes |
+| msb/discovery | runtime | medium | ❌ | Yes | Yes |
+| msb/java-sdk | runtime | medium | ❌ | Yes | Yes |
+| msb/service-mesh | runtime | medium | ❌ | Yes |  |
+| msb/swagger-sdk | runtime | medium | ❌ | Yes | Yes |
 | multicloud | runtime | medium | ☑️ | Yes | Yes |
 | multicloud/framework | runtime | high | ✅ | Yes | Yes |
 | multicloud/k8s | runtime | high | ✅ | Yes |  |
 | multicloud/openstack | runtime | high | ☑️ | Yes | Yes |
-| multicloud/openstack/vmware | runtime | medium | ❓ | Yes | Yes |
-| multicloud/openstack/windriver | runtime | medium | ❓ | Yes |  |
+| multicloud/openstack/vmware | runtime | medium | ❌ | Yes | Yes |
+| multicloud/openstack/windriver | runtime | medium | ❌ | Yes |  |
 | oom | infrastructure | high | ☑️ | Yes | Yes |
-| oom/consul | runtime | medium | ❓ | Yes | Yes |
-| oom/offline-installer | runtime | medium | ❓ | Yes |  |
-| oom/platform/cert-manager | runtime | medium | ❓ | Yes |  |
+| oom/consul | runtime | medium | ❌ | Yes | Yes |
+| oom/offline-installer | runtime | medium | ❌ | Yes |  |
+| oom/platform/cert-manager | runtime | medium | ❌ | Yes |  |
 | oom/platform/cert-service | runtime | high | ✅ | Yes | Yes |
-| oom/platform/keycloak | runtime | medium | ❓ | Yes |  |
-| oom/readiness | runtime | medium | ❓ | Yes | Yes |
-| oom/registrator | runtime | medium | ❓ | Yes | Yes |
-| oom/utils | runtime | medium | ❓ | Yes |  |
-| oparent | runtime | medium | ❓ | Yes | Yes |
-| oparent/cia | runtime | medium | ❓ | Yes |  |
-| optf | runtime | medium | ❓ | Yes |  |
-| optf/has | runtime | medium | ❓ | Yes |  |
-| optf/osdf | runtime | medium | ❓ | Yes |  |
-| osa | runtime | medium | ❓ | Yes |  |
+| oom/platform/keycloak | runtime | medium | ❌ | Yes |  |
+| oom/readiness | runtime | high | ✅ | Yes | Yes |
+| oom/registrator | runtime | medium | ❌ | Yes | Yes |
+| oom/utils | runtime | medium | ❌ | Yes |  |
+| oparent | runtime | medium | ❌ | Yes | Yes |
+| oparent/cia | runtime | medium | ❌ | Yes |  |
+| optf | runtime | medium | ❌ | Yes |  |
+| optf/has | runtime | medium | ❌ | Yes |  |
+| optf/osdf | runtime | medium | ❌ | Yes |  |
+| osa | runtime | medium | ❌ | Yes |  |
 | policy | runtime | medium | ☑️ | Yes |  |
 | policy/apex-pdp | runtime | high | ✅ | Yes | Yes |
 | policy/api | runtime | high | ✅ | Yes | Yes |
 | policy/clamp | runtime | high | ✅ | Yes | Yes |
-| policy/common | runtime | medium | ❓ | Yes | Yes |
+| policy/common | runtime | medium | ❌ | Yes | Yes |
 | policy/distribution | runtime | high | ✅ | Yes | Yes |
 | policy/docker | runtime | high | ✅ | Yes | Yes |
-| policy/drools-applications | runtime | medium | ❓ | Yes | Yes |
+| policy/drools-applications | runtime | medium | ❌ | Yes | Yes |
 | policy/drools-pdp | runtime | high | ✅ | Yes | Yes |
-| policy/gui | runtime | medium | ❓ | Yes |  |
-| policy/models | runtime | medium | ❓ | Yes | Yes |
+| policy/gui | runtime | medium | ❌ | Yes |  |
+| policy/models | runtime | medium | ❌ | Yes | Yes |
 | policy/opa-pdp | runtime | high | ✅ |  |  |
 | policy/pap | runtime | high | ✅ | Yes | Yes |
-| policy/parent | runtime | medium | ❓ | Yes | Yes |
+| policy/parent | runtime | medium | ❌ | Yes | Yes |
 | policy/xacml-pdp | runtime | high | ✅ | Yes | Yes |
-| portal-ng | runtime | medium | ❓ |  |  |
+| portal-ng | runtime | medium | ✅ |  |  |
 | portal-ng/bff | runtime | high | ✅ |  | Yes |
-| portal-ng/e2e | runtime | medium | ❓ |  |  |
+| portal-ng/e2e | runtime | medium | ❌ |  |  |
 | portal-ng/history | runtime | high | ✅ |  | Yes |
 | portal-ng/preferences | runtime | high | ✅ |  | Yes |
 | portal-ng/ui | runtime | high | ✅ |  | Yes |
-| relman | runtime | medium | ❓ | Yes |  |
-| sandbox-2 | runtime | medium | ❓ | Yes |  |
-| sandbox-3 | runtime | medium | ❓ | Yes |  |
+| relman | runtime | medium | ❌ | Yes |  |
+| sandbox-2 | runtime | medium | ❌ | Yes |  |
+| sandbox-3 | runtime | medium | ❌ | Yes |  |
 | sdc | runtime | high | ☑️ | Yes | Yes |
-| sdc/onap-ui-angular | runtime | medium | ❓ | Yes | Yes |
-| sdc/onap-ui-common | runtime | medium | ❓ | Yes | Yes |
-| sdc/sdc-be-common | runtime | medium | ❓ | Yes | Yes |
-| sdc/sdc-distribution-client | runtime | medium | ❓ | Yes | Yes |
-| sdc/sdc-docker-base | runtime | medium | ❓ | Yes |  |
+| sdc/onap-ui-angular | runtime | medium | ❌ | Yes | Yes |
+| sdc/onap-ui-common | runtime | medium | ❌ | Yes | Yes |
+| sdc/sdc-be-common | runtime | medium | ❌ | Yes | Yes |
+| sdc/sdc-distribution-client | runtime | medium | ❌ | Yes | Yes |
+| sdc/sdc-docker-base | runtime | medium | ❌ | Yes |  |
 | sdc/sdc-helm-validator | runtime | high | ✅ | Yes | Yes |
-| sdc/sdc-pubsub | runtime | medium | ❓ | Yes | Yes |
-| sdc/sdc-tosca | runtime | medium | ❓ | Yes | Yes |
+| sdc/sdc-pubsub | runtime | medium | ❌ | Yes | Yes |
+| sdc/sdc-tosca | runtime | medium | ❌ | Yes | Yes |
 | sdc/sdc-workflow-designer | runtime | high | ✅ | Yes | Yes |
 | sdnc | runtime | medium | ☑️ | Yes |  |
-| sdnc/apps | runtime | medium | ❓ | Yes | Yes |
-| sdnc/northbound | runtime | medium | ❓ | Yes | Yes |
+| sdnc/apps | runtime | medium | ❌ | Yes | Yes |
+| sdnc/northbound | runtime | medium | ❌ | Yes | Yes |
 | sdnc/oam | runtime | high | ✅ | Yes | Yes |
 | so | runtime | high | ☑️ | Yes | Yes |
-| so/adapters/so-cnf-adapter | runtime | medium | ❓ | Yes | Yes |
+| so/adapters/so-cnf-adapter | runtime | medium | ❌ | Yes | Yes |
 | so/adapters/so-etsi-sol003-adapter | runtime | high | ✅ | Yes | Yes |
 | so/adapters/so-etsi-sol005-adapter | runtime | high | ✅ | Yes | Yes |
 | so/adapters/so-nssmf-adapter | runtime | high | ✅ | Yes | Yes |
 | so/adapters/so-oof-adapter | runtime | high | ✅ | Yes | Yes |
-| so/chef-repo | runtime | medium | ❓ | Yes |  |
-| so/docker-config | runtime | medium | ❓ | Yes |  |
-| so/libs | runtime | medium | ❓ | Yes | Yes |
+| so/chef-repo | runtime | medium | ❌ | Yes |  |
+| so/docker-config | runtime | medium | ✅ | Yes |  |
+| so/libs | runtime | medium | ❌ | Yes | Yes |
 | so/so-admin-cockpit | runtime | high | ✅ | Yes | Yes |
-| so/so-config | runtime | medium | ❓ | Yes |  |
-| so/so-etsi-nfvo | runtime | medium | ❓ | Yes | Yes |
-| spark-model-runner | runtime | medium | ❓ | Yes |  |
+| so/so-config | runtime | medium | ❌ | Yes |  |
+| so/so-etsi-nfvo | runtime | medium | ❌ | Yes | Yes |
+| spark-model-runner | runtime | medium | ❌ | Yes |  |
 | testsuite | runtime | high | ☑️ | Yes |  |
-| testsuite/cds | runtime | medium | ❓ | Yes | Yes |
-| testsuite/cds-mock-odl | runtime | medium | ❓ | Yes | Yes |
-| testsuite/cds-mock-server | runtime | medium | ❓ | Yes | Yes |
-| testsuite/cds-mock-ssh | runtime | medium | ❓ | Yes | Yes |
+| testsuite/cds | runtime | medium | ❌ | Yes | Yes |
+| testsuite/cds-mock-odl | runtime | medium | ❌ | Yes | Yes |
+| testsuite/cds-mock-server | runtime | medium | ❌ | Yes | Yes |
+| testsuite/cds-mock-ssh | runtime | medium | ❌ | Yes | Yes |
 | testsuite/cds-modk-odl | runtime | medium | ❓ |  | Yes |
-| testsuite/oom | runtime | medium | ❓ | Yes |  |
-| testsuite/python-testing-utils | runtime | medium | ❓ | Yes | Yes |
-| testsuite/pythonsdk-tests | runtime | medium | ❓ | Yes | Yes |
-| testsuite/robot-utils | runtime | medium | ❓ | Yes |  |
-| university | runtime | medium | ❓ | Yes |  |
+| testsuite/oom | runtime | medium | ❌ | Yes |  |
+| testsuite/python-testing-utils | runtime | medium | ❌ | Yes | Yes |
+| testsuite/pythonsdk-tests | runtime | medium | ❌ | Yes | Yes |
+| testsuite/robot-utils | runtime | medium | ❌ | Yes |  |
+| university | runtime | medium | ❌ | Yes |  |
 | usecase-ui | runtime | high | ☑️ | Yes | Yes |
 | usecase-ui/intent-analysis | runtime | high | ✅ |  | Yes |
 | usecase-ui/llm-adaptation | runtime | high | ✅ |  | Yes |
 | usecase-ui/nlp | runtime | high | ✅ | Yes | Yes |
 | usecase-ui/server | runtime | high | ✅ | Yes | Yes |
-| vfc | runtime | medium | ❓ | Yes |  |
-| vfc/gvnfm/vnflcm | runtime | medium | ❓ | Yes |  |
-| vfc/gvnfm/vnfmgr | runtime | medium | ❓ | Yes |  |
-| vfc/gvnfm/vnfres | runtime | medium | ❓ | Yes |  |
-| vfc/nfvo/db | runtime | medium | ❓ | Yes |  |
-| vfc/nfvo/driver/vnfm/gvnfm | runtime | medium | ❓ | Yes |  |
-| vfc/nfvo/driver/vnfm/svnfm | runtime | medium | ❓ | Yes |  |
-| vfc/nfvo/lcm | runtime | medium | ❓ | Yes |  |
-| vnfrqts | runtime | medium | ❓ | Yes |  |
-| vnfrqts/epics | runtime | medium | ❓ | Yes |  |
-| vnfrqts/guidelines | runtime | medium | ❓ | Yes |  |
-| vnfrqts/requirements | runtime | medium | ❓ | Yes |  |
-| vnfrqts/testcases | runtime | medium | ❓ | Yes |  |
-| vnfrqts/usecases | runtime | medium | ❓ | Yes |  |
-| vnfsdk | runtime | medium | ❓ | Yes |  |
-| vnfsdk/dovetail-integration | runtime | medium | ❓ | Yes |  |
-| vnfsdk/functest | runtime | medium | ❓ | Yes |  |
-| vnfsdk/lctest | runtime | medium | ❓ | Yes | Yes |
-| vnfsdk/model | runtime | medium | ❓ | Yes |  |
-| vnfsdk/pkgtools | runtime | medium | ❓ | Yes | Yes |
-| vnfsdk/refrepo | runtime | medium | ❓ | Yes |  |
-| vnfsdk/validation | runtime | medium | ❓ | Yes |  |
-| vvp | runtime | medium | ❓ | Yes |  |
-| vvp/documentation | runtime | medium | ❓ | Yes |  |
-| vvp/engagementmgr | runtime | medium | ❓ | Yes |  |
-| vvp/regression-tests | runtime | medium | ❓ | Yes |  |
-| vvp/test-engine | runtime | medium | ❓ | Yes |  |
-| vvp/validation-scripts | runtime | medium | ❓ | Yes |  |
+| vfc | runtime | medium | ❌ | Yes |  |
+| vfc/gvnfm/vnflcm | runtime | medium | ❌ | Yes |  |
+| vfc/gvnfm/vnfmgr | runtime | medium | ❌ | Yes |  |
+| vfc/gvnfm/vnfres | runtime | medium | ❌ | Yes |  |
+| vfc/nfvo/db | runtime | medium | ❌ | Yes |  |
+| vfc/nfvo/driver/vnfm/gvnfm | runtime | medium | ❌ | Yes |  |
+| vfc/nfvo/driver/vnfm/svnfm | runtime | medium | ❌ | Yes |  |
+| vfc/nfvo/lcm | runtime | medium | ❌ | Yes |  |
+| vnfrqts | runtime | medium | ❌ | Yes |  |
+| vnfrqts/epics | runtime | medium | ❌ | Yes |  |
+| vnfrqts/guidelines | runtime | medium | ❌ | Yes |  |
+| vnfrqts/requirements | runtime | medium | ❌ | Yes |  |
+| vnfrqts/testcases | runtime | medium | ❌ | Yes |  |
+| vnfrqts/usecases | runtime | medium | ❌ | Yes |  |
+| vnfsdk | runtime | medium | ☑️ | Yes |  |
+| vnfsdk/dovetail-integration | runtime | medium | ❌ | Yes |  |
+| vnfsdk/functest | runtime | medium | ❌ | Yes |  |
+| vnfsdk/lctest | runtime | medium | ❌ | Yes | Yes |
+| vnfsdk/model | runtime | medium | ❌ | Yes |  |
+| vnfsdk/pkgtools | runtime | medium | ❌ | Yes | Yes |
+| vnfsdk/refrepo | runtime | medium | ❌ | Yes |  |
+| vnfsdk/validation | runtime | medium | ❌ | Yes |  |
+| vvp | runtime | medium | ❌ | Yes |  |
+| vvp/documentation | runtime | medium | ❌ | Yes |  |
+| vvp/engagementmgr | runtime | medium | ❌ | Yes |  |
+| vvp/regression-tests | runtime | medium | ❌ | Yes |  |
+| vvp/test-engine | runtime | medium | ❌ | Yes |  |
+| vvp/validation-scripts | runtime | medium | ❌ | Yes |  |
 
 ### Totals
 
 | Total | State | Description |
 | ----: | :---: | ----------- |
-| 46 | ✅ | In current ONAP release |
-| 15 | ☑️ | Parent project (children in release) |
-| 157 | ❓ | Undetermined |
+| 53 | ✅ | In current ONAP release |
+| 19 | ☑️ | Parent project (children in release) |
+| 144 | ❌ | Not in current ONAP release |
+| 1 | ❓ | Undetermined |
 
 ## Docker Images
 
@@ -262,6 +262,8 @@
 | onap/ccsdk-sdclistener | 1.8.1 | ccsdk/cds | nexus3.onap.org:10001 | Yes |
 | onap/cps-and-ncmp | 3.7.0 | cps | nexus3.onap.org:10001 | Yes |
 | onap/cps-temporal | 1.2.1 | cps | nexus3.onap.org:10001 | Yes |
+| onap/dmaap/datarouter-prov-client | 2.1.15 | dmaap/datarouter | nexus3.onap.org:10001 | Yes |
+| onap/integration-java11 | 10.0.0 | integration/docker/onap-java11 | nexus3.onap.org:10001 | Yes |
 | onap/model-loader | 1.14.3 | aai/model-loader | nexus3.onap.org:10001 | Yes |
 | onap/multicloud/framework | 1.9.2 | multicloud/framework | nexus3.onap.org:10001 | Yes |
 | onap/multicloud/framework-artifactbroker | 1.9.3 | multicloud/framework | nexus3.onap.org:10001 | Yes |
@@ -269,8 +271,10 @@
 | onap/multicloud/openstack-fcaps | 1.5.7 | multicloud/openstack | nexus3.onap.org:10001 | Yes |
 | onap/music/prom | 1.0.5 | music/prom | nexus3.onap.org:10001 | Yes |
 | onap/ncmp-dmi-plugin | 1.7.0 | cps/ncmp-dmi-plugin | nexus3.onap.org:10001 | Yes |
+| onap/oom/readiness | 7.0.1 | oom/readiness | nexus3.onap.org:10001 | Yes |
 | onap/org.onap.dcaegen2.collectors.hv-ves.hv-collector-main | 1.11.0 | dcaegen2/collectors/hv-ves | nexus3.onap.org:10001 | Yes |
 | onap/org.onap.dcaegen2.collectors.ves.vescollector | 1.12.4 | dcaegen2/collectors/ves | nexus3.onap.org:10001 | Yes |
+| onap/org.onap.dcaegen2.deployments.dcae-services-policy-sync | 1.0.1 | dcaegen2/deployments | nexus3.onap.org:10001 | Yes |
 | onap/org.onap.dcaegen2.deployments.healthcheck-container | 2.4.1 | dcaegen2/deployments | nexus3.onap.org:10001 | Yes |
 | onap/org.onap.dcaegen2.platform.ves-openapi-manager | 1.3.1 | dcaegen2/platform/ves-openapi-manager | nexus3.onap.org:10001 | Yes |
 | onap/org.onap.dcaegen2.services.datalake.exposure.service | 1.1.3 | dcaegen2/services | nexus3.onap.org:10001 | Yes |

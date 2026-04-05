@@ -111,6 +111,20 @@ docker_images:
   nexus_validated: null
   registry: nexus3.onap.org:10001
   tag: 1.2.1
+- gerrit_project: dmaap/datarouter
+  helm_charts:
+  - repositoryGenerator
+  image: onap/dmaap/datarouter-prov-client
+  nexus_validated: null
+  registry: nexus3.onap.org:10001
+  tag: 2.1.15
+- gerrit_project: integration/docker/onap-java11
+  helm_charts:
+  - repositoryGenerator
+  image: onap/integration-java11
+  nexus_validated: null
+  registry: nexus3.onap.org:10001
+  tag: 10.0.0
 - gerrit_project: aai/model-loader
   helm_charts:
   - aai/aai-modelloader
@@ -160,6 +174,13 @@ docker_images:
   nexus_validated: null
   registry: nexus3.onap.org:10001
   tag: 1.7.0
+- gerrit_project: oom/readiness
+  helm_charts:
+  - repositoryGenerator
+  image: onap/oom/readiness
+  nexus_validated: null
+  registry: nexus3.onap.org:10001
+  tag: 7.0.1
 - gerrit_project: dcaegen2/collectors/hv-ves
   helm_charts:
   - dcaegen2-services/dcae-hv-ves-collector
@@ -174,6 +195,13 @@ docker_images:
   nexus_validated: null
   registry: nexus3.onap.org:10001
   tag: 1.12.4
+- gerrit_project: dcaegen2/deployments
+  helm_charts:
+  - repositoryGenerator
+  image: onap/org.onap.dcaegen2.deployments.dcae-services-policy-sync
+  nexus_validated: null
+  registry: nexus3.onap.org:10001
+  tag: 1.0.1
 - gerrit_project: dcaegen2/deployments
   helm_charts:
   - dcaegen2-services/dcae-ms-healthcheck
@@ -594,7 +622,7 @@ docker_images:
   nexus_validated: null
   registry: nexus3.onap.org:10001
   tag: 16.0.1
-generated_at: '2026-04-05T20:52:57Z'
+generated_at: '2026-04-05T21:47:06Z'
 helm_components:
 - condition_key: a1policymanagement.enabled
   docker_images:
@@ -1666,19 +1694,19 @@ onap_release:
   oom_commit: 4ad36579a06b56ed10b819d7a453d5040f75040d
 provenance:
   collectors_executed:
-  - duration_seconds: 1.204
+  - duration_seconds: 1.199
     errors: []
-    items_collected: 238
+    items_collected: 245
     name: oom
-  - duration_seconds: 0.232
+  - duration_seconds: 0.371
     errors: []
     items_collected: 181
     name: gerrit
-  - duration_seconds: 0.102
+  - duration_seconds: 0.103
     errors: []
     items_collected: 372
     name: relman
-  - duration_seconds: 0.979
+  - duration_seconds: 0.976
     errors: []
     items_collected: 114
     name: jjb
@@ -1810,7 +1838,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fgraphgraph
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: aai
@@ -1830,7 +1858,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Flogging-service
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: aai
@@ -1872,7 +1900,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Foom
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: aai
@@ -1916,7 +1944,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Frest-client
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: aai
@@ -1984,7 +2012,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Fsparky-fe
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: aai
@@ -1993,6 +2021,7 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Gerrit URL reference in OOM file aai/components/aai-sparky-be/values.yaml
   discovered_by:
   - gerrit
   - relman
@@ -2002,7 +2031,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/aai%2Ftest-config
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: true
   is_parent_project: null
   maintained: true
   top_level_project: aai
@@ -2144,7 +2173,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Ffeatures
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: ccsdk
@@ -2188,7 +2217,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Fparent
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: ccsdk
@@ -2204,7 +2233,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Fplatform%2Fblueprints
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: ccsdk
@@ -2224,7 +2253,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Fsli
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: true
   maintained: true
   top_level_project: ccsdk
@@ -2240,30 +2269,10 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/ccsdk%2Fstorage%2Fesaas
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: ccsdk
-- category: runtime
-  confidence: medium
-  confidence_reasons:
-  - Discovered via Gerrit REST API
-  - Listed in relman repos.yaml
-  - Has CI jobs in ci-management JJB
-  discovered_by:
-  - gerrit
-  - relman
-  - jjb
-  docker_images: []
-  gerrit_project: ci-management
-  gerrit_state: ACTIVE
-  gerrit_url: https://gerrit.onap.org/r/admin/repos/ci-management
-  has_ci: true
-  helm_charts: []
-  in_current_release: null
-  is_parent_project: null
-  maintained: true
-  top_level_project: ci-management
 - category: runtime
   confidence: medium
   confidence_reasons:
@@ -2276,7 +2285,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/cli
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: cli
@@ -2318,7 +2327,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/cps%2Fcps-tbdmt
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: cps
@@ -2334,7 +2343,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/cps%2Fcps-temporal
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: cps
@@ -2394,7 +2403,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fanalytics%2Ftca-gen2
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dcaegen2
@@ -2412,7 +2421,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fcollectors%2Fdatafile
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dcaegen2
@@ -2452,7 +2461,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fcollectors%2Frestconf
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dcaegen2
@@ -2470,7 +2479,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fcollectors%2Fsnmptrap
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dcaegen2
@@ -2508,12 +2517,14 @@ repositories:
   - relman
   docker_images:
   - onap/org.onap.dcaegen2.deployments.healthcheck-container
+  - onap/org.onap.dcaegen2.deployments.dcae-services-policy-sync
   gerrit_project: dcaegen2/deployments
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fdeployments
   has_ci: null
   helm_charts:
   - dcaegen2-services/dcae-ms-healthcheck
+  - repositoryGenerator
   in_current_release: true
   is_parent_project: null
   maintained: true
@@ -2548,7 +2559,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fplatform%2Fblueprints
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dcaegen2
@@ -2616,7 +2627,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fservices%2Fheartbeat
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dcaegen2
@@ -2634,7 +2645,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fservices%2Fmapper
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dcaegen2
@@ -2654,7 +2665,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fservices%2Fpm-mapper
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dcaegen2
@@ -2694,7 +2705,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fservices%2Fsdk
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dcaegen2
@@ -2712,7 +2723,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fservices%2Fson-handler
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dcaegen2
@@ -2730,7 +2741,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Futils
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dcaegen2
@@ -2740,6 +2751,7 @@ repositories:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   - Has CI jobs in ci-management JJB
+  - Referenced in OOM file so/values.yaml
   discovered_by:
   - gerrit
   - relman
@@ -2750,7 +2762,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/demo
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: true
   is_parent_project: null
   maintained: true
   top_level_project: demo
@@ -2768,7 +2780,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dmaap
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: true
   is_parent_project: true
   maintained: true
   top_level_project: dmaap
@@ -2786,25 +2798,29 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dmaap%2Fbuscontroller
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dmaap
 - category: runtime
-  confidence: medium
+  confidence: high
   confidence_reasons:
+  - Docker image referenced in OOM Helm charts
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   discovered_by:
+  - oom
   - gerrit
   - relman
-  docker_images: []
+  docker_images:
+  - onap/dmaap/datarouter-prov-client
   gerrit_project: dmaap/datarouter
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dmaap%2Fdatarouter
   has_ci: null
-  helm_charts: []
-  in_current_release: null
+  helm_charts:
+  - repositoryGenerator
+  in_current_release: true
   is_parent_project: null
   maintained: true
   top_level_project: dmaap
@@ -2822,7 +2838,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dmaap%2Fkafka11aaf
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dmaap
@@ -2838,7 +2854,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dmaap%2Fmessagerouter%2Fdmaapclient
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dmaap
@@ -2854,7 +2870,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dmaap%2Fmessagerouter%2Fmessageservice
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dmaap
@@ -2870,7 +2886,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dmaap%2Fzookeeper
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: dmaap
@@ -2888,7 +2904,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/doc
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: doc
@@ -2904,7 +2920,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/doc%2Fdoc-best-practice
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: null
   top_level_project: doc
@@ -2913,6 +2929,7 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Referenced in OOM file onap/values.yaml
   discovered_by:
   - gerrit
   - relman
@@ -2922,7 +2939,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/holmes
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: true
   is_parent_project: true
   maintained: true
   top_level_project: holmes
@@ -2938,7 +2955,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/holmes%2Fcommon
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: holmes
@@ -2954,7 +2971,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/holmes%2Fengine-management
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: holmes
@@ -2970,7 +2987,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/holmes%2Frule-management
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: holmes
@@ -2990,7 +3007,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: true
   is_parent_project: true
   maintained: true
   top_level_project: integration
@@ -3008,7 +3025,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fcsit
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3028,27 +3045,31 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fdata-provider
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
 - category: runtime
-  confidence: medium
+  confidence: high
   confidence_reasons:
+  - Docker image referenced in OOM Helm charts
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   - Has CI jobs in ci-management JJB
   discovered_by:
+  - oom
   - gerrit
   - relman
   - jjb
-  docker_images: []
+  docker_images:
+  - onap/integration-java11
   gerrit_project: integration/docker/onap-java11
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fdocker%2Fonap-java11
   has_ci: true
-  helm_charts: []
-  in_current_release: null
+  helm_charts:
+  - repositoryGenerator
+  in_current_release: true
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3068,7 +3089,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fdocker%2Fonap-python
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3086,7 +3107,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fgating
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: null
   top_level_project: integration
@@ -3106,7 +3127,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fietf-actn-tools
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3124,7 +3145,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fonap-component-simulators
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: null
   top_level_project: integration
@@ -3140,7 +3161,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fpipelines%2Fbuild-integration
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: null
   top_level_project: integration
@@ -3156,7 +3177,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fpipelines%2Fchained-ci
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: null
   top_level_project: integration
@@ -3172,7 +3193,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fpipelines%2Foom-automatic-installation
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: null
   top_level_project: integration
@@ -3188,7 +3209,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fpipelines%2Fxtesting-onap
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: null
   top_level_project: integration
@@ -3206,7 +3227,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fpython-onapsdk
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: null
   top_level_project: integration
@@ -3226,7 +3247,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fseccom
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3246,7 +3267,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fsimulators%2F5G-core-nf-simulator
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3266,7 +3287,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fsimulators%2FA1-policy-enforcement-simulator
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3286,7 +3307,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fsimulators%2Fcore-nssmf-simulator
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3306,7 +3327,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fsimulators%2Fnf-simulator
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: true
   maintained: true
   top_level_project: integration
@@ -3326,7 +3347,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fsimulators%2Fnf-simulator%2Favcn-manager
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3346,7 +3367,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fsimulators%2Fnf-simulator%2Fnetconf-server
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3366,7 +3387,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fsimulators%2Fnf-simulator%2Fpm-https-server
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3386,7 +3407,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fsimulators%2Fnf-simulator%2Fves-client
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3406,7 +3427,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fsimulators%2Fpnf-simulator
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3422,7 +3443,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fsimulators%2Fran-app
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: null
   top_level_project: integration
@@ -3442,7 +3463,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fsimulators%2Fran-nssmf-simulator
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3462,7 +3483,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fsimulators%2Fran-simulator
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3482,7 +3503,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fusecases%2FA1-policy-enforcement
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3502,7 +3523,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fusecases%2FA1-policy-enforcement-r-apps
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3522,7 +3543,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/integration%2Fxtesting
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: integration
@@ -3538,7 +3559,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/modeling%2Fetsicatalog
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: modeling
@@ -3556,7 +3577,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/modeling%2Fmodelspec
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: modeling
@@ -3572,7 +3593,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/modeling%2Ftoscaparsers
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: modeling
@@ -3590,7 +3611,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/msb
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: true
   maintained: true
   top_level_project: msb
@@ -3608,7 +3629,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/msb%2Fapigateway
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: msb
@@ -3626,7 +3647,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/msb%2Fdiscovery
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: msb
@@ -3644,7 +3665,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/msb%2Fjava-sdk
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: msb
@@ -3662,7 +3683,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/msb%2Fservice-mesh
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: msb
@@ -3680,7 +3701,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/msb%2Fswagger-sdk
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: msb
@@ -3792,7 +3813,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/multicloud%2Fopenstack%2Fvmware
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: multicloud
@@ -3810,7 +3831,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/multicloud%2Fopenstack%2Fwindriver
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: multicloud
@@ -3852,7 +3873,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/oom%2Fconsul
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: oom
@@ -3870,7 +3891,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/oom%2Foffline-installer
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: oom
@@ -3888,7 +3909,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/oom%2Fplatform%2Fcert-manager
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: oom
@@ -3932,27 +3953,31 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/oom%2Fplatform%2Fkeycloak
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: oom
 - category: runtime
-  confidence: medium
+  confidence: high
   confidence_reasons:
+  - Docker image referenced in OOM Helm charts
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
   - Has CI jobs in ci-management JJB
   discovered_by:
+  - oom
   - gerrit
   - relman
   - jjb
-  docker_images: []
+  docker_images:
+  - onap/oom/readiness
   gerrit_project: oom/readiness
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/oom%2Freadiness
   has_ci: true
-  helm_charts: []
-  in_current_release: null
+  helm_charts:
+  - repositoryGenerator
+  in_current_release: true
   is_parent_project: null
   maintained: true
   top_level_project: oom
@@ -3972,7 +3997,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/oom%2Fregistrator
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: oom
@@ -3990,7 +4015,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/oom%2Futils
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: oom
@@ -4010,7 +4035,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/oparent
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: true
   maintained: true
   top_level_project: oparent
@@ -4028,7 +4053,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/oparent%2Fcia
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: oparent
@@ -4044,7 +4069,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/optf
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: true
   maintained: true
   top_level_project: optf
@@ -4060,7 +4085,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/optf%2Fhas
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: optf
@@ -4076,7 +4101,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/optf%2Fosdf
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: optf
@@ -4094,7 +4119,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/osa
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: osa
@@ -4214,7 +4239,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/policy%2Fcommon
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: policy
@@ -4282,7 +4307,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/policy%2Fdrools-applications
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: policy
@@ -4322,7 +4347,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/policy%2Fgui
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: policy
@@ -4342,7 +4367,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/policy%2Fmodels
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: policy
@@ -4406,7 +4431,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/policy%2Fparent
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: policy
@@ -4438,6 +4463,7 @@ repositories:
   confidence: medium
   confidence_reasons:
   - Discovered via Gerrit REST API
+  - Referenced in OOM file onap/values.yaml
   discovered_by:
   - gerrit
   docker_images: []
@@ -4446,7 +4472,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/portal-ng
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: true
   is_parent_project: null
   maintained: null
   top_level_project: portal-ng
@@ -4484,7 +4510,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/portal-ng%2Fe2e
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: null
   top_level_project: portal-ng
@@ -4568,7 +4594,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/relman
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: relman
@@ -4586,7 +4612,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/sandbox-2
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: sandbox-2
@@ -4604,7 +4630,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/sandbox-3
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: sandbox-3
@@ -4654,7 +4680,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fonap-ui-angular
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: sdc
@@ -4674,7 +4700,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fonap-ui-common
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: sdc
@@ -4694,7 +4720,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fsdc-be-common
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: sdc
@@ -4714,7 +4740,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fsdc-distribution-client
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: sdc
@@ -4732,7 +4758,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fsdc-docker-base
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: sdc
@@ -4776,7 +4802,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fsdc-pubsub
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: sdc
@@ -4796,7 +4822,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/sdc%2Fsdc-tosca
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: sdc
@@ -4860,7 +4886,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/sdnc%2Fapps
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: sdnc
@@ -4880,7 +4906,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/sdnc%2Fnorthbound
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: sdnc
@@ -4974,7 +5000,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/so%2Fadapters%2Fso-cnf-adapter
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: so
@@ -5088,7 +5114,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/so%2Fchef-repo
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: so
@@ -5097,6 +5123,7 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Gerrit URL reference in OOM file so/components/so-mariadb/values.yaml
   discovered_by:
   - gerrit
   - relman
@@ -5106,7 +5133,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/so%2Fdocker-config
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: true
   is_parent_project: null
   maintained: true
   top_level_project: so
@@ -5126,7 +5153,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/so%2Flibs
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: so
@@ -5168,7 +5195,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/so%2Fso-config
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: so
@@ -5188,7 +5215,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/so%2Fso-etsi-nfvo
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: so
@@ -5204,7 +5231,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/spark-model-runner
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: spark-model-runner
@@ -5246,7 +5273,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/testsuite%2Fcds
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: testsuite
@@ -5266,7 +5293,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/testsuite%2Fcds-mock-odl
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: testsuite
@@ -5286,7 +5313,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/testsuite%2Fcds-mock-server
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: testsuite
@@ -5306,7 +5333,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/testsuite%2Fcds-mock-ssh
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: testsuite
@@ -5340,7 +5367,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/testsuite%2Foom
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: testsuite
@@ -5360,7 +5387,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/testsuite%2Fpython-testing-utils
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: testsuite
@@ -5380,7 +5407,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/testsuite%2Fpythonsdk-tests
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: testsuite
@@ -5398,7 +5425,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/testsuite%2Frobot-utils
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: testsuite
@@ -5416,7 +5443,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/university
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: university
@@ -5550,7 +5577,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: true
   maintained: true
   top_level_project: vfc
@@ -5566,7 +5593,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc%2Fgvnfm%2Fvnflcm
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vfc
@@ -5582,7 +5609,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc%2Fgvnfm%2Fvnfmgr
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vfc
@@ -5598,7 +5625,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc%2Fgvnfm%2Fvnfres
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vfc
@@ -5616,7 +5643,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc%2Fnfvo%2Fdb
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vfc
@@ -5632,7 +5659,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc%2Fnfvo%2Fdriver%2Fvnfm%2Fgvnfm
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vfc
@@ -5648,7 +5675,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc%2Fnfvo%2Fdriver%2Fvnfm%2Fsvnfm
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vfc
@@ -5664,7 +5691,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc%2Fnfvo%2Flcm
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vfc
@@ -5682,7 +5709,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfrqts
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: true
   maintained: true
   top_level_project: vnfrqts
@@ -5700,7 +5727,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfrqts%2Fepics
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vnfrqts
@@ -5718,7 +5745,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfrqts%2Fguidelines
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vnfrqts
@@ -5736,7 +5763,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfrqts%2Frequirements
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vnfrqts
@@ -5754,7 +5781,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfrqts%2Ftestcases
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vnfrqts
@@ -5772,7 +5799,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfrqts%2Fusecases
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vnfrqts
@@ -5781,6 +5808,7 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Referenced in OOM file onap/values.yaml
   discovered_by:
   - gerrit
   - relman
@@ -5790,7 +5818,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfsdk
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: true
   is_parent_project: true
   maintained: true
   top_level_project: vnfsdk
@@ -5806,7 +5834,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfsdk%2Fdovetail-integration
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vnfsdk
@@ -5822,7 +5850,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfsdk%2Ffunctest
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vnfsdk
@@ -5842,7 +5870,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfsdk%2Flctest
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vnfsdk
@@ -5860,7 +5888,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfsdk%2Fmodel
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vnfsdk
@@ -5880,7 +5908,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfsdk%2Fpkgtools
   has_ci: true
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vnfsdk
@@ -5896,7 +5924,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfsdk%2Frefrepo
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vnfsdk
@@ -5912,7 +5940,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfsdk%2Fvalidation
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vnfsdk
@@ -5928,7 +5956,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: true
   maintained: true
   top_level_project: vvp
@@ -5944,7 +5972,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp%2Fdocumentation
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vvp
@@ -5960,7 +5988,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp%2Fengagementmgr
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vvp
@@ -5976,7 +6004,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp%2Fregression-tests
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vvp
@@ -5992,7 +6020,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp%2Ftest-engine
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vvp
@@ -6008,7 +6036,7 @@ repositories:
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vvp%2Fvalidation-scripts
   has_ci: null
   helm_charts: []
-  in_current_release: null
+  in_current_release: false
   is_parent_project: null
   maintained: true
   top_level_project: vvp
@@ -6021,11 +6049,11 @@ summary:
   - relman
   repositories_by_category:
     infrastructure: 1
-    runtime: 217
+    runtime: 216
   repositories_by_confidence:
-    high: 54
-    medium: 164
-  total_docker_images: 85
+    high: 57
+    medium: 160
+  total_docker_images: 89
   total_helm_components: 98
-  total_repositories: 218
-tool_version: 0.4.0
+  total_repositories: 217
+tool_version: 0.5.0
