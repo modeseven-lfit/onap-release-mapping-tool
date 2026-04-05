@@ -15,12 +15,12 @@ on:
         default: "master"
       collectors:
         # Available: oom, gerrit, relman, jjb
-        # Only oom and gerrit are defaulted; relman and jjb
-        # need local repo checkouts not cloned by this workflow.
+        # relman and jjb need ci-management and release-management
+        # checkouts which are cloned in dedicated steps below.
         description: "Collectors to enable (oom,gerrit,relman,jjb)"
         type: string
         required: false
-        default: "oom,gerrit"
+        default: "oom,gerrit,relman,jjb"
       nexus_url:
         description: "Nexus3 registry URL for image verification"
         type: string
@@ -118,6 +118,28 @@ jobs:
           git sparse-checkout set kubernetes
           git checkout
 
+      - name: "Clone ci-management from Gerrit"
+        run: |
+          # Clone ci-management (sparse checkout of jjb/ only)
+          GERRIT_URL="${{ vars.GERRIT_URL || 'https://gerrit.onap.org/r' }}"
+          git clone --depth 1 --branch master \
+            --single-branch --filter=blob:none --no-checkout \
+            "${GERRIT_URL}/ci-management" \
+            "${{ runner.temp }}/ci-management"
+          cd "${{ runner.temp }}/ci-management"
+          git sparse-checkout init --cone
+          git sparse-checkout set jjb
+          git checkout
+
+      - name: "Clone relman from Gerrit"
+        run: |
+          # Clone relman for repos/repos.yaml
+          GERRIT_URL="${{ vars.GERRIT_URL || 'https://gerrit.onap.org/r' }}"
+          git clone --depth 1 --branch master \
+            --single-branch --filter=blob:none \
+            "${GERRIT_URL}/relman" \
+            "${{ runner.temp }}/relman"
+
       - name: "Run discover"
         run: |
           # Run release mapping discovery
@@ -131,10 +153,23 @@ jobs:
           ARGS+=(--release-name "${RELEASE_NAME}")
           ARGS+=(--collectors "${{ inputs.collectors }}")
           ARGS+=(--gerrit-url "${GERRIT_URL}")
+          ARGS+=(--jjb-path "${{ runner.temp }}/ci-management/jjb")
+          ARGS+=(--repos-yaml "${{ runner.temp }}/relman/repos/repos.yaml")
           if [ "${{ inputs.debug }}" = "true" ]; then
             ARGS+=(--verbose -v)
           fi
           uvx "${TOOL_SPEC}" "${ARGS[@]}"
+
+      - name: "Verify images on Nexus"
+        if: inputs.skip_nexus != true
+        run: |
+          # Validate Docker images exist in Nexus registry
+          # Runs before export so results appear in reports
+          MANIFEST="${{ runner.temp }}/output/manifest.json"
+          if [ -f "$MANIFEST" ]; then
+            uvx "${TOOL_SPEC}" verify "$MANIFEST" \
+              --nexus-url "${{ inputs.nexus_url }}"
+          fi
 
       - name: "Export additional formats"
         run: |
@@ -150,16 +185,6 @@ jobs:
             uvx "${TOOL_SPEC}" export "$MANIFEST" \
               --format html \
               --output "${{ runner.temp }}/output/manifest.html"
-          fi
-
-      - name: "Verify images on Nexus"
-        if: inputs.skip_nexus != true
-        run: |
-          # Validate Docker images exist in Nexus registry
-          MANIFEST="${{ runner.temp }}/output/manifest.json"
-          if [ -f "$MANIFEST" ]; then
-            uvx "${TOOL_SPEC}" verify "$MANIFEST" \
-              --nexus-url "${{ inputs.nexus_url }}"
           fi
 
       - name: "Create metadata.json"

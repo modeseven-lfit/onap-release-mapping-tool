@@ -47,6 +47,20 @@ class HelmChartParser:
             self._logger.error("Umbrella Chart.yaml not found: %s", umbrella_chart_path)
             return [], [], []
 
+        # Detect global registry from the umbrella values.yaml so
+        # it can be back-filled onto images parsed from sub-charts
+        # whose own values.yaml omit the global block.
+        umbrella_values_path = self.kubernetes_path / "onap" / "values.yaml"
+        umbrella_registry = ""
+        if umbrella_values_path.is_file():
+            umbrella_data = safe_load_yaml(umbrella_values_path)
+            if isinstance(umbrella_data, dict):
+                umbrella_registry = self._detect_global_registry(umbrella_data)
+                if umbrella_registry:
+                    self._logger.info(
+                        "Umbrella global registry: %s", umbrella_registry,
+                    )
+
         umbrella = self._parse_chart_yaml(umbrella_chart_path)
         dependencies: list[dict[str, Any]] = umbrella.get("dependencies", [])
         if not isinstance(dependencies, list):
@@ -106,6 +120,15 @@ class HelmChartParser:
                         "images": [img["image"] for img in images],
                     }
                 )
+
+        # Back-fill the umbrella global registry onto any images
+        # that were parsed without one (most sub-chart values.yaml
+        # files omit global.repository and rely on Helm value
+        # inheritance at deploy time, which static parsing misses).
+        if umbrella_registry:
+            for img in docker_images:
+                if not img.get("registry"):
+                    img["registry"] = umbrella_registry
 
         self._logger.info(
             "Parsed %d components, %d images from umbrella chart",
@@ -287,7 +310,11 @@ class HelmChartParser:
 
     @staticmethod
     def _detect_global_registry(data: dict[str, Any]) -> str:
-        """Extract ``global.image.registry`` from a values dict.
+        """Extract the global Docker registry from a values dict.
+
+        Checks ``global.image.registry`` first, then falls back
+        to ``global.repository`` which is the convention used by
+        the OOM umbrella chart.
 
         Args:
             data: Top-level parsed YAML values dict.
@@ -297,11 +324,16 @@ class HelmChartParser:
         """
         global_block = data.get("global")
         if isinstance(global_block, dict):
+            # Preferred: global.image.registry
             image_block = global_block.get("image")
             if isinstance(image_block, dict):
                 reg = image_block.get("registry")
                 if isinstance(reg, str) and reg:
                     return reg
+            # Fallback: global.repository (OOM convention)
+            repo = global_block.get("repository")
+            if isinstance(repo, str) and repo:
+                return repo
         return ""
 
     def _recurse_values(

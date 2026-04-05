@@ -57,6 +57,22 @@ class OOMCollector(BaseCollector):
 
         helm_components_raw, docker_images_raw, _ = parser.parse_umbrella_chart()
 
+        # Parse umbrella values.yaml for component enable flags.
+        # Each top-level key matching a component name may contain
+        # an ``enabled`` boolean (e.g. ``policy.enabled: false``).
+        umbrella_values_path = self.oom_path / "kubernetes" / "onap" / "values.yaml"
+        component_enabled: dict[str, bool] = {}
+        if umbrella_values_path.is_file():
+            from onap_release_map.parsers.yaml_utils import safe_load_yaml
+
+            umbrella_values = safe_load_yaml(umbrella_values_path)
+            if isinstance(umbrella_values, dict):
+                for key, val in umbrella_values.items():
+                    if isinstance(val, dict) and "enabled" in val:
+                        enabled = val["enabled"]
+                        if isinstance(enabled, bool):
+                            component_enabled[key] = enabled
+
         # Build Docker image models
         seen_images: dict[str, DockerImage] = {}
         for img_data in docker_images_raw:
@@ -139,7 +155,9 @@ class OOMCollector(BaseCollector):
                     name=comp_name,
                     version=comp_data.get("umbrella_version")
                     or comp_data.get("version"),
-                    enabled_by_default=comp_data.get("enabled_by_default"),
+                    enabled_by_default=component_enabled.get(
+                        comp_name, comp_data.get("enabled_by_default"),
+                    ),
                     condition_key=comp_data.get("condition"),
                     sub_charts=comp_sub_charts.get(comp_name, []),
                     docker_images=chart_images.get(lookup_key, []),

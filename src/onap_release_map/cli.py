@@ -645,6 +645,13 @@ def verify(
             min=1,
         ),
     ] = 4,
+    update: Annotated[
+        bool,
+        typer.Option(
+            "--update/--no-update",
+            help="Write validation results back to the manifest.",
+        ),
+    ] = True,
 ) -> None:
     """Check Docker image existence in the Nexus registry."""
     import json
@@ -711,6 +718,24 @@ def verify(
         f"[bold]Results:[/] {passed} passed, {failed} failed "
         f"out of {len(result.docker_images)} images"
     )
+
+    if update:
+        # Write validated images back to the manifest file
+        updated = manifest.model_copy(
+            update={"docker_images": list(result.docker_images)},
+        )
+        try:
+            manifest_path.write_text(
+                updated.model_dump_json(indent=2) + "\n",
+                encoding="utf-8",
+            )
+            console.print(
+                f"Manifest updated: [green]{manifest_path}[/]"
+            )
+        except OSError as exc:
+            err_console.print(
+                f"[red]Error writing {manifest_path}:[/] {exc}"
+            )
 
     if failed > 0:
         raise typer.Exit(code=1)
