@@ -8,6 +8,7 @@ from __future__ import annotations
 import copy
 import json
 import time
+from collections.abc import Sequence
 from typing import Any, Literal
 from urllib.parse import quote
 
@@ -25,19 +26,26 @@ _GERRIT_MAGIC_PREFIX = ")]}'\n"
 class GerritCollector(BaseCollector):
     """Collect ONAP repository metadata from the Gerrit REST API.
 
-    Queries the ``/projects/`` endpoint for both ``ACTIVE`` and
-    ``READ_ONLY`` projects and produces an :class:`OnapRepository` for
-    each one.  No authentication is required; the ONAP Gerrit instance
-    supports anonymous read access.
+    Queries the ``/projects/`` endpoint for the configured project
+    states (defaulting to both ``ACTIVE`` and ``READ_ONLY`` for
+    backward compatibility) and produces an :class:`OnapRepository`
+    for each one.  No authentication is required; the ONAP Gerrit
+    instance supports anonymous read access.
     """
 
     name = "gerrit"
+
+    #: Gerrit project states that the collector recognises.
+    VALID_STATES: frozenset[Literal["ACTIVE", "READ_ONLY"]] = frozenset(
+        {"ACTIVE", "READ_ONLY"},
+    )
 
     def __init__(
         self,
         gerrit_url: str | None = None,
         timeout: int = 30,
         max_retries: int = 3,
+        states: Sequence[Literal["ACTIVE", "READ_ONLY"]] | None = None,
         **kwargs: object,
     ) -> None:
         """Initialise the Gerrit collector.
@@ -47,11 +55,16 @@ class GerritCollector(BaseCollector):
                 ``https://gerrit.onap.org/r``.
             timeout: HTTP request timeout in seconds.
             max_retries: Maximum number of retry attempts per request.
+            states: Gerrit project states to query.  When *None* both
+                ``ACTIVE`` and ``READ_ONLY`` projects are fetched
+                for backward compatibility.  Pass ``["ACTIVE"]`` to
+                skip retired / archived projects.
             **kwargs: Passed through to :class:`BaseCollector`.
 
         Raises:
-            ValueError: If ``max_retries`` is less than 1 or
-                ``timeout`` is not positive.
+            ValueError: If ``max_retries`` is less than 1,
+                ``timeout`` is not positive, or *states* contains
+                an unrecognised value.
         """
         super().__init__()
         if max_retries < 1:
@@ -60,21 +73,48 @@ class GerritCollector(BaseCollector):
         if timeout <= 0:
             msg = f"timeout must be > 0, got {timeout}"
             raise ValueError(msg)
+
+        if states is None:
+            resolved: tuple[Literal["ACTIVE", "READ_ONLY"], ...] = (
+                "ACTIVE",
+                "READ_ONLY",
+            )
+        else:
+            if isinstance(states, str | bytes):
+                msg = f"states must be a list of strings, not {type(states).__name__!r}"
+                raise TypeError(msg)
+            invalid = {s for s in states if s not in self.VALID_STATES}
+            if invalid:
+                invalid_display = sorted(map(repr, invalid))
+                valid_display = sorted(map(repr, self.VALID_STATES))
+                msg = (
+                    f"Invalid Gerrit state(s): {invalid_display}. "
+                    f"Allowed values: {valid_display}"
+                )
+                raise ValueError(msg)
+            resolved = tuple(dict.fromkeys(states))  # type: ignore[arg-type]
+
         self._gerrit_url = (gerrit_url or "https://gerrit.onap.org/r").rstrip("/")
         self._timeout = timeout
         self._max_retries = max_retries
+        self._states = resolved
         self._cache: dict[str, dict[str, Any]] = {}
 
     # -----------------------------------------------------------------
     # Public API
     # -----------------------------------------------------------------
 
-    def collect(self, **kwargs: object) -> CollectorResult:
-        """Query Gerrit for all ONAP projects and return the results.
+    @property
+    def states(self) -> tuple[Literal["ACTIVE", "READ_ONLY"], ...]:
+        """Return the Gerrit project states that will be queried."""
+        return self._states
 
-        Two queries are made: one for ``ACTIVE`` projects and one for
-        ``READ_ONLY`` (archived) projects.  Each discovered project is
-        converted into an :class:`OnapRepository`.
+    def collect(self, **kwargs: object) -> CollectorResult:
+        """Query Gerrit for ONAP projects and return the results.
+
+        A separate query is made for each state in :attr:`states`.
+        Each discovered project is converted into an
+        :class:`OnapRepository`.
 
         Raises:
             RuntimeError: If all fetch attempts failed and no
@@ -88,7 +128,7 @@ class GerritCollector(BaseCollector):
         fetch_errors: list[str] = []
 
         with httpx.Client(timeout=self._timeout) as client:
-            for state in ("ACTIVE", "READ_ONLY"):
+            for state in self._states:
                 self._logger.info("Querying Gerrit for %s projects", state)
                 try:
                     projects = self._fetch_projects(client, state)

@@ -312,3 +312,95 @@ def test_gerrit_top_level_project(_mock_sleep: object) -> None:
     repos_by_name = {r.gerrit_project: r for r in result.repositories}
     assert repos_by_name["policy/api"].top_level_project == "policy"
     assert repos_by_name["cps"].top_level_project == "cps"
+
+
+# -----------------------------------------------------------------
+# State-based filtering tests
+# -----------------------------------------------------------------
+
+
+@respx.mock
+@patch("onap_release_map.collectors.gerrit.time.sleep")
+def test_states_active_only(_mock_sleep: object) -> None:
+    """When states=["ACTIVE"], only ACTIVE projects are queried."""
+    active_body = '{"policy/api": {"id": "policy%2Fapi", "state": "ACTIVE"}}'
+
+    respx.get(_active_url()).mock(
+        return_value=_gerrit_response(active_body),
+    )
+    # READ_ONLY endpoint must NOT be called.
+    route_readonly = respx.get(_readonly_url()).mock(
+        return_value=_gerrit_response("{}"),
+    )
+
+    collector = GerritCollector(
+        gerrit_url=GERRIT_URL,
+        max_retries=1,
+        states=["ACTIVE"],
+    )
+    result = collector.collect()
+
+    assert len(result.repositories) == 1
+    assert result.repositories[0].gerrit_project == "policy/api"
+    assert result.repositories[0].gerrit_state == "ACTIVE"
+    assert route_readonly.call_count == 0
+
+
+@respx.mock
+@patch("onap_release_map.collectors.gerrit.time.sleep")
+def test_states_readonly_only(_mock_sleep: object) -> None:
+    """When states=["READ_ONLY"], only READ_ONLY projects are queried."""
+    readonly_body = '{"aaf/authz": {"id": "aaf%2Fauthz", "state": "READ_ONLY"}}'
+
+    route_active = respx.get(_active_url()).mock(
+        return_value=_gerrit_response("{}"),
+    )
+    respx.get(_readonly_url()).mock(
+        return_value=_gerrit_response(readonly_body),
+    )
+
+    collector = GerritCollector(
+        gerrit_url=GERRIT_URL,
+        max_retries=1,
+        states=["READ_ONLY"],
+    )
+    result = collector.collect()
+
+    assert len(result.repositories) == 1
+    assert result.repositories[0].gerrit_project == "aaf/authz"
+    assert result.repositories[0].gerrit_state == "READ_ONLY"
+    assert route_active.call_count == 0
+
+
+def test_states_invalid_value() -> None:
+    """Passing an unrecognised state raises ValueError."""
+    with pytest.raises(ValueError, match="Invalid Gerrit state"):
+        GerritCollector(
+            gerrit_url=GERRIT_URL,
+            states=["ACTIVE", "BOGUS"],  # type: ignore[list-item]
+        )
+
+
+def test_states_bare_string_rejected() -> None:
+    """Passing a bare string instead of a list raises TypeError."""
+    with pytest.raises(TypeError, match="must be a list of strings"):
+        GerritCollector(
+            gerrit_url=GERRIT_URL,
+            states="ACTIVE",  # type: ignore[arg-type]
+        )
+
+
+def test_states_default_backward_compat() -> None:
+    """When states is None the default includes both states."""
+    collector = GerritCollector(gerrit_url=GERRIT_URL, max_retries=1)
+    assert set(collector.states) == {"ACTIVE", "READ_ONLY"}
+
+
+def test_states_property() -> None:
+    """The states property reflects the configured filter."""
+    collector = GerritCollector(
+        gerrit_url=GERRIT_URL,
+        max_retries=1,
+        states=["ACTIVE"],
+    )
+    assert collector.states == ("ACTIVE",)

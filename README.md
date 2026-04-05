@@ -5,14 +5,17 @@
 
 # onap-release-map
 
-![Build](https://github.com/modeseven-lfit/onap-release-mapping-tool/actions/workflows/build-test.yaml/badge.svg)
-![PyPI](https://img.shields.io/pypi/v/onap-release-map)
-![Python](https://img.shields.io/pypi/pyversions/onap-release-map)
-![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)
-![Docs](https://readthedocs.org/projects/onap-release-mapping-tool/badge/)
+[![Build](https://github.com/modeseven-lfit/onap-release-mapping-tool/actions/workflows/build-test.yaml/badge.svg)](https://github.com/modeseven-lfit/onap-release-mapping-tool/actions/workflows/build-test.yaml)
+[![PyPI](https://img.shields.io/pypi/v/onap-release-map)](https://pypi.org/project/onap-release-map/)
+[![Python](https://img.shields.io/pypi/pyversions/onap-release-map)](https://pypi.org/project/onap-release-map/)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 ONAP release component mapping tool — generates definitive manifests of
 Gerrit projects and Docker images comprising an ONAP release.
+
+## Results / GitHub Pages
+
+[https://modeseven-lfit.github.io/onap-release-mapping-tool/](https://modeseven-lfit.github.io/onap-release-mapping-tool/)
 
 ## Overview
 

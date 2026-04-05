@@ -6,11 +6,13 @@
 from __future__ import annotations
 
 import csv
+import html
 import io
 import logging
 from collections.abc import Callable
 from typing import TYPE_CHECKING
 
+import markdown as md_lib
 import yaml
 
 from onap_release_map.exceptions import ExportError
@@ -24,6 +26,7 @@ __all__ = [
     "EXPORT_FORMATS",
     "export_csv",
     "export_gerrit_list",
+    "export_html",
     "export_manifest",
     "export_markdown",
     "export_yaml",
@@ -224,6 +227,152 @@ def export_markdown(manifest: ReleaseManifest) -> str:
     return "\n".join(lines)
 
 
+def export_html(manifest: ReleaseManifest) -> str:
+    """Export a release manifest as a styled HTML report.
+
+    Converts the Markdown report produced by :func:`export_markdown`
+    into a self-contained HTML document with dark-theme styling that
+    matches the project's GitHub Pages index page.
+
+    The generated HTML includes inline CSS (no external dependencies),
+    responsive tables with hover effects, and a navigation link back
+    to the parent index page.
+
+    All manifest-derived string values are HTML-escaped before
+    Markdown generation to prevent cross-site scripting (XSS)
+    when the report is hosted on GitHub Pages.
+
+    Parameters
+    ----------
+    manifest:
+        The release manifest to export.
+
+    Returns
+    -------
+    str
+        Complete HTML document as a string.
+    """
+    safe_manifest = _sanitise_manifest(manifest)
+    md_text = export_markdown(safe_manifest)
+    body_html = md_lib.markdown(md_text, extensions=["tables"])
+    title = f"ONAP Release Manifest: {manifest.onap_release.name}"
+    return _html_wrapper(body_html, title)
+
+
+def _html_wrapper(body_html: str, title: str) -> str:
+    """Wrap an HTML fragment in a full dark-themed HTML document.
+
+    Provides the ``<!DOCTYPE html>`` scaffold, inline CSS using the
+    same design tokens as the GitHub Pages index, and table-specific
+    styling for borders, padding, striped rows, and hover effects.
+
+    Parameters
+    ----------
+    body_html:
+        Inner HTML content to place inside ``<body>``.
+    title:
+        Text for the ``<title>`` element.
+
+    Returns
+    -------
+    str
+        Complete HTML document as a string.
+    """
+    return (
+        "<!DOCTYPE html>\n"
+        '<html lang="en">\n'
+        "<head>\n"
+        '  <meta charset="utf-8">\n'
+        '  <meta name="viewport"'
+        ' content="width=device-width, initial-scale=1">\n'
+        f"  <title>{html.escape(title)}</title>\n"
+        "  <style>\n"
+        "    :root {\n"
+        "      --bg: #0d1117; --fg: #c9d1d9;\n"
+        "      --card-bg: #161b22;\n"
+        "      --border: #30363d;\n"
+        "      --accent: #58a6ff;\n"
+        "      --green: #3fb950;\n"
+        "    }\n"
+        "    * { box-sizing: border-box;"
+        " margin: 0; padding: 0; }\n"
+        "    body {\n"
+        "      font-family: -apple-system,"
+        " BlinkMacSystemFont, "
+        '"Segoe UI",\n'
+        "                   Helvetica, Arial,"
+        " sans-serif;\n"
+        "      background: var(--bg);"
+        " color: var(--fg);\n"
+        "      max-width: 960px;"
+        " margin: 0 auto; padding: 2rem 1rem;\n"
+        "    }\n"
+        "    a { color: var(--accent);"
+        " text-decoration: none; }\n"
+        "    a:hover { text-decoration: underline; }\n"
+        "    .back-link {\n"
+        "      display: inline-block;\n"
+        "      margin-bottom: 1.5rem;\n"
+        "      font-size: 0.9rem;\n"
+        "    }\n"
+        "    h1 { color: var(--accent);"
+        " margin-bottom: 0.5rem; }\n"
+        "    h2 { color: var(--accent);"
+        " margin-top: 2rem;"
+        " margin-bottom: 0.75rem; }\n"
+        "    ul { margin: 0.5rem 0 1rem 1.5rem; }\n"
+        "    li { margin-bottom: 0.25rem; }\n"
+        "    table {\n"
+        "      width: 100%;\n"
+        "      border-collapse: collapse;\n"
+        "      margin-bottom: 1.5rem;\n"
+        "      background: var(--card-bg);\n"
+        "      border: 1px solid var(--border);\n"
+        "      border-radius: 6px;\n"
+        "      overflow: hidden;\n"
+        "    }\n"
+        "    th, td {\n"
+        "      padding: 0.6rem 0.75rem;\n"
+        "      text-align: left;\n"
+        "      border-bottom:"
+        " 1px solid var(--border);\n"
+        "    }\n"
+        "    th {\n"
+        "      background: var(--border);\n"
+        "      color: var(--fg);\n"
+        "      font-weight: 600;\n"
+        "      cursor: default;\n"
+        "    }\n"
+        "    tr:nth-child(even) td {\n"
+        "      background: rgba(99,110,123,0.08);\n"
+        "    }\n"
+        "    tr:hover td {\n"
+        "      background: rgba(88,166,255,0.1);\n"
+        "    }\n"
+        "    footer {\n"
+        "      margin-top: 3rem; color: #8b949e;\n"
+        "      font-size: 0.85rem;\n"
+        "    }\n"
+        "  </style>\n"
+        "</head>\n"
+        "<body>\n"
+        '  <a class="back-link"'
+        ' href="../">&larr; Back to index</a>\n'
+        f"  {body_html}\n"
+        "  <footer>\n"
+        "    <p>Generated by\n"
+        '      <a href="https://github.com/'
+        "modeseven-lfit/"
+        'onap-release-mapping-tool">\n'
+        "        onap-release-mapping-tool\n"
+        "      </a>\n"
+        "    </p>\n"
+        "  </footer>\n"
+        "</body>\n"
+        "</html>\n"
+    )
+
+
 def export_gerrit_list(manifest: ReleaseManifest) -> str:
     """Export Gerrit project paths as a plain-text list.
 
@@ -299,6 +448,95 @@ def export_manifest(
 # ------------------------------------------------------------------
 
 
+def _sanitise_manifest(manifest: ReleaseManifest) -> ReleaseManifest:
+    """Return a deep copy of *manifest* with strings HTML-escaped.
+
+    Escapes HTML special characters (``&``, ``<``, ``>``, ``"``,
+    ``'``) **and** Markdown link metacharacters (``[``, ``]``) in
+    all user-facing string fields so that the resulting Markdown —
+    and therefore the HTML produced from it — is safe against
+    cross-site scripting (XSS) and Markdown injection (e.g.
+    ``[click](javascript:...)``).
+
+    Parameters
+    ----------
+    manifest:
+        The release manifest to sanitise.
+
+    Returns
+    -------
+    ReleaseManifest
+        A new manifest instance with escaped string values.
+    """
+    data = manifest.model_dump(mode="json")
+
+    # Escape manifest-level metadata fields
+    for key in ("generated_at", "tool_version", "schema_version"):
+        if key in data and isinstance(data[key], str):
+            data[key] = _esc(data[key])
+
+    # Escape release-level fields
+    rel = data.get("onap_release", {})
+    for key in ("name", "oom_chart_version"):
+        if key in rel and isinstance(rel[key], str):
+            rel[key] = _esc(rel[key])
+
+    # Escape repository fields
+    for repo in data.get("repositories", []):
+        for key in (
+            "gerrit_project",
+            "top_level_project",
+            "category",
+            "confidence",
+            "gerrit_state",
+        ):
+            if key in repo and isinstance(repo[key], str):
+                repo[key] = _esc(repo[key])
+        if "discovered_by" in repo:
+            repo["discovered_by"] = [_esc(v) for v in repo["discovered_by"]]
+
+    # Escape Docker image fields
+    for img in data.get("docker_images", []):
+        for key in ("image", "tag", "registry", "gerrit_project"):
+            if key in img and isinstance(img[key], str):
+                img[key] = _esc(img[key])
+        if "helm_charts" in img:
+            img["helm_charts"] = [_esc(v) for v in img["helm_charts"]]
+
+    # Escape Helm component fields
+    for comp in data.get("helm_components", []):
+        for key in ("name", "version", "condition_key"):
+            if key in comp and isinstance(comp[key], str):
+                comp[key] = _esc(comp[key])
+
+    from onap_release_map.models import ReleaseManifest as RM
+
+    result: ReleaseManifest = RM.model_validate(data)
+    return result
+
+
+def _esc(value: str) -> str:
+    """Escape HTML special chars and Markdown link metacharacters.
+
+    Applies :func:`html.escape` first, then replaces ``[`` and
+    ``]`` with their HTML entities so that Markdown link syntax
+    such as ``[click](javascript:...)`` is neutralised before
+    the value reaches :func:`markdown.markdown`.
+
+    Parameters
+    ----------
+    value:
+        Raw string to escape.
+
+    Returns
+    -------
+    str
+        Escaped string safe for Markdown-to-HTML conversion.
+    """
+    escaped = html.escape(value)
+    return escaped.replace("[", "&#91;").replace("]", "&#93;")
+
+
 def _bool_str(value: bool | None) -> str:
     """Convert an optional boolean to a CSV-friendly string.
 
@@ -320,8 +558,9 @@ def _bool_display(value: bool | None) -> str:
 
 
 EXPORT_FORMATS: dict[str, Callable[[ReleaseManifest], str]] = {
-    "yaml": export_yaml,
-    "md": export_markdown,
     "gerrit-list": export_gerrit_list,
+    "html": export_html,
+    "md": export_markdown,
+    "yaml": export_yaml,
 }
 """Mapping of format names to their export functions."""

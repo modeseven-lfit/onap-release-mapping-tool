@@ -58,6 +58,7 @@ cat > "${PAGES_DIR}/index.html" << 'OUTER_EOF'
     <div class="card">
       <h3>Latest <span class="badge">current</span></h3>
       <p>Most recent mapping run</p>
+      <a href="latest/manifest.html"><strong>📄 Report</strong></a>
       <a href="latest/manifest.json">JSON</a>
       <a href="latest/manifest.md">Markdown</a>
       <a href="latest/manifest.yaml">YAML</a>
@@ -71,6 +72,7 @@ for dir in $(find "${PAGES_DIR}" -maxdepth 1 -type d -name '2*' | sort -r); do
   cat >> "${PAGES_DIR}/index.html" << EOF
     <div class="card">
       <h3>${DATE}</h3>
+      <a href="${DATE}/manifest.html"><strong>📄 Report</strong></a>
       <a href="${DATE}/manifest.json">JSON</a>
       <a href="${DATE}/manifest.md">Markdown</a>
       <a href="${DATE}/manifest.yaml">YAML</a>
