@@ -1,7 +1,7 @@
 # ONAP Release Manifest: Master
 
-- **Generated:** 2026-04-06T09:23:02Z
-- **Tool version:** 0.5.0
+- **Generated:** 2026-04-06T09:29:57Z
+- **Tool version:** 0.5.1
 - **Schema version:** 1.1.0
 - **OOM chart version:** 18.0.0
 
@@ -45,25 +45,25 @@
 | cps/cps-tbdmt | runtime | medium | ❌ | Yes |  |
 | cps/cps-temporal | runtime | medium | ❌ | Yes |  |
 | cps/ncmp-dmi-plugin | runtime | high | ✅ | Yes | Yes |
-| dcaegen2 | runtime | medium | ☑️ | Yes |  |
-| dcaegen2/analytics/tca-gen2 | runtime | medium | ❌ | Yes |  |
-| dcaegen2/collectors/datafile | runtime | medium | ❌ | Yes |  |
-| dcaegen2/collectors/hv-ves | runtime | high | ✅ | Yes |  |
-| dcaegen2/collectors/restconf | runtime | medium | ❌ | Yes |  |
-| dcaegen2/collectors/snmptrap | runtime | medium | ❌ | Yes |  |
-| dcaegen2/collectors/ves | runtime | high | ✅ | Yes |  |
-| dcaegen2/deployments | runtime | high | ✅ | Yes |  |
+| dcaegen2 | runtime | medium | ☑️ | Yes | Yes |
+| dcaegen2/analytics/tca-gen2 | runtime | medium | ❌ | Yes | Yes |
+| dcaegen2/collectors/datafile | runtime | medium | ❌ | Yes | Yes |
+| dcaegen2/collectors/hv-ves | runtime | high | ✅ | Yes | Yes |
+| dcaegen2/collectors/restconf | runtime | medium | ❌ | Yes | Yes |
+| dcaegen2/collectors/snmptrap | runtime | medium | ❌ | Yes | Yes |
+| dcaegen2/collectors/ves | runtime | high | ✅ | Yes | Yes |
+| dcaegen2/deployments | runtime | high | ✅ | Yes | Yes |
 | dcaegen2/platform | runtime | medium | ☑️ | Yes | Yes |
 | dcaegen2/platform/blueprints | runtime | medium | ❌ | Yes |  |
-| dcaegen2/platform/ves-openapi-manager | runtime | high | ✅ | Yes |  |
+| dcaegen2/platform/ves-openapi-manager | runtime | high | ✅ | Yes | Yes |
 | dcaegen2/services | runtime | high | ☑️ | Yes | Yes |
-| dcaegen2/services/heartbeat | runtime | medium | ❌ | Yes |  |
-| dcaegen2/services/mapper | runtime | medium | ❌ | Yes |  |
+| dcaegen2/services/heartbeat | runtime | medium | ❌ | Yes | Yes |
+| dcaegen2/services/mapper | runtime | medium | ❌ | Yes | Yes |
 | dcaegen2/services/pm-mapper | runtime | medium | ❌ | Yes | Yes |
-| dcaegen2/services/prh | runtime | high | ✅ | Yes |  |
-| dcaegen2/services/sdk | runtime | medium | ❌ | Yes |  |
-| dcaegen2/services/son-handler | runtime | medium | ❌ | Yes |  |
-| dcaegen2/utils | runtime | medium | ❌ | Yes |  |
+| dcaegen2/services/prh | runtime | high | ✅ | Yes | Yes |
+| dcaegen2/services/sdk | runtime | medium | ❌ | Yes | Yes |
+| dcaegen2/services/son-handler | runtime | medium | ❌ | Yes | Yes |
+| dcaegen2/utils | runtime | medium | ❌ | Yes | Yes |
 | demo | runtime | medium | ✅ | Yes | Yes |
 | dmaap | runtime | medium | ☑️ | Yes |  |
 | dmaap/buscontroller | runtime | medium | ❌ | Yes |  |
@@ -118,13 +118,13 @@
 | msb/swagger-sdk | runtime | medium | ❌ | Yes | Yes |
 | multicloud | runtime | medium | ☑️ | Yes | Yes |
 | multicloud/framework | runtime | high | ✅ | Yes | Yes |
-| multicloud/k8s | runtime | high | ✅ | Yes |  |
+| multicloud/k8s | runtime | high | ✅ | Yes | Yes |
 | multicloud/openstack | runtime | high | ☑️ | Yes | Yes |
 | multicloud/openstack/vmware | runtime | medium | ❌ | Yes | Yes |
 | multicloud/openstack/windriver | runtime | medium | ❌ | Yes |  |
 | oom | infrastructure | high | ☑️ | Yes | Yes |
 | oom/consul | runtime | medium | ❌ | Yes | Yes |
-| oom/offline-installer | runtime | medium | ❌ | Yes |  |
+| oom/offline-installer | runtime | medium | ❌ | Yes | Yes |
 | oom/platform/cert-manager | runtime | medium | ❌ | Yes |  |
 | oom/platform/cert-service | runtime | high | ✅ | Yes | Yes |
 | oom/platform/keycloak | runtime | medium | ❌ | Yes |  |
@@ -148,7 +148,7 @@
 | policy/drools-pdp | runtime | high | ✅ | Yes | Yes |
 | policy/gui | runtime | medium | ❌ | Yes |  |
 | policy/models | runtime | medium | ❌ | Yes | Yes |
-| policy/opa-pdp | runtime | high | ✅ |  |  |
+| policy/opa-pdp | runtime | high | ✅ |  | Yes |
 | policy/pap | runtime | high | ✅ | Yes | Yes |
 | policy/parent | runtime | medium | ❌ | Yes | Yes |
 | policy/xacml-pdp | runtime | high | ✅ | Yes | Yes |
@@ -188,7 +188,7 @@
 | so/so-config | runtime | medium | ❌ | Yes |  |
 | so/so-etsi-nfvo | runtime | medium | ❌ | Yes | Yes |
 | spark-model-runner | runtime | medium | ❌ | Yes |  |
-| testsuite | runtime | high | ☑️ | Yes |  |
+| testsuite | runtime | high | ☑️ | Yes | Yes |
 | testsuite/cds | runtime | medium | ❌ | Yes | Yes |
 | testsuite/cds-mock-odl | runtime | medium | ❌ | Yes | Yes |
 | testsuite/cds-mock-server | runtime | medium | ❌ | Yes | Yes |
@@ -208,14 +208,14 @@
 | vfc/gvnfm/vnflcm | runtime | medium | ❌ | Yes |  |
 | vfc/gvnfm/vnfmgr | runtime | medium | ❌ | Yes |  |
 | vfc/gvnfm/vnfres | runtime | medium | ❌ | Yes |  |
-| vfc/nfvo/db | runtime | medium | ❌ | Yes |  |
+| vfc/nfvo/db | runtime | medium | ❌ | Yes | Yes |
 | vfc/nfvo/driver/vnfm/gvnfm | runtime | medium | ❌ | Yes |  |
 | vfc/nfvo/driver/vnfm/svnfm | runtime | medium | ❌ | Yes |  |
 | vfc/nfvo/lcm | runtime | medium | ❌ | Yes |  |
 | vnfrqts | runtime | medium | ❌ | Yes |  |
 | vnfrqts/epics | runtime | medium | ❌ | Yes |  |
 | vnfrqts/guidelines | runtime | medium | ❌ | Yes |  |
-| vnfrqts/requirements | runtime | medium | ❌ | Yes |  |
+| vnfrqts/requirements | runtime | medium | ❌ | Yes | Yes |
 | vnfrqts/testcases | runtime | medium | ❌ | Yes |  |
 | vnfrqts/usecases | runtime | medium | ❌ | Yes |  |
 | vnfsdk | runtime | medium | ☑️ | Yes |  |

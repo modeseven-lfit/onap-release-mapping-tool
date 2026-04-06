@@ -1,7 +1,7 @@
 {
   "schema_version": "1.1.0",
-  "tool_version": "0.5.0",
-  "generated_at": "2026-04-06T09:23:02Z",
+  "tool_version": "0.5.1",
+  "generated_at": "2026-04-06T09:29:57Z",
   "onap_release": {
     "name": "Master",
     "oom_chart_version": "18.0.0",
@@ -822,19 +822,21 @@
       "confidence": "medium",
       "confidence_reasons": [
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": true,
       "is_parent_project": true,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [],
       "helm_charts": [],
       "discovered_by": [
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -844,19 +846,21 @@
       "confidence": "medium",
       "confidence_reasons": [
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": false,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [],
       "helm_charts": [],
       "discovered_by": [
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -866,19 +870,21 @@
       "confidence": "medium",
       "confidence_reasons": [
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": false,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [],
       "helm_charts": [],
       "discovered_by": [
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -889,14 +895,15 @@
       "confidence_reasons": [
         "Docker image referenced in OOM Helm charts",
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": true,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [
         "onap/org.onap.dcaegen2.collectors.hv-ves.hv-collector-main"
       ],
@@ -906,7 +913,8 @@
       "discovered_by": [
         "oom",
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -916,19 +924,21 @@
       "confidence": "medium",
       "confidence_reasons": [
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": false,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [],
       "helm_charts": [],
       "discovered_by": [
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -938,19 +948,21 @@
       "confidence": "medium",
       "confidence_reasons": [
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": false,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [],
       "helm_charts": [],
       "discovered_by": [
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -961,14 +973,15 @@
       "confidence_reasons": [
         "Docker image referenced in OOM Helm charts",
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": true,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [
         "onap/org.onap.dcaegen2.collectors.ves.vescollector"
       ],
@@ -978,7 +991,8 @@
       "discovered_by": [
         "oom",
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -989,14 +1003,15 @@
       "confidence_reasons": [
         "Docker image referenced in OOM Helm charts",
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": true,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [
         "onap/org.onap.dcaegen2.deployments.healthcheck-container",
         "onap/org.onap.dcaegen2.deployments.dcae-services-policy-sync"
@@ -1008,7 +1023,8 @@
       "discovered_by": [
         "oom",
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -1061,14 +1077,15 @@
       "confidence_reasons": [
         "Docker image referenced in OOM Helm charts",
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": true,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [
         "onap/org.onap.dcaegen2.platform.ves-openapi-manager"
       ],
@@ -1078,7 +1095,8 @@
       "discovered_by": [
         "oom",
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -1122,19 +1140,21 @@
       "confidence": "medium",
       "confidence_reasons": [
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": false,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [],
       "helm_charts": [],
       "discovered_by": [
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -1144,19 +1164,21 @@
       "confidence": "medium",
       "confidence_reasons": [
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": false,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [],
       "helm_charts": [],
       "discovered_by": [
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -1191,14 +1213,15 @@
       "confidence_reasons": [
         "Docker image referenced in OOM Helm charts",
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": true,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [
         "onap/org.onap.dcaegen2.services.prh.prh-app-server"
       ],
@@ -1208,7 +1231,8 @@
       "discovered_by": [
         "oom",
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -1218,19 +1242,21 @@
       "confidence": "medium",
       "confidence_reasons": [
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": false,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [],
       "helm_charts": [],
       "discovered_by": [
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -1240,19 +1266,21 @@
       "confidence": "medium",
       "confidence_reasons": [
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": false,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [],
       "helm_charts": [],
       "discovered_by": [
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -1262,19 +1290,21 @@
       "confidence": "medium",
       "confidence_reasons": [
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": false,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [],
       "helm_charts": [],
       "discovered_by": [
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -2513,14 +2543,15 @@
       "confidence_reasons": [
         "Docker image referenced in OOM Helm charts",
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": true,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [
         "onap/multicloud/k8s"
       ],
@@ -2530,7 +2561,8 @@
       "discovered_by": [
         "oom",
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -2666,19 +2698,21 @@
       "confidence": "medium",
       "confidence_reasons": [
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": false,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [],
       "helm_charts": [],
       "discovered_by": [
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -3272,14 +3306,15 @@
       "confidence": "high",
       "confidence_reasons": [
         "Docker image referenced in OOM Helm charts",
-        "Discovered via Gerrit REST API"
+        "Discovered via Gerrit REST API",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": true,
       "is_parent_project": null,
       "maintained": null,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [
         "onap/policy-opa-pdp"
       ],
@@ -3288,7 +3323,8 @@
       ],
       "discovered_by": [
         "oom",
-        "gerrit"
+        "gerrit",
+        "jjb"
       ]
     },
     {
@@ -4331,14 +4367,15 @@
       "confidence_reasons": [
         "Docker image referenced in OOM Helm charts",
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": true,
       "is_parent_project": true,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [
         "onap/testsuite"
       ],
@@ -4348,7 +4385,8 @@
       "discovered_by": [
         "oom",
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -4816,19 +4854,21 @@
       "confidence": "medium",
       "confidence_reasons": [
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": false,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [],
       "helm_charts": [],
       "discovered_by": [
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -4964,19 +5004,21 @@
       "confidence": "medium",
       "confidence_reasons": [
         "Discovered via Gerrit REST API",
-        "Listed in relman repos.yaml"
+        "Listed in relman repos.yaml",
+        "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
       "in_current_release": false,
       "is_parent_project": null,
       "maintained": true,
-      "has_ci": null,
+      "has_ci": true,
       "docker_images": [],
       "helm_charts": [],
       "discovered_by": [
         "gerrit",
-        "relman"
+        "relman",
+        "jjb"
       ]
     },
     {
@@ -7698,26 +7740,26 @@
     "collectors_executed": [
       {
         "name": "oom",
-        "duration_seconds": 1.197,
+        "duration_seconds": 1.237,
         "items_collected": 245,
         "errors": []
       },
       {
         "name": "gerrit",
-        "duration_seconds": 0.35,
+        "duration_seconds": 0.291,
         "items_collected": 181,
         "errors": []
       },
       {
         "name": "relman",
-        "duration_seconds": 0.102,
+        "duration_seconds": 0.108,
         "items_collected": 372,
         "errors": []
       },
       {
         "name": "jjb",
-        "duration_seconds": 0.968,
-        "items_collected": 114,
+        "duration_seconds": 0.901,
+        "items_collected": 135,
         "errors": []
       }
     ]

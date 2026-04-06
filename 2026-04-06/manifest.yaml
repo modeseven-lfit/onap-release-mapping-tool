@@ -622,7 +622,7 @@ docker_images:
   nexus_validated: null
   registry: nexus3.onap.org:10001
   tag: 16.0.1
-generated_at: '2026-04-06T09:23:02Z'
+generated_at: '2026-04-06T09:29:57Z'
 helm_components:
 - condition_key: a1policymanagement.enabled
   docker_images:
@@ -1694,21 +1694,21 @@ onap_release:
   oom_commit: 4ad36579a06b56ed10b819d7a453d5040f75040d
 provenance:
   collectors_executed:
-  - duration_seconds: 1.197
+  - duration_seconds: 1.237
     errors: []
     items_collected: 245
     name: oom
-  - duration_seconds: 0.35
+  - duration_seconds: 0.291
     errors: []
     items_collected: 181
     name: gerrit
-  - duration_seconds: 0.102
+  - duration_seconds: 0.108
     errors: []
     items_collected: 372
     name: relman
-  - duration_seconds: 0.968
+  - duration_seconds: 0.901
     errors: []
-    items_collected: 114
+    items_collected: 135
     name: jjb
   data_sources:
   - commit: 4ad36579a06b56ed10b819d7a453d5040f75040d
@@ -2376,14 +2376,16 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - gerrit
   - relman
+  - jjb
   docker_images: []
   gerrit_project: dcaegen2
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2
-  has_ci: null
+  has_ci: true
   helm_charts: []
   in_current_release: true
   is_parent_project: true
@@ -2394,14 +2396,16 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - gerrit
   - relman
+  - jjb
   docker_images: []
   gerrit_project: dcaegen2/analytics/tca-gen2
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fanalytics%2Ftca-gen2
-  has_ci: null
+  has_ci: true
   helm_charts: []
   in_current_release: false
   is_parent_project: null
@@ -2412,14 +2416,16 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - gerrit
   - relman
+  - jjb
   docker_images: []
   gerrit_project: dcaegen2/collectors/datafile
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fcollectors%2Fdatafile
-  has_ci: null
+  has_ci: true
   helm_charts: []
   in_current_release: false
   is_parent_project: null
@@ -2431,16 +2437,18 @@ repositories:
   - Docker image referenced in OOM Helm charts
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - oom
   - gerrit
   - relman
+  - jjb
   docker_images:
   - onap/org.onap.dcaegen2.collectors.hv-ves.hv-collector-main
   gerrit_project: dcaegen2/collectors/hv-ves
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fcollectors%2Fhv-ves
-  has_ci: null
+  has_ci: true
   helm_charts:
   - dcaegen2-services/dcae-hv-ves-collector
   in_current_release: true
@@ -2452,14 +2460,16 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - gerrit
   - relman
+  - jjb
   docker_images: []
   gerrit_project: dcaegen2/collectors/restconf
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fcollectors%2Frestconf
-  has_ci: null
+  has_ci: true
   helm_charts: []
   in_current_release: false
   is_parent_project: null
@@ -2470,14 +2480,16 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - gerrit
   - relman
+  - jjb
   docker_images: []
   gerrit_project: dcaegen2/collectors/snmptrap
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fcollectors%2Fsnmptrap
-  has_ci: null
+  has_ci: true
   helm_charts: []
   in_current_release: false
   is_parent_project: null
@@ -2489,16 +2501,18 @@ repositories:
   - Docker image referenced in OOM Helm charts
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - oom
   - gerrit
   - relman
+  - jjb
   docker_images:
   - onap/org.onap.dcaegen2.collectors.ves.vescollector
   gerrit_project: dcaegen2/collectors/ves
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fcollectors%2Fves
-  has_ci: null
+  has_ci: true
   helm_charts:
   - dcaegen2-services/dcae-ves-collector
   in_current_release: true
@@ -2511,17 +2525,19 @@ repositories:
   - Docker image referenced in OOM Helm charts
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - oom
   - gerrit
   - relman
+  - jjb
   docker_images:
   - onap/org.onap.dcaegen2.deployments.healthcheck-container
   - onap/org.onap.dcaegen2.deployments.dcae-services-policy-sync
   gerrit_project: dcaegen2/deployments
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fdeployments
-  has_ci: null
+  has_ci: true
   helm_charts:
   - dcaegen2-services/dcae-ms-healthcheck
   - repositoryGenerator
@@ -2569,16 +2585,18 @@ repositories:
   - Docker image referenced in OOM Helm charts
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - oom
   - gerrit
   - relman
+  - jjb
   docker_images:
   - onap/org.onap.dcaegen2.platform.ves-openapi-manager
   gerrit_project: dcaegen2/platform/ves-openapi-manager
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fplatform%2Fves-openapi-manager
-  has_ci: null
+  has_ci: true
   helm_charts:
   - dcaegen2-services/dcae-ves-openapi-manager
   in_current_release: true
@@ -2618,14 +2636,16 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - gerrit
   - relman
+  - jjb
   docker_images: []
   gerrit_project: dcaegen2/services/heartbeat
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fservices%2Fheartbeat
-  has_ci: null
+  has_ci: true
   helm_charts: []
   in_current_release: false
   is_parent_project: null
@@ -2636,14 +2656,16 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - gerrit
   - relman
+  - jjb
   docker_images: []
   gerrit_project: dcaegen2/services/mapper
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fservices%2Fmapper
-  has_ci: null
+  has_ci: true
   helm_charts: []
   in_current_release: false
   is_parent_project: null
@@ -2675,16 +2697,18 @@ repositories:
   - Docker image referenced in OOM Helm charts
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - oom
   - gerrit
   - relman
+  - jjb
   docker_images:
   - onap/org.onap.dcaegen2.services.prh.prh-app-server
   gerrit_project: dcaegen2/services/prh
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fservices%2Fprh
-  has_ci: null
+  has_ci: true
   helm_charts:
   - dcaegen2-services/dcae-prh
   in_current_release: true
@@ -2696,14 +2720,16 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - gerrit
   - relman
+  - jjb
   docker_images: []
   gerrit_project: dcaegen2/services/sdk
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fservices%2Fsdk
-  has_ci: null
+  has_ci: true
   helm_charts: []
   in_current_release: false
   is_parent_project: null
@@ -2714,14 +2740,16 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - gerrit
   - relman
+  - jjb
   docker_images: []
   gerrit_project: dcaegen2/services/son-handler
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Fservices%2Fson-handler
-  has_ci: null
+  has_ci: true
   helm_charts: []
   in_current_release: false
   is_parent_project: null
@@ -2732,14 +2760,16 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - gerrit
   - relman
+  - jjb
   docker_images: []
   gerrit_project: dcaegen2/utils
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/dcaegen2%2Futils
-  has_ci: null
+  has_ci: true
   helm_charts: []
   in_current_release: false
   is_parent_project: null
@@ -3757,16 +3787,18 @@ repositories:
   - Docker image referenced in OOM Helm charts
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - oom
   - gerrit
   - relman
+  - jjb
   docker_images:
   - onap/multicloud/k8s
   gerrit_project: multicloud/k8s
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/multicloud%2Fk8s
-  has_ci: null
+  has_ci: true
   helm_charts:
   - multicloud/multicloud-k8s
   in_current_release: true
@@ -3882,14 +3914,16 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - gerrit
   - relman
+  - jjb
   docker_images: []
   gerrit_project: oom/offline-installer
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/oom%2Foffline-installer
-  has_ci: null
+  has_ci: true
   helm_charts: []
   in_current_release: false
   is_parent_project: null
@@ -4376,15 +4410,17 @@ repositories:
   confidence_reasons:
   - Docker image referenced in OOM Helm charts
   - Discovered via Gerrit REST API
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - oom
   - gerrit
+  - jjb
   docker_images:
   - onap/policy-opa-pdp
   gerrit_project: policy/opa-pdp
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/policy%2Fopa-pdp
-  has_ci: null
+  has_ci: true
   helm_charts:
   - policy/policy-opa-pdp
   in_current_release: true
@@ -5241,16 +5277,18 @@ repositories:
   - Docker image referenced in OOM Helm charts
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - oom
   - gerrit
   - relman
+  - jjb
   docker_images:
   - onap/testsuite
   gerrit_project: testsuite
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/testsuite
-  has_ci: null
+  has_ci: true
   helm_charts:
   - robot
   in_current_release: true
@@ -5634,14 +5672,16 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - gerrit
   - relman
+  - jjb
   docker_images: []
   gerrit_project: vfc/nfvo/db
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vfc%2Fnfvo%2Fdb
-  has_ci: null
+  has_ci: true
   helm_charts: []
   in_current_release: false
   is_parent_project: null
@@ -5754,14 +5794,16 @@ repositories:
   confidence_reasons:
   - Discovered via Gerrit REST API
   - Listed in relman repos.yaml
+  - Has CI jobs in ci-management JJB
   discovered_by:
   - gerrit
   - relman
+  - jjb
   docker_images: []
   gerrit_project: vnfrqts/requirements
   gerrit_state: ACTIVE
   gerrit_url: https://gerrit.onap.org/r/admin/repos/vnfrqts%2Frequirements
-  has_ci: null
+  has_ci: true
   helm_charts: []
   in_current_release: false
   is_parent_project: null
@@ -6056,4 +6098,4 @@ summary:
   total_docker_images: 89
   total_helm_components: 98
   total_repositories: 217
-tool_version: 0.5.0
+tool_version: 0.5.1
