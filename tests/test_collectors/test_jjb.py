@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 import pytest
@@ -141,3 +142,109 @@ class TestJJBCollector:
         """Test that JJBCollector is registered in the collector registry."""
         collector_cls = registry.get("jjb")
         assert collector_cls is JJBCollector
+
+    def test_jjb_include_raw_escape_tag(self, tmp_path: Path) -> None:
+        """JJB files with !include-raw-escape: tags must parse."""
+        (tmp_path / "with-include.yaml").write_text(
+            "---\n"
+            "- project:\n"
+            "    name: sdc-verify\n"
+            '    project: "sdc"\n'
+            "    jobs:\n"
+            "      - gerrit-maven-verify\n"
+            "- builder:\n"
+            "    name: sdc-build\n"
+            "    builders:\n"
+            "      - shell: !include-raw-escape: build-sdc.sh\n",
+            encoding="utf-8",
+        )
+
+        collector = JJBCollector(jjb_path=tmp_path)
+        result = collector.collect()
+
+        assert len(result.repositories) == 1
+        assert result.repositories[0].gerrit_project == "sdc"
+
+    def test_jjb_include_raw_tag(self, tmp_path: Path) -> None:
+        """JJB files with !include-raw: tags must parse."""
+        (tmp_path / "macros.yaml").write_text(
+            "---\n"
+            "- project:\n"
+            "    name: integration-verify\n"
+            '    project: "integration"\n'
+            "- builder:\n"
+            "    name: docker-log\n"
+            "    builders:\n"
+            "      - shell: !include-raw: include-docker-log.sh\n",
+            encoding="utf-8",
+        )
+
+        collector = JJBCollector(jjb_path=tmp_path)
+        result = collector.collect()
+
+        assert len(result.repositories) == 1
+        assert result.repositories[0].gerrit_project == "integration"
+
+    def test_jjb_include_raw_no_warning(
+        self, tmp_path: Path, caplog: pytest.LogCaptureFixture
+    ) -> None:
+        """No YAML parse warnings for files using JJB include tags."""
+        (tmp_path / "clean.yaml").write_text(
+            "---\n"
+            "- project:\n"
+            "    name: policy-api-verify\n"
+            '    project: "policy/api"\n'
+            "- builder:\n"
+            "    name: policy-build\n"
+            "    builders:\n"
+            "      - shell: !include-raw-escape: build-policy.sh\n",
+            encoding="utf-8",
+        )
+
+        collector = JJBCollector(jjb_path=tmp_path)
+        with caplog.at_level(logging.WARNING):
+            collector.collect()
+
+        assert "YAML parse error" not in caplog.text
+
+    def test_jjb_multidoc_partial_failure(self, tmp_path: Path) -> None:
+        """Valid documents are kept when a later document fails."""
+        (tmp_path / "multi.yaml").write_text(
+            "---\n"
+            "- project:\n"
+            "    name: aai-resources-verify\n"
+            '    project: "aai/resources"\n'
+            "---\n"
+            "{{invalid yaml{{\n",
+            encoding="utf-8",
+        )
+
+        collector = JJBCollector(jjb_path=tmp_path)
+        result = collector.collect()
+
+        assert len(result.repositories) == 1
+        assert result.repositories[0].gerrit_project == "aai/resources"
+
+    def test_jjb_multidoc_valid_broken_valid(self, tmp_path: Path) -> None:
+        """Documents after a broken document are still recovered."""
+        (tmp_path / "sandwich.yaml").write_text(
+            "---\n"
+            "- project:\n"
+            "    name: aai-resources-verify\n"
+            '    project: "aai/resources"\n'
+            "---\n"
+            "{{invalid yaml{{\n"
+            "---\n"
+            "- project:\n"
+            "    name: sdnc-oam-verify\n"
+            '    project: "sdnc/oam"\n',
+            encoding="utf-8",
+        )
+
+        collector = JJBCollector(jjb_path=tmp_path)
+        result = collector.collect()
+
+        projects = {r.gerrit_project for r in result.repositories}
+        assert "aai/resources" in projects, "Document before failure lost"
+        assert "sdnc/oam" in projects, "Document after failure lost"
+        assert len(result.repositories) == 2
