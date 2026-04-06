@@ -5,6 +5,9 @@
 
 from __future__ import annotations
 
+import logging
+import re
+from collections.abc import Iterator
 from pathlib import Path
 from urllib.parse import quote
 
@@ -12,6 +15,93 @@ import yaml
 
 from onap_release_map.collectors import BaseCollector, CollectorResult, registry
 from onap_release_map.models import OnapRepository
+
+
+def _jjb_tag_constructor(loader: yaml.SafeLoader, node: yaml.Node) -> object:
+    """Construct any JJB custom-tag node as a no-op placeholder.
+
+    Handles scalar nodes (``!include-raw-escape: script.sh``) and
+    sequence nodes (``!include-raw-escape:\\n  - a.sh\\n  - b.sh``)
+    so the rest of the document can still be parsed for ``project:``
+    metadata.
+
+    Args:
+        loader: The YAML loader instance.
+        node: The tagged YAML node.
+
+    Returns:
+        The scalar string or list of strings under the tag.
+    """
+    if isinstance(node, yaml.ScalarNode):
+        return loader.construct_scalar(node)
+    if isinstance(node, yaml.SequenceNode):
+        return loader.construct_sequence(node)
+    return None
+
+
+class _JJBSafeLoader(yaml.SafeLoader):
+    """``SafeLoader`` with no-op constructors for JJB custom tags.
+
+    Jenkins Job Builder YAML files use custom tags such as
+    ``!include-raw:``, ``!include-raw-escape:``, and
+    ``!include-jinja2:`` to inline shell scripts at parse time.
+    Standard ``SafeLoader`` raises ``ConstructorError`` for these
+    unknown tags.  This loader treats them as plain values so the
+    rest of the document can be parsed for ``project:`` metadata.
+    """
+
+
+# Register no-op constructors for every JJB include variant.
+# Both forms (with and without trailing colon) are needed because
+# PyYAML's tag resolution treats them differently depending on
+# whitespace after the tag.
+_JJB_CUSTOM_TAGS = (
+    "!include-raw:",
+    "!include-raw-escape:",
+    "!include-jinja2:",
+    "!include-raw",
+    "!include-raw-escape",
+    "!include-jinja2",
+)
+
+for _tag in _JJB_CUSTOM_TAGS:
+    _JJBSafeLoader.add_constructor(_tag, _jjb_tag_constructor)
+
+
+# Regex matching a YAML document-start marker on its own line.
+_YAML_DOC_BOUNDARY = re.compile(r"^---[ \t]*$", re.MULTILINE)
+
+
+def _iter_yaml_documents(
+    content: str, path: Path, logger: logging.Logger
+) -> Iterator[object]:
+    """Yield YAML documents from *content*, skipping failures.
+
+    Uses :class:`_JJBSafeLoader` so JJB custom tags are accepted.
+    The raw text is split on ``---`` document boundaries and each
+    chunk is parsed with an independent loader so that a parse
+    error in one document cannot prevent earlier or later documents
+    from being returned.
+
+    Args:
+        content: Raw YAML text (may contain multiple documents).
+        path: Source file path, used only for log messages.
+        logger: Logger for parse-error warnings.
+
+    Yields:
+        Parsed YAML documents.
+    """
+    raw_docs = _YAML_DOC_BOUNDARY.split(content)
+    for raw_doc in raw_docs:
+        if not raw_doc.strip():
+            continue
+        try:
+            data = yaml.load(raw_doc, Loader=_JJBSafeLoader)  # noqa: S506
+        except yaml.YAMLError as exc:
+            logger.warning("YAML parse error in %s: %s", path, exc)
+            continue
+        if data is not None:
+            yield data
 
 
 def _is_template_placeholder(value: str) -> bool:
@@ -173,8 +263,9 @@ class JJBCollector(BaseCollector):
         """Parse a single JJB YAML file for project references.
 
         Handles multi-document YAML files via
-        ``yaml.safe_load_all``.  Malformed files are logged and
-        skipped rather than raising exceptions.
+        :func:`_iter_yaml_documents` with :class:`_JJBSafeLoader`.
+        Malformed files are logged and skipped rather than raising
+        exceptions.
 
         Args:
             path: Path to the YAML file to parse.
@@ -191,13 +282,7 @@ class JJBCollector(BaseCollector):
             self._logger.warning("Cannot read JJB file %s: %s", path, exc)
             return results
 
-        try:
-            documents = list(yaml.safe_load_all(content))
-        except yaml.YAMLError as exc:
-            self._logger.warning("YAML parse error in %s: %s", path, exc)
-            return results
-
-        for document in documents:
+        for document in _iter_yaml_documents(content, path, self._logger):
             entries = _extract_projects_from_document(document)
             results.extend(entries)
 
