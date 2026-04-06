@@ -171,7 +171,9 @@ jobs:
           if [ "${{ inputs.exclude_readonly }}" = "false" ]; then
             ARGS+=(--no-exclude-readonly)
           fi
-          if [ "${{ inputs.debug }}" = "true" ]; then
+          if [ "${{ inputs.debug }}" = "true" ] || \
+             [ "${RUNNER_DEBUG:-0}" = "1" ] || \
+             [ "${ACTIONS_STEP_DEBUG:-false}" = "true" ]; then
             ARGS+=(--verbose -v)
           fi
           uvx "${TOOL_SPEC}" "${ARGS[@]}"
