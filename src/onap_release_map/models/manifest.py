@@ -8,6 +8,20 @@ from pydantic import BaseModel, Field
 from .docker_image import DockerImage
 from .helm_component import HelmComponent
 from .repository import OnapRepository
+from .validation import ValidationReport
+
+#: Current manifest schema version. Bump this constant (and add a
+#: new bullet to the :class:`ReleaseManifest` version history) when
+#: the shape of the serialised manifest changes. Every producer and
+#: consumer inside the project derives the version from this single
+#: source of truth rather than duplicating a literal string.
+#:
+#: Version history:
+#:     * ``1.0.0`` — initial release.
+#:     * ``1.1.0`` — added manifest provenance.
+#:     * ``1.2.0`` — added optional ``validation`` section reporting
+#:       the outcome of post-collection data-quality validators.
+MANIFEST_SCHEMA_VERSION: str = "1.2.0"
 
 
 class DataSource(BaseModel):
@@ -122,8 +136,14 @@ class ReleaseManifest(BaseModel):
     summary statistics.
     """
 
-    schema_version: str = "1.1.0"
-    """Manifest schema version for forward compatibility."""
+    schema_version: str = MANIFEST_SCHEMA_VERSION
+    """Manifest schema version for forward compatibility.
+
+    Defaults to :data:`MANIFEST_SCHEMA_VERSION`, which is the single
+    source of truth for the current schema revision. Consumers that
+    need to detect or compare versions should read this field from a
+    loaded manifest rather than hard-coding a literal string.
+    """
 
     tool_version: str
     """Version of ``onap-release-map`` that produced this manifest."""
@@ -149,8 +169,20 @@ class ReleaseManifest(BaseModel):
     provenance: ManifestProvenance = Field(default_factory=ManifestProvenance)
     """Data-source and collector provenance information."""
 
+    validation: ValidationReport | None = None
+    """Optional post-collection validation report.
+
+    When present, summarises the findings of validators (e.g. the
+    mapping audit) that examined the manifest after collection. When
+    no validators ran, this field serialises as ``null`` in the JSON
+    output produced by the current exporters rather than being
+    omitted, preserving a stable top-level shape for consumers that
+    predate schema version 1.2.0.
+    """
+
 
 __all__ = [
+    "MANIFEST_SCHEMA_VERSION",
     "CollectorExecution",
     "DataSource",
     "ManifestProvenance",

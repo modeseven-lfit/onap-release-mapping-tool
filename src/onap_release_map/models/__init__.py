@@ -6,6 +6,7 @@
 from .docker_image import DockerImage
 from .helm_component import HelmComponent
 from .manifest import (
+    MANIFEST_SCHEMA_VERSION,
     CollectorExecution,
     DataSource,
     ManifestProvenance,
@@ -14,8 +15,15 @@ from .manifest import (
     ReleaseManifest,
 )
 from .repository import OnapRepository
+from .validation import (
+    ValidationCategory,
+    ValidationFinding,
+    ValidationReport,
+    ValidationSeverity,
+)
 
 __all__ = [
+    "MANIFEST_SCHEMA_VERSION",
     "CollectorExecution",
     "DataSource",
     "DockerImage",
@@ -25,4 +33,8 @@ __all__ = [
     "OnapRelease",
     "OnapRepository",
     "ReleaseManifest",
+    "ValidationCategory",
+    "ValidationFinding",
+    "ValidationReport",
+    "ValidationSeverity",
 ]
