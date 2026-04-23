@@ -8,6 +8,7 @@ from __future__ import annotations
 from onap_release_map.collectors import CollectorResult
 from onap_release_map.manifest import CrossRefProvider, ManifestBuilder
 from onap_release_map.models import (
+    MANIFEST_SCHEMA_VERSION,
     DockerImage,
     HelmComponent,
     OnapRelease,
@@ -29,10 +30,42 @@ class TestManifestBuilder:
         )
         manifest = builder.build()
 
-        assert manifest.schema_version == "1.1.0"
+        # Assert against the single source of truth rather than a
+        # literal string so the test cannot drift away from the
+        # constant used by the builder and the model default.
+        assert manifest.schema_version == MANIFEST_SCHEMA_VERSION
         assert manifest.tool_version == "0.1.0"
         assert manifest.onap_release.name == "Test"
         assert manifest.summary.total_repositories == 0
+
+    def test_schema_version_single_source_of_truth(self) -> None:
+        """Model default and builder output must agree on the schema version.
+
+        Guards against the previous drift pattern where three separate
+        locations (the Pydantic model default, the hard-coded literal
+        in ``ManifestBuilder.build()``, and the JSON schema example)
+        carried independent copies of the version string and could
+        fall out of sync. The model default now comes from
+        :data:`MANIFEST_SCHEMA_VERSION` and the builder reads the
+        same constant; this test pins that invariant.
+        """
+        from onap_release_map.models import ReleaseManifest
+
+        # The model's default value must equal the constant.
+        default_manifest = ReleaseManifest(
+            tool_version="0.1.0",
+            generated_at="2026-01-01T00:00:00Z",
+            onap_release=OnapRelease(name="Test", oom_chart_version="1.0.0"),
+        )
+        assert default_manifest.schema_version == MANIFEST_SCHEMA_VERSION
+
+        # A freshly-built manifest must produce the same version.
+        builder = ManifestBuilder(
+            tool_version="0.1.0",
+            onap_release=OnapRelease(name="Test", oom_chart_version="1.0.0"),
+        )
+        built = builder.build()
+        assert built.schema_version == MANIFEST_SCHEMA_VERSION
 
     def test_build_with_results(self) -> None:
         """Test building a manifest with collector results."""

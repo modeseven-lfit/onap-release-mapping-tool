@@ -13,6 +13,7 @@ from typing import Protocol, runtime_checkable
 
 from onap_release_map.collectors import CollectorResult
 from onap_release_map.models import (
+    MANIFEST_SCHEMA_VERSION,
     DataSource,
     DockerImage,
     HelmComponent,
@@ -155,7 +156,7 @@ class ManifestBuilder:
             generated_at = self._timestamp.isoformat()
 
         return ReleaseManifest(
-            schema_version="1.1.0",
+            schema_version=MANIFEST_SCHEMA_VERSION,
             tool_version=self.tool_version,
             generated_at=generated_at,
             onap_release=self.onap_release,

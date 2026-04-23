@@ -200,6 +200,17 @@ def discover(
             help="Produce deterministic output.",
         ),
     ] = True,
+    strict_validation: Annotated[
+        bool,
+        typer.Option(
+            "--strict-validation/--no-strict-validation",
+            help=(
+                "Exit non-zero when the post-collection mapping audit "
+                "reports any ERROR-level findings. Useful for CI. "
+                "Warnings and info findings never block the run."
+            ),
+        ),
+    ] = False,
     verbose: Annotated[
         int,
         typer.Option(
@@ -427,6 +438,65 @@ def discover(
 
     manifest = builder.build()
 
+    # ----------------------------------------------------------
+    # Post-collection validation: audit the image → Gerrit
+    # project mapping against ground truth and attach the report
+    # to the manifest. The validator is read-only and never
+    # mutates collected data. When --strict-validation is set
+    # any ERROR-level finding causes a non-zero exit.
+    #
+    # The validator runs whenever the OOM collector actually ran,
+    # even if the Gerrit collector did not. Without ground truth the
+    # validator emits a single AUDIT_SKIPPED INFO finding explaining
+    # why, which preserves the graceful-degradation contract
+    # described in the module docstring and guarantees consumers
+    # always see a populated `validation` section when OOM-derived
+    # images were collected. Gating on the enabled collector set
+    # (rather than on `oom_path` alone) prevents the validator from
+    # attaching to manifests that had no OOM collection — for
+    # example when a user supplies `--oom-path` but runs with
+    # `--collectors gerrit,relman`.
+    # ----------------------------------------------------------
+    _strict_exit_code = 0
+    if "oom" in enabled:
+        from onap_release_map.validators import MappingAuditValidator
+
+        # Pull any ground truth the prefetch step produced. When the
+        # Gerrit collector was disabled this is missing, so fall back
+        # to None and let the validator report AUDIT_SKIPPED.
+        raw_known_projects = collector_configs.get("oom", {}).get("known_projects")
+        # PEP 604 unions are valid in isinstance() on Python 3.10+,
+        # which is this project's minimum. ruff's UP038 rule prefers
+        # this form over the legacy tuple syntax. Do not "simplify"
+        # to `(set, frozenset)` — that would trip UP038 on every run.
+        if isinstance(raw_known_projects, set | frozenset):
+            audit_known_projects: set[str] | frozenset[str] | None = raw_known_projects
+        else:
+            audit_known_projects = None
+
+        validator = MappingAuditValidator(
+            mapping_file=mapping_file,
+            known_projects=audit_known_projects,
+        )
+        with console.status("[bold green]Auditing image mappings..."):
+            report = validator.validate(manifest)
+        manifest.validation = report
+
+        if report.findings:
+            console.print(f"  [cyan]validation:[/] {report.summary}")
+        else:
+            console.print(f"  [green]validation:[/] {report.summary}")
+
+        if strict_validation and not report.passed:
+            err_console.print(
+                "[red]Error:[/] --strict-validation set and the mapping "
+                "audit reported ERROR-level findings. See the "
+                "`validation.findings` section of the manifest."
+            )
+            # Defer exit until after the manifest has been written
+            # so CI can still collect the artefact for inspection.
+            _strict_exit_code = 2
+
     # Apply repository filtering
     from onap_release_map.exporter import filter_repositories
 
@@ -488,6 +558,11 @@ def discover(
             err_console.print("[yellow]Warning:[/] PyYAML needed for YAML output")
 
     console.print("\n[bold green]Done![/]")
+
+    # Honour --strict-validation AFTER the manifest has been written
+    # so CI always has the artefact to inspect, even on failure.
+    if _strict_exit_code != 0:
+        raise typer.Exit(code=_strict_exit_code)
 
 
 @app.command()

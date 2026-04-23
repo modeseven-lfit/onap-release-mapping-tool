@@ -16,9 +16,9 @@
   "properties": {
     "schema_version": {
       "type": "string",
-      "description": "Semantic version of the manifest schema",
+      "description": "Semantic version of the manifest schema. The canonical value is defined by the MANIFEST_SCHEMA_VERSION constant in onap_release_map.models.manifest; update this example in lockstep when that constant is bumped.",
       "pattern": "^\\d+\\.\\d+\\.\\d+$",
-      "examples": ["1.1.0"]
+      "examples": ["1.2.0"]
     },
     "tool_version": {
       "type": "string",
@@ -117,6 +117,13 @@
           }
         }
       }
+    },
+    "validation": {
+      "description": "Optional post-collection validation report. Populated by validators such as the mapping audit. When no validators ran, this field serialises as null (not omitted) via the standard model exporters, preserving a stable top-level shape for consumers. Added in schema version 1.2.0.",
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "#/definitions/ValidationReport" }
+      ]
     }
   },
   "definitions": {
@@ -223,6 +230,87 @@
         "nexus_validated": {
           "type": ["boolean", "null"],
           "description": "Whether the image:tag was verified in Nexus"
+        }
+      }
+    },
+    "ValidationReport": {
+      "type": "object",
+      "required": ["validator", "passed", "summary"],
+      "description": "Aggregated output of a single validator run.",
+      "properties": {
+        "validator": {
+          "type": "string",
+          "description": "Identifier of the validator that produced the report (e.g. 'mapping_audit')."
+        },
+        "passed": {
+          "type": "boolean",
+          "description": "True when the report contains no ERROR-level findings."
+        },
+        "summary": {
+          "type": "string",
+          "description": "Human-readable one-line summary suitable for CLI output."
+        },
+        "counts": {
+          "type": "object",
+          "description": "Per-severity and per-category counts keyed as 'severity:NAME' and 'category:NAME' for quick stats without iterating findings.",
+          "additionalProperties": { "type": "integer" }
+        },
+        "findings": {
+          "type": "array",
+          "description": "Ordered list of findings: errors first, then warnings, then info; within each severity level sorted by category then image for deterministic output.",
+          "items": { "$ref": "#/definitions/ValidationFinding" }
+        }
+      }
+    },
+    "ValidationFinding": {
+      "type": "object",
+      "required": ["category", "severity", "reason"],
+      "description": "A single audit finding produced by a validator.",
+      "properties": {
+        "category": {
+          "type": "string",
+          "enum": [
+            "stale_override",
+            "stale_override_with_fix",
+            "override_shadowed",
+            "heuristic_unverified",
+            "ambiguous_leaf",
+            "cross_namespace_fallback",
+            "unresolved",
+            "audit_skipped"
+          ],
+          "description": "Classification of the finding."
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["error", "warning", "info"],
+          "description": "How serious the finding is. ERROR blocks CI when --strict-validation is set; WARNING and INFO never block."
+        },
+        "image": {
+          "type": ["string", "null"],
+          "description": "Docker image reference the finding concerns, if applicable."
+        },
+        "current_mapping": {
+          "type": ["string", "null"],
+          "description": "Gerrit project path the manifest currently records."
+        },
+        "suggested_mapping": {
+          "type": ["string", "null"],
+          "description": "Alternative mapping the validator recommends, when known."
+        },
+        "reason": {
+          "type": "string",
+          "description": "Human-readable explanation of the finding."
+        },
+        "alternatives": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Other plausible candidates considered during resolution."
+        },
+        "detail": {
+          "type": "object",
+          "description": "Optional free-form detail fields for category-specific context.",
+          "additionalProperties": { "type": "string" }
         }
       }
     },
