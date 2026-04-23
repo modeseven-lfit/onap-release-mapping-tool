@@ -67,3 +67,83 @@ class TestOOMCollector:
         assert result.execution.name == "oom"
         assert result.execution.duration_seconds >= 0
         assert result.execution.items_collected > 0
+
+    def test_attribution_fields_populated(self, sample_oom_path: Path) -> None:
+        """Every collected image carries a non-empty attribution reason.
+
+        The OOM collector now calls :meth:`ImageMapper.resolve` instead
+        of the thin :meth:`map_image` wrapper and persists the full
+        :class:`MappingResult` onto each :class:`DockerImage` record.
+        Every image therefore gains a populated ``attribution_reason``
+        string (the serialised ``MappingReason`` value), regardless of
+        whether the mapping succeeded. This is the observability
+        contract described in the class docstring and promised by the
+        validator's audit paths.
+        """
+        collector = OOMCollector(oom_path=sample_oom_path)
+        result = collector.collect()
+
+        # The sample OOM fixture should produce at least one image.
+        assert result.docker_images, "expected at least one image"
+
+        for img in result.docker_images:
+            # Every image must carry a reason string. Empty/None is
+            # never correct after resolve(): the mapper always sets
+            # reason, even on the unresolved path.
+            assert img.attribution_reason, (
+                f"image {img.image!r} has empty attribution_reason"
+            )
+            # attribution_alternatives defaults to an empty list, so
+            # the type must always be a list rather than None.
+            assert isinstance(img.attribution_alternatives, list)
+
+    def test_attribution_without_ground_truth_marked_none(
+        self,
+        sample_oom_path: Path,
+    ) -> None:
+        """Without known_projects, verified is None rather than False.
+
+        The collector distinguishes "verification not attempted" from
+        "verification failed" by passing ``None`` for
+        ``attribution_verified`` when no ground truth was supplied.
+        This matches the semantics of ``ImageMapper.has_ground_truth``
+        and keeps the audit validator's ``AUDIT_SKIPPED`` branch
+        distinguishable from genuine verification failures.
+        """
+        collector = OOMCollector(oom_path=sample_oom_path)
+        result = collector.collect()
+
+        for img in result.docker_images:
+            assert img.attribution_verified is None, (
+                f"image {img.image!r} should have verified=None without "
+                f"ground truth, got {img.attribution_verified!r}"
+            )
+
+    def test_attribution_with_ground_truth_marked_bool(
+        self,
+        sample_oom_path: Path,
+    ) -> None:
+        """With known_projects, verified becomes a real bool per image.
+
+        When the collector receives a non-empty ``known_projects``
+        set, every image gains a concrete ``True``/``False`` flag on
+        ``attribution_verified`` reflecting whether its resolved
+        project was found in ground truth. ``None`` becomes invalid
+        in this regime — that would indicate the wiring forgot to
+        thread the flag through.
+        """
+        # Seed ground truth with a project that matches the shipped
+        # override for onap/integration-java11 so at least one image
+        # in the fixture resolves cleanly against known_projects.
+        ground_truth = {"integration/docker/onap-java11", "oom/readiness"}
+        collector = OOMCollector(
+            oom_path=sample_oom_path,
+            known_projects=ground_truth,
+        )
+        result = collector.collect()
+
+        for img in result.docker_images:
+            assert isinstance(img.attribution_verified, bool), (
+                f"image {img.image!r} should have a bool verified flag "
+                f"with ground truth supplied, got {img.attribution_verified!r}"
+            )

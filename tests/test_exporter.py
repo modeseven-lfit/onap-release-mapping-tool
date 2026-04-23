@@ -143,6 +143,120 @@ class TestExportCsv:
         with pytest.raises(ExportError):
             export_csv(_make_manifest(), mode="invalid")
 
+    def test_csv_images_header_includes_attribution(self) -> None:
+        """Images mode header exposes the three attribution columns."""
+        result = export_csv(_make_manifest(), mode="images")
+        header = result.splitlines()[0]
+        assert "attribution_reason" in header
+        assert "attribution_verified" in header
+        assert "attribution_alternatives" in header
+
+    def test_csv_images_attribution_cells_populated(self) -> None:
+        """Non-empty attribution fields round-trip through the CSV export.
+
+        Builds a manifest whose Docker image carries a concrete
+        attribution triple, parses the rendered CSV, and asserts on
+        the exact value in each of the three new columns. Parsing
+        the CSV (rather than substring-matching the raw string)
+        guarantees the test fails loudly if the exporter ever
+        re-orders columns, drops a cell, or renders the boolean
+        differently — none of which a plain ``"leaf-match" in result``
+        check would catch.
+        """
+        import csv
+        import io
+
+        images = [
+            DockerImage(
+                image="onap/so/so-cnf-adapter",
+                tag="1.0.0",
+                gerrit_project="so/adapters/so-cnf-adapter",
+                attribution_reason="leaf-match-namespace",
+                attribution_verified=True,
+                attribution_alternatives=[
+                    "so/so-cnf-adapter",
+                    "so/other/so-cnf-adapter",
+                ],
+            ),
+        ]
+        manifest = ReleaseManifest(
+            tool_version="0.0.0-test",
+            generated_at="2026-01-01T00:00:00Z",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="0.0.0",
+            ),
+            summary=ManifestSummary(),
+            docker_images=images,
+        )
+        result = export_csv(manifest, mode="images")
+
+        # Parse the rendered CSV back into (header, row) pairs so
+        # assertions land on exact column values rather than
+        # substring coincidences.
+        reader = csv.DictReader(io.StringIO(result))
+        rows = list(reader)
+        assert len(rows) == 1
+        row = rows[0]
+
+        assert row["attribution_reason"] == "leaf-match-namespace"
+        # _bool_str renders True as the lowercase token "true".
+        assert row["attribution_verified"] == "true"
+        # Alternatives are joined with ';' to match the helm_charts
+        # convention, and all alternatives must appear in the same
+        # order the model recorded them.
+        assert row["attribution_alternatives"] == (
+            "so/so-cnf-adapter;so/other/so-cnf-adapter"
+        )
+
+    def test_csv_images_attribution_unverified_and_none(self) -> None:
+        """Unverified and None attribution_verified render distinctly.
+
+        Exercises the two non-True branches of ``_bool_str``: a
+        verified=False image renders as the literal token ``false``,
+        and a verified=None image (no ground truth available) renders
+        as an empty cell. Both must be distinguishable in the CSV so
+        downstream consumers can tell ``rejected verification`` apart
+        from ``verification not attempted``.
+        """
+        import csv
+        import io
+
+        images = [
+            DockerImage(
+                image="onap/policy-ghost-repo",
+                tag="1.0.0",
+                gerrit_project="policy/ghost-repo",
+                attribution_reason="heuristic-dash-unverified",
+                attribution_verified=False,
+            ),
+            DockerImage(
+                image="onap/policy-api",
+                tag="1.0.0",
+                gerrit_project="policy/api",
+                attribution_reason="override",
+                attribution_verified=None,
+            ),
+        ]
+        manifest = ReleaseManifest(
+            tool_version="0.0.0-test",
+            generated_at="2026-01-01T00:00:00Z",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="0.0.0",
+            ),
+            summary=ManifestSummary(),
+            docker_images=images,
+        )
+        result = export_csv(manifest, mode="images")
+
+        reader = csv.DictReader(io.StringIO(result))
+        by_image = {r["image"]: r for r in reader}
+
+        assert by_image["onap/policy-ghost-repo"]["attribution_verified"] == ("false")
+        # None renders as the empty string, not the literal "None".
+        assert by_image["onap/policy-api"]["attribution_verified"] == ""
+
 
 class TestExportMarkdown:
     """Tests for export_markdown."""
@@ -158,6 +272,104 @@ class TestExportMarkdown:
         assert "## Repositories" in result
         assert "## Docker Images" in result
         assert "## Helm Components" in result
+
+    def test_markdown_images_table_has_attribution_column(self) -> None:
+        """The Markdown images table includes an Attribution column header."""
+        result = export_markdown(_make_manifest())
+        # Grab only the "## Docker Images" section so assertions
+        # cannot leak into unrelated tables.
+        section = result.split("## Docker Images", maxsplit=1)[1].split("## ")[0]
+        assert "| Attribution |" in section
+
+    def test_markdown_attribution_cell_formats_reason_and_marker(self) -> None:
+        """The Attribution cell renders reason, verification marker, and alts.
+
+        The Markdown exporter promises a ``reason`` token, a
+        verification marker (``✓`` / ``✗``), and an ``(alt: …)``
+        suffix when alternatives exist. This test exercises each of
+        those with a single constructed manifest so any regression
+        in cell formatting fails loudly.
+        """
+        images = [
+            DockerImage(
+                image="onap/so/so-cnf-adapter",
+                tag="1.0.0",
+                gerrit_project="so/adapters/so-cnf-adapter",
+                attribution_reason="leaf-match-namespace",
+                attribution_verified=True,
+                attribution_alternatives=["so/so-cnf-adapter"],
+            ),
+        ]
+        manifest = ReleaseManifest(
+            tool_version="0.0.0-test",
+            generated_at="2026-01-01T00:00:00Z",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="0.0.0",
+            ),
+            summary=ManifestSummary(),
+            docker_images=images,
+        )
+        result = export_markdown(manifest)
+        section = result.split("## Docker Images", maxsplit=1)[1].split("## ")[0]
+
+        assert "leaf-match-namespace ✓" in section
+        assert "(alt: so/so-cnf-adapter)" in section
+
+    def test_markdown_attribution_unverified_marker(self) -> None:
+        """Unverified attribution renders with a ✗ marker."""
+        images = [
+            DockerImage(
+                image="onap/policy-ghost-repo",
+                tag="1.0.0",
+                gerrit_project="policy/ghost-repo",
+                attribution_reason="heuristic-dash-unverified",
+                attribution_verified=False,
+            ),
+        ]
+        manifest = ReleaseManifest(
+            tool_version="0.0.0-test",
+            generated_at="2026-01-01T00:00:00Z",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="0.0.0",
+            ),
+            summary=ManifestSummary(),
+            docker_images=images,
+        )
+        result = export_markdown(manifest)
+        section = result.split("## Docker Images", maxsplit=1)[1].split("## ")[0]
+
+        assert "heuristic-dash-unverified ✗" in section
+
+    def test_markdown_attribution_no_marker_without_ground_truth(self) -> None:
+        """When verified is None the cell has no ✓/✗ marker."""
+        images = [
+            DockerImage(
+                image="onap/policy-api",
+                tag="1.0.0",
+                gerrit_project="policy/api",
+                attribution_reason="override",
+                attribution_verified=None,
+            ),
+        ]
+        manifest = ReleaseManifest(
+            tool_version="0.0.0-test",
+            generated_at="2026-01-01T00:00:00Z",
+            onap_release=OnapRelease(
+                name="Test",
+                oom_chart_version="0.0.0",
+            ),
+            summary=ManifestSummary(),
+            docker_images=images,
+        )
+        result = export_markdown(manifest)
+        section = result.split("## Docker Images", maxsplit=1)[1].split("## ")[0]
+
+        # The reason appears bare, without a verification marker.
+        assert "override" in section
+        assert "override ✓" not in section
+        assert "override ✗" not in section
 
     def test_markdown_repo_data(self) -> None:
         """Output contains policy/api in a table row."""

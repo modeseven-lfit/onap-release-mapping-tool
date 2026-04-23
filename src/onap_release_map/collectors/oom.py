@@ -106,13 +106,25 @@ class OOMCollector(BaseCollector):
                     existing.registry = new_registry
                 continue
 
-            gerrit_project = mapper.map_image(img_data["image"])
+            # Use resolve() rather than the thin map_image() wrapper
+            # so the full MappingResult — reason, verified flag, and
+            # any alternatives the longest-match stage considered — is
+            # available to persist alongside the resolved project.
+            # Downstream consumers (audit validators, exporters, human
+            # reviewers) use these attribution fields to explain or
+            # flag a mapping without having to re-run the mapper.
+            resolution = mapper.resolve(img_data["image"])
             img = DockerImage(
                 image=img_data["image"],
                 tag=img_data.get("tag", "latest"),
                 registry=img_data.get("registry"),
-                gerrit_project=gerrit_project,
+                gerrit_project=resolution.project,
                 helm_charts=[chart_name] if chart_name else [],
+                attribution_reason=resolution.reason.value,
+                attribution_verified=(
+                    resolution.verified if mapper.has_ground_truth else None
+                ),
+                attribution_alternatives=list(resolution.alternatives),
             )
             seen_images[image_key] = img
 
@@ -145,12 +157,21 @@ class OOMCollector(BaseCollector):
                 if img_data["image"] not in chart_images[key]:
                     chart_images[key].append(img_data["image"])
 
-        # Derive gerrit_projects per chart key from image mappings
+        # Derive gerrit_projects per chart key from the resolutions
+        # already captured on each DockerImage in the main loop. The
+        # previous version called ``mapper.map_image()`` here, which
+        # re-ran the full longest-match / heuristic pipeline for every
+        # image-chart pairing and duplicated work that ``resolve()``
+        # had already performed. Index the resolved projects by image
+        # name once, then look them up directly.
+        resolved_by_image: dict[str, str | None] = {
+            img.image: img.gerrit_project for img in seen_images.values()
+        }
         chart_gerrit: dict[str, list[str]] = {}
         for chart_key, images in chart_images.items():
             projects: list[str] = []
             for img_name in images:
-                proj = mapper.map_image(img_name)
+                proj = resolved_by_image.get(img_name)
                 if proj and proj not in projects:
                     projects.append(proj)
             if projects:

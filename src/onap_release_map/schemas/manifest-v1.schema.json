@@ -230,6 +230,19 @@
         "nexus_validated": {
           "type": ["boolean", "null"],
           "description": "Whether the image:tag was verified in Nexus"
+        },
+        "attribution_reason": {
+          "type": ["string", "null"],
+          "description": "Serialised MappingReason describing how the image was resolved to its Gerrit project (e.g. 'override', 'leaf-match-namespace', 'heuristic-dash-verified', 'unresolved'). Null when the image record predates attribution observability."
+        },
+        "attribution_verified": {
+          "type": ["boolean", "null"],
+          "description": "Tri-state verification flag. True when gerrit_project was confirmed present in Gerrit ground truth. False in two sub-cases that should be interpreted by also reading gerrit_project: (a) when gerrit_project is a non-null path that the mapper could not verify against ground truth (e.g. an unverified heuristic fallback or a stale override), and (b) when gerrit_project is null because no candidate matched (attribution_reason 'unresolved'), which carries false as the absence of a verified result rather than as a rejection. Null only when no ground truth was available at resolution time, so verification was impossible to determine either way. Consumers should always read this field together with gerrit_project and attribution_reason rather than treating false as a single signal."
+        },
+        "attribution_alternatives": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Other plausible Gerrit project paths considered but not chosen by the longest-match tiebreak. Empty when the mapper had a single candidate or did not run."
         }
       }
     },
