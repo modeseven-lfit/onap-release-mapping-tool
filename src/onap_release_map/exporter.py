@@ -129,6 +129,9 @@ def export_csv(manifest: ReleaseManifest, *, mode: str = "repos") -> str:
                 "gerrit_project",
                 "nexus_validated",
                 "helm_charts",
+                "attribution_reason",
+                "attribution_verified",
+                "attribution_alternatives",
             ]
         )
         for img in manifest.docker_images:
@@ -140,6 +143,9 @@ def export_csv(manifest: ReleaseManifest, *, mode: str = "repos") -> str:
                     img.gerrit_project or "",
                     _bool_str(img.nexus_validated),
                     ";".join(img.helm_charts),
+                    img.attribution_reason or "",
+                    _bool_str(img.attribution_verified),
+                    ";".join(img.attribution_alternatives),
                 ]
             )
     else:
@@ -208,13 +214,34 @@ def export_markdown(manifest: ReleaseManifest) -> str:
     # Docker images table
     lines.append("## Docker Images")
     lines.append("")
-    lines.append("| Image | Tag | Gerrit Project | Registry | Validated |")
-    lines.append("| ----- | --- | -------------- | -------- | --------- |")
+    lines.append(
+        "| Image | Tag | Gerrit Project | Registry | Validated | Attribution |"
+    )
+    lines.append(
+        "| ----- | --- | -------------- | -------- | --------- | ----------- |"
+    )
     for img in manifest.docker_images:
         project = img.gerrit_project or ""
         reg = img.registry or ""
         validated = _bool_display(img.nexus_validated)
-        lines.append(f"| {img.image} | {img.tag} | {project} | {reg} | {validated} |")
+        # Attribution cell shows the mapper reason with a verification
+        # marker suffix (✓ verified, ✗ unverified, blank when no ground
+        # truth was available). Alternatives are appended in parentheses
+        # when the longest-match tiebreak had to choose between
+        # siblings, so reviewers can spot ambiguous leaves at a glance.
+        attribution = img.attribution_reason or ""
+        if attribution:
+            if img.attribution_verified is True:
+                attribution += " ✓"
+            elif img.attribution_verified is False:
+                attribution += " ✗"
+            if img.attribution_alternatives:
+                alts = ", ".join(img.attribution_alternatives)
+                attribution += f" (alt: {alts})"
+        lines.append(
+            f"| {img.image} | {img.tag} | {project} | {reg} "
+            f"| {validated} | {attribution} |"
+        )
     lines.append("")
 
     # Helm components table
@@ -743,11 +770,21 @@ def _sanitise_manifest(manifest: ReleaseManifest) -> ReleaseManifest:
 
     # Escape Docker image fields
     for img in data.get("docker_images", []):
-        for key in ("image", "tag", "registry", "gerrit_project"):
+        for key in (
+            "image",
+            "tag",
+            "registry",
+            "gerrit_project",
+            "attribution_reason",
+        ):
             if key in img and isinstance(img[key], str):
                 img[key] = _esc(img[key])
         if "helm_charts" in img:
             img["helm_charts"] = [_esc(v) for v in img["helm_charts"]]
+        if "attribution_alternatives" in img:
+            img["attribution_alternatives"] = [
+                _esc(v) for v in img["attribution_alternatives"]
+            ]
 
     # Escape Helm component fields
     for comp in data.get("helm_components", []):
