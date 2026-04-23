@@ -30,6 +30,7 @@ class OOMCollector(BaseCollector):
         oom_path: Path | None = None,
         mapping_file: Path | None = None,
         gerrit_url: str | None = None,
+        known_projects: set[str] | frozenset[str] | None = None,
         **kwargs: object,
     ) -> None:
         """Initialise the OOM collector.
@@ -40,12 +41,18 @@ class OOMCollector(BaseCollector):
                 or overriding image-to-project mappings.
             gerrit_url: Base URL of the Gerrit instance.  Defaults to
                 ``https://gerrit.onap.org/r``.
+            known_projects: Optional set of Gerrit project paths used
+                as ground truth by :class:`ImageMapper` for verified
+                longest-match resolution. Typically sourced from the
+                Gerrit collector's project listing. When ``None`` or
+                empty the mapper falls back to unverified heuristics.
             **kwargs: Passed through to :class:`BaseCollector`.
         """
         super().__init__()
         self.oom_path = oom_path
         self.mapping_file = mapping_file
         self._gerrit_url = (gerrit_url or "https://gerrit.onap.org/r").rstrip("/")
+        self._known_projects: frozenset[str] = frozenset(known_projects or ())
 
     def collect(self, **kwargs: object) -> CollectorResult:
         """Parse OOM charts and produce repositories, images, and components."""
@@ -53,7 +60,10 @@ class OOMCollector(BaseCollector):
             raise ValueError("oom_path is required for OOMCollector")
 
         parser = HelmChartParser(self.oom_path)
-        mapper = ImageMapper(self.mapping_file)
+        mapper = ImageMapper(
+            self.mapping_file,
+            known_projects=self._known_projects,
+        )
 
         helm_components_raw, docker_images_raw, _ = parser.parse_umbrella_chart()
 
