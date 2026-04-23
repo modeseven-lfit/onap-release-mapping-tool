@@ -16,7 +16,7 @@ from rich.logging import RichHandler
 from rich.table import Table
 
 from onap_release_map import __version__
-from onap_release_map.collectors import registry
+from onap_release_map.collectors import CollectorResult, registry
 from onap_release_map.collectors.gerrit import GerritCollector  # noqa: F401
 from onap_release_map.collectors.jjb import JJBCollector  # noqa: F401
 from onap_release_map.collectors.oom import OOMCollector  # noqa: F401
@@ -323,7 +323,60 @@ def discover(
         },
     }
 
+    # Pre-run Gerrit when both `oom` and `gerrit` are enabled so that
+    # the OOM collector can feed the fetched project list into
+    # ImageMapper as ground truth for longest-match attribution.
+    # The Gerrit result is stored and added to the builder in place
+    # of a second run, and `gerrit` is skipped in the main loop.
+    prefetched: dict[str, CollectorResult] = {}
+    if "oom" in enabled and "gerrit" in enabled:
+        gerrit_kwargs = collector_configs.get("gerrit", {})
+        gerrit_collector = registry.create("gerrit", **gerrit_kwargs)
+        if gerrit_collector is None:
+            err_console.print("[red]Error:[/] gerrit collector not available")
+            raise typer.Exit(code=1)
+
+        status_msg = _collector_status_message("gerrit")
+        with console.status(f"[bold green]{status_msg}"):
+            gerrit_result = gerrit_collector.timed_collect()
+
+        if gerrit_result.execution and gerrit_result.execution.errors:
+            for err in gerrit_result.execution.errors:
+                err_console.print(f"  [yellow]Warning (gerrit):[/] {err}")
+            err_console.print(
+                "  [yellow]Proceeding without Gerrit ground truth; "
+                "image attribution will fall back to heuristics[/]"
+            )
+        else:
+            _items = 0
+            if gerrit_result.execution:
+                _items = gerrit_result.execution.items_collected
+            console.print(f"  [green]gerrit:[/] {_items} items collected")
+
+        # Inject the fetched project paths into OOM's kwargs as
+        # known_projects ground truth for the image mapper.
+        known_projects = {repo.gerrit_project for repo in gerrit_result.repositories}
+        collector_configs["oom"]["known_projects"] = known_projects
+        prefetched["gerrit"] = gerrit_result
+
     for collector_name in enabled:
+        # Skip Gerrit when it has already been executed in the
+        # prefetch phase above; reuse the stored result instead.
+        if collector_name == "gerrit" and "gerrit" in prefetched:
+            result = prefetched["gerrit"]
+            builder.add_result(result)
+            source = _make_data_source(
+                collector_name,
+                oom_path=oom_path,
+                oom_commit=onap_release.oom_commit,
+                repos_yaml=repos_yaml,
+                jjb_path=jjb_path,
+                gerrit_url=gerrit_url or gerrit_cfg.get("url"),
+            )
+            if source:
+                builder.add_data_source(source)
+            continue
+
         kwargs = collector_configs.get(collector_name, {})
         collector = registry.create(collector_name, **kwargs)
         if collector is None:
