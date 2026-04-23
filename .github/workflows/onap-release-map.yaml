@@ -56,6 +56,16 @@ on:
         type: string
         required: false
         default: "latest"
+      from_source:
+        # When true, install the tool directly from the repository
+        # checkout at the current branch's HEAD instead of pulling a
+        # released wheel from PyPI. Useful for verifying unreleased
+        # changes end-to-end before cutting a new release. The
+        # ``version`` input is ignored when this is set.
+        description: "Install from repository checkout (ignores 'version')"
+        type: boolean
+        required: false
+        default: false
       debug:
         description: "Enable debug output"
         type: boolean
@@ -102,17 +112,47 @@ jobs:
         uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b  # v8.1.0
 
       - name: "Resolve tool specifier"
+        # Pass workflow_dispatch inputs through the step ``env`` map
+        # rather than interpolating ``${{ inputs.* }}`` directly into
+        # the bash script. ``${{ ... }}`` interpolation happens before
+        # the runner even starts a shell, so a hostile operator who
+        # supplied an input containing command substitution
+        # (``$(...)``, backticks) would have that executed verbatim.
+        # Reading from ``$FROM_SOURCE`` / ``$VERSION`` instead treats
+        # the inputs as data, which bash quotes expand safely.
+        env:
+          FROM_SOURCE: "${{ inputs.from_source }}"
+          VERSION: "${{ inputs.version }}"
         run: |
-          # Build uvx specifier with optional version pin
-          VERSION="${{ inputs.version }}"
-          if [ "$VERSION" = "latest" ] || [ -z "$VERSION" ]; then
-            TOOL_SPEC="onap-release-map"
+          # Build uvx specifier. When `from_source` is true, point
+          # uvx at the repository checkout so unreleased changes on
+          # the current branch flow through end-to-end. Otherwise
+          # resolve against PyPI using the optional version pin.
+          if [ "$FROM_SOURCE" = "true" ]; then
+            # `uvx --from <path>` installs the project at that path
+            # into an ephemeral environment and runs its entrypoint.
+            # The `onap-release-map` argument after `--from` is the
+            # console script name that uvx should invoke.
+            TOOL_SPEC=(--from "${GITHUB_WORKSPACE}" onap-release-map)
+            echo "Running from source checkout at ${GITHUB_WORKSPACE}"
+          elif [ "$VERSION" = "latest" ] || [ -z "$VERSION" ]; then
+            TOOL_SPEC=(onap-release-map)
           else
-            TOOL_SPEC="onap-release-map@${VERSION}"
+            TOOL_SPEC=(onap-release-map@"${VERSION}")
           fi
-          echo "TOOL_SPEC=${TOOL_SPEC}" >> "$GITHUB_ENV"
+          # Persist the specifier using GitHub Actions' multi-line
+          # env var heredoc form so later steps can rebuild the
+          # argument array identically, with one array element per
+          # line in the stored value. The single grouped redirect
+          # satisfies shellcheck SC2129 and avoids three separate
+          # open/append operations on the env file.
+          {
+            printf 'TOOL_SPEC<<EOF\n'
+            printf '%s\n' "${TOOL_SPEC[@]}"
+            printf 'EOF\n'
+          } >> "$GITHUB_ENV"
           echo "::group::Tool version"
-          uvx "${TOOL_SPEC}" version
+          uvx "${TOOL_SPEC[@]}" version
           echo "::endgroup::"
 
       - name: "Clone OOM from Gerrit"
@@ -176,7 +216,11 @@ jobs:
              [ "${ACTIONS_STEP_DEBUG:-false}" = "true" ]; then
             ARGS+=(--verbose -v)
           fi
-          uvx "${TOOL_SPEC}" "${ARGS[@]}"
+          # Rebuild the specifier array from the multi-line env var
+          # written by the "Resolve tool specifier" step. The same
+          # reconstruction appears in every step that invokes uvx.
+          mapfile -t TOOL_SPEC <<< "${TOOL_SPEC}"
+          uvx "${TOOL_SPEC[@]}" "${ARGS[@]}"
 
       - name: "Verify images on Nexus"
         if: inputs.skip_nexus != true
@@ -185,7 +229,8 @@ jobs:
           # Runs before export so results appear in reports
           MANIFEST="${{ runner.temp }}/output/manifest.json"
           if [ -f "$MANIFEST" ]; then
-            uvx "${TOOL_SPEC}" verify "$MANIFEST" \
+            mapfile -t TOOL_SPEC <<< "${TOOL_SPEC}"
+            uvx "${TOOL_SPEC[@]}" verify "$MANIFEST" \
               --nexus-url "${{ inputs.nexus_url }}"
           fi
 
@@ -201,15 +246,16 @@ jobs:
             if [ "${{ inputs.exclude_readonly }}" = "false" ]; then
               EXPORT_ARGS+=(--no-exclude-readonly)
             fi
-            uvx "${TOOL_SPEC}" export "$MANIFEST" \
+            mapfile -t TOOL_SPEC <<< "${TOOL_SPEC}"
+            uvx "${TOOL_SPEC[@]}" export "$MANIFEST" \
               --format md \
               --output "${{ runner.temp }}/output/manifest.md" \
               "${EXPORT_ARGS[@]}"
-            uvx "${TOOL_SPEC}" export "$MANIFEST" \
+            uvx "${TOOL_SPEC[@]}" export "$MANIFEST" \
               --format csv \
               --output "${{ runner.temp }}/output/manifest.csv" \
               "${EXPORT_ARGS[@]}"
-            uvx "${TOOL_SPEC}" export "$MANIFEST" \
+            uvx "${TOOL_SPEC[@]}" export "$MANIFEST" \
               --format html \
               --output "${{ runner.temp }}/output/manifest.html" \
               "${EXPORT_ARGS[@]}"
@@ -219,7 +265,8 @@ jobs:
         # yamllint disable rule:line-length
         run: |
           # Create run provenance metadata
-          TOOL_VERSION="$(uvx "${TOOL_SPEC}" version 2>&1 | head -1)"
+          mapfile -t TOOL_SPEC <<< "${TOOL_SPEC}"
+          TOOL_VERSION="$(uvx "${TOOL_SPEC[@]}" version 2>&1 | head -1)"
           cat > "${{ runner.temp }}/output/metadata.json" <<EOF
           {
             "run_id": "${GITHUB_RUN_ID}",
