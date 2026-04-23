@@ -160,7 +160,7 @@ sdnc/apps,sdnc,runtime,medium,ACTIVE,false,true,true,gerrit;relman;jjb
 sdnc/northbound,sdnc,runtime,medium,ACTIVE,false,true,true,gerrit;relman;jjb
 sdnc/oam,sdnc,runtime,high,ACTIVE,true,true,true,oom;gerrit;relman;jjb
 so,so,runtime,high,ACTIVE,true,true,true,oom;gerrit;relman;jjb
-so/adapters/so-cnf-adapter,so,runtime,medium,ACTIVE,false,true,true,gerrit;relman;jjb
+so/adapters/so-cnf-adapter,so,runtime,high,ACTIVE,true,true,true,oom;gerrit;relman;jjb
 so/adapters/so-etsi-sol003-adapter,so,runtime,high,ACTIVE,true,true,true,oom;gerrit;relman;jjb
 so/adapters/so-etsi-sol005-adapter,so,runtime,high,ACTIVE,true,true,true,oom;gerrit;relman;jjb
 so/adapters/so-nssmf-adapter,so,runtime,high,ACTIVE,true,true,true,oom;gerrit;relman;jjb

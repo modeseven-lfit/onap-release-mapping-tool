@@ -1,7 +1,7 @@
 {
-  "schema_version": "1.1.0",
-  "tool_version": "0.5.1",
-  "generated_at": "2026-04-23T14:08:00Z",
+  "schema_version": "1.2.0",
+  "tool_version": "0.0.1.dev1",
+  "generated_at": "2026-04-23T14:44:12Z",
   "onap_release": {
     "name": "Master",
     "oom_chart_version": "18.0.0",
@@ -17,8 +17,8 @@
       "runtime": 216
     },
     "repositories_by_confidence": {
-      "high": 57,
-      "medium": 160
+      "high": 58,
+      "medium": 159
     },
     "collectors_used": [
       "gerrit",
@@ -1316,7 +1316,7 @@
         "Discovered via Gerrit REST API",
         "Listed in relman repos.yaml",
         "Has CI jobs in ci-management JJB",
-        "Referenced in OOM file robot/values.yaml"
+        "Referenced in OOM file so/values.yaml"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
@@ -4021,7 +4021,6 @@
         "onap/so/api-handler-infra",
         "onap/so/bpmn-infra",
         "onap/so/catalog-db-adapter",
-        "onap/so/so-cnf-adapter",
         "onap/so/so-cnfm-as-lcm",
         "onap/so/so-etsi-nfvo-ns-lcm",
         "onap/so/openstack-adapter",
@@ -4034,7 +4033,6 @@
         "so",
         "so/so-bpmn-infra",
         "so/so-catalog-db-adapter",
-        "so/so-cnf-adapter",
         "so/so-cnfm-lcm",
         "so/so-etsi-nfvo-ns-lcm",
         "so/so-openstack-adapter",
@@ -4054,21 +4052,27 @@
       "gerrit_project": "so/adapters/so-cnf-adapter",
       "top_level_project": "so",
       "gerrit_url": "https://gerrit.onap.org/r/admin/repos/so%2Fadapters%2Fso-cnf-adapter",
-      "confidence": "medium",
+      "confidence": "high",
       "confidence_reasons": [
+        "Docker image referenced in OOM Helm charts",
         "Discovered via Gerrit REST API",
         "Listed in relman repos.yaml",
         "Has CI jobs in ci-management JJB"
       ],
       "category": "runtime",
       "gerrit_state": "ACTIVE",
-      "in_current_release": false,
+      "in_current_release": true,
       "is_parent_project": null,
       "maintained": true,
       "has_ci": true,
-      "docker_images": [],
-      "helm_charts": [],
+      "docker_images": [
+        "onap/so/so-cnf-adapter"
+      ],
+      "helm_charts": [
+        "so/so-cnf-adapter"
+      ],
       "discovered_by": [
+        "oom",
         "gerrit",
         "relman",
         "jjb"
@@ -5368,7 +5372,10 @@
       "helm_charts": [
         "aai/aai-graphadmin"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/aai-haproxy",
@@ -5378,7 +5385,10 @@
       "helm_charts": [
         "aai"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/aai-resources",
@@ -5388,7 +5398,10 @@
       "helm_charts": [
         "aai/aai-resources"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/aai-schema-service",
@@ -5398,7 +5411,10 @@
       "helm_charts": [
         "aai/aai-schema-service"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/aai-traversal",
@@ -5408,7 +5424,10 @@
       "helm_charts": [
         "aai/aai-traversal"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/babel",
@@ -5418,7 +5437,10 @@
       "helm_charts": [
         "aai/aai-babel"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/ccsdk-apps-ms-neng",
@@ -5428,7 +5450,10 @@
       "helm_charts": [
         "sdnc/network-name-gen"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/ccsdk-blueprintsprocessor",
@@ -5438,7 +5463,10 @@
       "helm_charts": [
         "cds/cds-blueprints-processor"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/ccsdk-cds-ui-server",
@@ -5448,7 +5476,10 @@
       "helm_charts": [
         "cds/cds-ui"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/ccsdk-commandexecutor",
@@ -5458,7 +5489,10 @@
       "helm_charts": [
         "cds/cds-command-executor"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/ccsdk-dgbuilder-image",
@@ -5468,7 +5502,10 @@
       "helm_charts": [
         "sdnc/dgbuilder"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/ccsdk-oran-a1policymanagementservice",
@@ -5478,7 +5515,10 @@
       "helm_charts": [
         "a1policymanagement"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/ccsdk-py-executor",
@@ -5488,7 +5528,10 @@
       "helm_charts": [
         "cds/cds-py-executor"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/ccsdk-sdclistener",
@@ -5498,7 +5541,10 @@
       "helm_charts": [
         "cds/cds-sdc-listener"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/cps-and-ncmp",
@@ -5508,7 +5554,10 @@
       "helm_charts": [
         "cps/cps-core"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/cps-temporal",
@@ -5518,7 +5567,10 @@
       "helm_charts": [
         "cps/cps-temporal"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/dmaap/datarouter-prov-client",
@@ -5528,7 +5580,10 @@
       "helm_charts": [
         "repositoryGenerator"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/integration-java11",
@@ -5538,7 +5593,10 @@
       "helm_charts": [
         "repositoryGenerator"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/model-loader",
@@ -5548,7 +5606,10 @@
       "helm_charts": [
         "aai/aai-modelloader"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/multicloud/framework",
@@ -5558,7 +5619,10 @@
       "helm_charts": [
         "multicloud"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/multicloud/framework-artifactbroker",
@@ -5568,7 +5632,10 @@
       "helm_charts": [
         "multicloud/multicloud-k8s"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/multicloud/k8s",
@@ -5578,7 +5645,10 @@
       "helm_charts": [
         "multicloud/multicloud-k8s"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/multicloud/openstack-fcaps",
@@ -5588,7 +5658,10 @@
       "helm_charts": [
         "multicloud/multicloud-fcaps"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/music/prom",
@@ -5598,7 +5671,10 @@
       "helm_charts": [
         "sdnc/sdnc-prom"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override-stale",
+      "attribution_verified": false,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/ncmp-dmi-plugin",
@@ -5608,7 +5684,10 @@
       "helm_charts": [
         "cps/ncmp-dmi-plugin"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/oom/readiness",
@@ -5618,7 +5697,10 @@
       "helm_charts": [
         "repositoryGenerator"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/org.onap.dcaegen2.collectors.hv-ves.hv-collector-main",
@@ -5628,7 +5710,10 @@
       "helm_charts": [
         "dcaegen2-services/dcae-hv-ves-collector"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/org.onap.dcaegen2.collectors.ves.vescollector",
@@ -5638,7 +5723,10 @@
       "helm_charts": [
         "dcaegen2-services/dcae-ves-collector"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/org.onap.dcaegen2.deployments.dcae-services-policy-sync",
@@ -5648,7 +5736,10 @@
       "helm_charts": [
         "repositoryGenerator"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/org.onap.dcaegen2.deployments.healthcheck-container",
@@ -5658,7 +5749,10 @@
       "helm_charts": [
         "dcaegen2-services/dcae-ms-healthcheck"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/org.onap.dcaegen2.platform.ves-openapi-manager",
@@ -5668,7 +5762,10 @@
       "helm_charts": [
         "dcaegen2-services/dcae-ves-openapi-manager"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/org.onap.dcaegen2.services.datalake.exposure.service",
@@ -5678,7 +5775,10 @@
       "helm_charts": [
         "dcaegen2-services/dcae-datalake-des"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/org.onap.dcaegen2.services.datalakeadminui",
@@ -5688,7 +5788,10 @@
       "helm_charts": [
         "dcaegen2-services/dcae-datalake-admin-ui"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/org.onap.dcaegen2.services.datalakefeeder",
@@ -5698,7 +5801,10 @@
       "helm_charts": [
         "dcaegen2-services/dcae-datalake-feeder"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/org.onap.dcaegen2.services.prh.prh-app-server",
@@ -5708,7 +5814,10 @@
       "helm_charts": [
         "dcaegen2-services/dcae-prh"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/org.onap.oom.platform.cert-service.oom-certservice-api",
@@ -5718,7 +5827,10 @@
       "helm_charts": [
         "platform/oom-cert-service"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/org.onap.oom.platform.cert-service.oom-certservice-k8s-external-provider",
@@ -5728,7 +5840,10 @@
       "helm_charts": [
         "platform/cmpv2-cert-provider"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/policy-apex-pdp",
@@ -5738,7 +5853,10 @@
       "helm_charts": [
         "policy/policy-apex-pdp"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/policy-api",
@@ -5748,7 +5866,10 @@
       "helm_charts": [
         "policy/policy-api"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/policy-clamp-ac-a1pms-ppnt",
@@ -5758,7 +5879,10 @@
       "helm_charts": [
         "policy/policy-clamp-ac-a1pms-ppnt"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/policy-clamp-ac-http-ppnt",
@@ -5768,7 +5892,10 @@
       "helm_charts": [
         "policy/policy-clamp-ac-http-ppnt"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/policy-clamp-ac-k8s-ppnt",
@@ -5778,7 +5905,10 @@
       "helm_charts": [
         "policy/policy-clamp-ac-k8s-ppnt"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/policy-clamp-ac-kserve-ppnt",
@@ -5788,7 +5918,10 @@
       "helm_charts": [
         "policy/policy-clamp-ac-kserve-ppnt"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/policy-clamp-ac-pf-ppnt",
@@ -5798,7 +5931,10 @@
       "helm_charts": [
         "policy/policy-clamp-ac-pf-ppnt"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/policy-clamp-runtime-acm",
@@ -5808,7 +5944,10 @@
       "helm_charts": [
         "policy/policy-clamp-runtime-acm"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/policy-db-migrator",
@@ -5818,7 +5957,10 @@
       "helm_charts": [
         "policy/policy-api"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/policy-distribution",
@@ -5828,7 +5970,10 @@
       "helm_charts": [
         "policy/policy-distribution"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/policy-opa-pdp",
@@ -5838,7 +5983,10 @@
       "helm_charts": [
         "policy/policy-opa-pdp"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/policy-pap",
@@ -5848,7 +5996,10 @@
       "helm_charts": [
         "policy/policy-pap"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/policy-pdpd-cl",
@@ -5858,7 +6009,10 @@
       "helm_charts": [
         "policy/policy-drools-pdp"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/policy-xacml-pdp",
@@ -5868,7 +6022,10 @@
       "helm_charts": [
         "policy/policy-xacml-pdp"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/portal-ng/bff",
@@ -5878,7 +6035,10 @@
       "helm_charts": [
         "portal-ng/portal-ng-bff"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/portal-ng/history",
@@ -5888,7 +6048,10 @@
       "helm_charts": [
         "portal-ng/portal-ng-history"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/portal-ng/preferences",
@@ -5898,7 +6061,10 @@
       "helm_charts": [
         "portal-ng/portal-ng-preferences"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/portal-ng/ui",
@@ -5908,7 +6074,10 @@
       "helm_charts": [
         "portal-ng/portal-ng-ui"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/sdc-backend-all-plugins",
@@ -5918,7 +6087,10 @@
       "helm_charts": [
         "sdc/sdc-be"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/sdc-cassandra",
@@ -5928,7 +6100,10 @@
       "helm_charts": [
         "sdc/sdc-cs"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/sdc-frontend",
@@ -5938,7 +6113,10 @@
       "helm_charts": [
         "sdc/sdc-fe"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/sdc-helm-validator",
@@ -5948,7 +6126,10 @@
       "helm_charts": [
         "sdc/sdc-helm-validator"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/sdc-onboard-backend",
@@ -5958,7 +6139,10 @@
       "helm_charts": [
         "sdc/sdc-onboarding-be"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/sdc-workflow-backend",
@@ -5968,7 +6152,10 @@
       "helm_charts": [
         "sdc/sdc-wfd-be"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/sdc-workflow-frontend",
@@ -5978,7 +6165,10 @@
       "helm_charts": [
         "sdc/sdc-wfd-fe"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/sdnc-ansible-server-image",
@@ -5988,7 +6178,10 @@
       "helm_charts": [
         "sdnc/sdnc-ansible-server"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/sdnc-image",
@@ -5998,7 +6191,10 @@
       "helm_charts": [
         "sdnc"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/sdnc-ueb-listener-image",
@@ -6008,7 +6204,10 @@
       "helm_charts": [
         "sdnc/ueb-listener"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/sdnc-web-image",
@@ -6018,7 +6217,10 @@
       "helm_charts": [
         "sdnc/sdnc-web"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/api-handler-infra",
@@ -6028,7 +6230,10 @@
       "helm_charts": [
         "so"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/bpmn-infra",
@@ -6038,7 +6243,10 @@
       "helm_charts": [
         "so/so-bpmn-infra"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/catalog-db-adapter",
@@ -6048,7 +6256,10 @@
       "helm_charts": [
         "so/so-catalog-db-adapter"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/openstack-adapter",
@@ -6058,7 +6269,10 @@
       "helm_charts": [
         "so/so-openstack-adapter"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/request-db-adapter",
@@ -6068,7 +6282,10 @@
       "helm_charts": [
         "so/so-request-db-adapter"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/sdc-controller",
@@ -6078,7 +6295,10 @@
       "helm_charts": [
         "so/so-sdc-controller"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/sdnc-adapter",
@@ -6088,7 +6308,10 @@
       "helm_charts": [
         "so/so-sdnc-adapter"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/so-admin-cockpit",
@@ -6098,17 +6321,23 @@
       "helm_charts": [
         "so/so-admin-cockpit"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/so-cnf-adapter",
       "tag": "1.14.0",
       "registry": "nexus3.onap.org:10001",
-      "gerrit_project": "so",
+      "gerrit_project": "so/adapters/so-cnf-adapter",
       "helm_charts": [
         "so/so-cnf-adapter"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "leaf-match-namespace",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/so-cnfm-as-lcm",
@@ -6118,7 +6347,10 @@
       "helm_charts": [
         "so/so-cnfm-lcm"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/so-etsi-nfvo-ns-lcm",
@@ -6128,7 +6360,10 @@
       "helm_charts": [
         "so/so-etsi-nfvo-ns-lcm"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/so-etsi-sol003-adapter",
@@ -6138,7 +6373,10 @@
       "helm_charts": [
         "so/so-etsi-sol003-adapter"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/so-etsi-sol005-adapter",
@@ -6148,7 +6386,10 @@
       "helm_charts": [
         "so/so-etsi-sol005-adapter"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/so-nssmf-adapter",
@@ -6158,7 +6399,10 @@
       "helm_charts": [
         "so/so-nssmf-adapter"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/so-oof-adapter",
@@ -6168,7 +6412,10 @@
       "helm_charts": [
         "so/so-oof-adapter"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/so/ve-vnfm-adapter",
@@ -6178,7 +6425,10 @@
       "helm_charts": [
         "so/so-ve-vnfm-adapter"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/sparky-be",
@@ -6188,7 +6438,10 @@
       "helm_charts": [
         "aai/aai-sparky-be"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/testsuite",
@@ -6198,7 +6451,10 @@
       "helm_charts": [
         "robot"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/usecase-ui",
@@ -6208,7 +6464,10 @@
       "helm_charts": [
         "uui"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/usecase-ui-intent-analysis",
@@ -6218,7 +6477,10 @@
       "helm_charts": [
         "uui/uui-intent-analysis"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/usecase-ui-llm-adaptation",
@@ -6228,7 +6490,10 @@
       "helm_charts": [
         "uui/uui-llm-adaptation"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/usecase-ui-nlp",
@@ -6238,7 +6503,10 @@
       "helm_charts": [
         "uui/uui-nlp"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     },
     {
       "image": "onap/usecase-ui-server",
@@ -6248,7 +6516,10 @@
       "helm_charts": [
         "uui/uui-server"
       ],
-      "nexus_validated": true
+      "nexus_validated": true,
+      "attribution_reason": "override",
+      "attribution_verified": true,
+      "attribution_alternatives": []
     }
   ],
   "helm_components": [
@@ -7375,6 +7646,7 @@
       "gerrit_projects": [
         "so",
         "so/so-admin-cockpit",
+        "so/adapters/so-cnf-adapter",
         "so/adapters/so-etsi-sol003-adapter",
         "so/adapters/so-etsi-sol005-adapter",
         "so/adapters/so-nssmf-adapter",
@@ -7430,7 +7702,7 @@
         "onap/so/so-cnf-adapter"
       ],
       "gerrit_projects": [
-        "so"
+        "so/adapters/so-cnf-adapter"
       ]
     },
     {
@@ -7740,27 +8012,48 @@
     "collectors_executed": [
       {
         "name": "oom",
-        "duration_seconds": 1.257,
-        "items_collected": 245,
+        "duration_seconds": 1.231,
+        "items_collected": 246,
         "errors": []
       },
       {
         "name": "gerrit",
-        "duration_seconds": 0.233,
+        "duration_seconds": 0.289,
         "items_collected": 181,
         "errors": []
       },
       {
         "name": "relman",
-        "duration_seconds": 0.105,
+        "duration_seconds": 0.103,
         "items_collected": 372,
         "errors": []
       },
       {
         "name": "jjb",
-        "duration_seconds": 0.916,
+        "duration_seconds": 0.891,
         "items_collected": 135,
         "errors": []
+      }
+    ]
+  },
+  "validation": {
+    "validator": "mapping_audit",
+    "passed": false,
+    "summary": "1 error(s), 0 warning(s), 0 info",
+    "counts": {
+      "category:stale_override": 1,
+      "severity:error": 1
+    },
+    "findings": [
+      {
+        "category": "stale_override",
+        "severity": "error",
+        "image": "onap/music/prom",
+        "current_mapping": "music/prom",
+        "suggested_mapping": null,
+        "reason": "Override for 'onap/music/prom' points at 'music/prom' which is not a known Gerrit project. Review and either correct the override or remove it.",
+        "alternatives": [],
+        "detail": {}
       }
     ]
   }

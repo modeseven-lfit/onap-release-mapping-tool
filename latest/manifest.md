@@ -1,8 +1,8 @@
 # ONAP Release Manifest: Master
 
-- **Generated:** 2026-04-23T14:08:00Z
-- **Tool version:** 0.5.1
-- **Schema version:** 1.1.0
+- **Generated:** 2026-04-23T14:44:12Z
+- **Tool version:** 0.0.1.dev1
+- **Schema version:** 1.2.0
 - **OOM chart version:** 18.0.0
 
 ## Summary
@@ -176,7 +176,7 @@
 | sdnc/northbound | runtime | medium | ❌ | Yes | Yes |
 | sdnc/oam | runtime | high | ✅ | Yes | Yes |
 | so | runtime | high | ☑️ | Yes | Yes |
-| so/adapters/so-cnf-adapter | runtime | medium | ❌ | Yes | Yes |
+| so/adapters/so-cnf-adapter | runtime | high | ✅ | Yes | Yes |
 | so/adapters/so-etsi-sol003-adapter | runtime | high | ✅ | Yes | Yes |
 | so/adapters/so-etsi-sol005-adapter | runtime | high | ✅ | Yes | Yes |
 | so/adapters/so-nssmf-adapter | runtime | high | ✅ | Yes | Yes |
@@ -237,104 +237,104 @@
 
 | Total | State | Description |
 | ----: | :---: | ----------- |
-| 53 | ✅ | In current ONAP release |
+| 54 | ✅ | In current ONAP release |
 | 19 | ☑️ | Parent project (children in release) |
-| 144 | ❌ | Not in current ONAP release |
+| 143 | ❌ | Not in current ONAP release |
 | 1 | ❓ | Undetermined |
 
 ## Docker Images
 
-| Image | Tag | Gerrit Project | Registry | Validated |
-| ----- | --- | -------------- | -------- | --------- |
-| onap/aai-graphadmin | 1.16.0 | aai/graphadmin | nexus3.onap.org:10001 | Yes |
-| onap/aai-haproxy | 1.15.2 | aai/aai-common | nexus3.onap.org:10001 | Yes |
-| onap/aai-resources | 1.16.0 | aai/resources | nexus3.onap.org:10001 | Yes |
-| onap/aai-schema-service | 1.12.11 | aai/schema-service | nexus3.onap.org:10001 | Yes |
-| onap/aai-traversal | 1.16.0 | aai/traversal | nexus3.onap.org:10001 | Yes |
-| onap/babel | 1.13.5 | aai/babel | nexus3.onap.org:10001 | Yes |
-| onap/ccsdk-apps-ms-neng | 1.4.0 | ccsdk/apps | nexus3.onap.org:10001 | Yes |
-| onap/ccsdk-blueprintsprocessor | 1.10.0 | ccsdk/cds | nexus3.onap.org:10001 | Yes |
-| onap/ccsdk-cds-ui-server | 1.10.0 | ccsdk/cds | nexus3.onap.org:10001 | Yes |
-| onap/ccsdk-commandexecutor | 1.10.0 | ccsdk/cds | nexus3.onap.org:10001 | Yes |
-| onap/ccsdk-dgbuilder-image | 2.2.0 | ccsdk/distribution | nexus3.onap.org:10001 | Yes |
-| onap/ccsdk-oran-a1policymanagementservice | 2.2.0 | ccsdk/oran | nexus3.onap.org:10001 | Yes |
-| onap/ccsdk-py-executor | 1.10.0 | ccsdk/cds | nexus3.onap.org:10001 | Yes |
-| onap/ccsdk-sdclistener | 1.10.0 | ccsdk/cds | nexus3.onap.org:10001 | Yes |
-| onap/cps-and-ncmp | 3.7.0 | cps | nexus3.onap.org:10001 | Yes |
-| onap/cps-temporal | 1.2.1 | cps | nexus3.onap.org:10001 | Yes |
-| onap/dmaap/datarouter-prov-client | 2.1.15 | dmaap/datarouter | nexus3.onap.org:10001 | Yes |
-| onap/integration-java11 | 10.0.0 | integration/docker/onap-java11 | nexus3.onap.org:10001 | Yes |
-| onap/model-loader | 1.14.3 | aai/model-loader | nexus3.onap.org:10001 | Yes |
-| onap/multicloud/framework | 1.9.2 | multicloud/framework | nexus3.onap.org:10001 | Yes |
-| onap/multicloud/framework-artifactbroker | 1.9.3 | multicloud/framework | nexus3.onap.org:10001 | Yes |
-| onap/multicloud/k8s | 0.12.0 | multicloud/k8s | nexus3.onap.org:10001 | Yes |
-| onap/multicloud/openstack-fcaps | 1.5.7 | multicloud/openstack | nexus3.onap.org:10001 | Yes |
-| onap/music/prom | 1.0.5 | music/prom | nexus3.onap.org:10001 | Yes |
-| onap/ncmp-dmi-plugin | 1.7.0 | cps/ncmp-dmi-plugin | nexus3.onap.org:10001 | Yes |
-| onap/oom/readiness | 7.0.1 | oom/readiness | nexus3.onap.org:10001 | Yes |
-| onap/org.onap.dcaegen2.collectors.hv-ves.hv-collector-main | 1.11.1 | dcaegen2/collectors/hv-ves | nexus3.onap.org:10001 | Yes |
-| onap/org.onap.dcaegen2.collectors.ves.vescollector | 1.12.6 | dcaegen2/collectors/ves | nexus3.onap.org:10001 | Yes |
-| onap/org.onap.dcaegen2.deployments.dcae-services-policy-sync | 1.0.1 | dcaegen2/deployments | nexus3.onap.org:10001 | Yes |
-| onap/org.onap.dcaegen2.deployments.healthcheck-container | 2.4.1 | dcaegen2/deployments | nexus3.onap.org:10001 | Yes |
-| onap/org.onap.dcaegen2.platform.ves-openapi-manager | 1.3.1 | dcaegen2/platform/ves-openapi-manager | nexus3.onap.org:10001 | Yes |
-| onap/org.onap.dcaegen2.services.datalake.exposure.service | 1.1.3 | dcaegen2/services | nexus3.onap.org:10001 | Yes |
-| onap/org.onap.dcaegen2.services.datalakeadminui | 1.1.3 | dcaegen2/services | nexus3.onap.org:10001 | Yes |
-| onap/org.onap.dcaegen2.services.datalakefeeder | 1.2.0 | dcaegen2/services | nexus3.onap.org:10001 | Yes |
-| onap/org.onap.dcaegen2.services.prh.prh-app-server | 1.12.0 | dcaegen2/services/prh | nexus3.onap.org:10001 | Yes |
-| onap/org.onap.oom.platform.cert-service.oom-certservice-api | 2.6.0 | oom/platform/cert-service | nexus3.onap.org:10001 | Yes |
-| onap/org.onap.oom.platform.cert-service.oom-certservice-k8s-external-provider | 2.6.0 | oom/platform/cert-service | nexus3.onap.org:10001 | Yes |
-| onap/policy-apex-pdp | 4.2.2 | policy/apex-pdp | nexus3.onap.org:10001 | Yes |
-| onap/policy-api | 4.2.2 | policy/api | nexus3.onap.org:10001 | Yes |
-| onap/policy-clamp-ac-a1pms-ppnt | 9.0.0 | policy/clamp | nexus3.onap.org:10001 | Yes |
-| onap/policy-clamp-ac-http-ppnt | 9.0.0 | policy/clamp | nexus3.onap.org:10001 | Yes |
-| onap/policy-clamp-ac-k8s-ppnt | 8.2.2 | policy/clamp | nexus3.onap.org:10001 | Yes |
-| onap/policy-clamp-ac-kserve-ppnt | 9.0.0 | policy/clamp | nexus3.onap.org:10001 | Yes |
-| onap/policy-clamp-ac-pf-ppnt | 9.0.0 | policy/clamp | nexus3.onap.org:10001 | Yes |
-| onap/policy-clamp-runtime-acm | 8.2.2 | policy/clamp | nexus3.onap.org:10001 | Yes |
-| onap/policy-db-migrator | 4.2.2 | policy/docker | nexus3.onap.org:10001 | Yes |
-| onap/policy-distribution | 4.2.2 | policy/distribution | nexus3.onap.org:10001 | Yes |
-| onap/policy-opa-pdp | 1.0.8 | policy/opa-pdp | nexus3.onap.org:10001 | Yes |
-| onap/policy-pap | 4.2.2 | policy/pap | nexus3.onap.org:10001 | Yes |
-| onap/policy-pdpd-cl | 3.2.2 | policy/drools-pdp | nexus3.onap.org:10001 | Yes |
-| onap/policy-xacml-pdp | 4.2.2 | policy/xacml-pdp | nexus3.onap.org:10001 | Yes |
-| onap/portal-ng/bff | latest | portal-ng/bff | nexus3.onap.org:10001 | Yes |
-| onap/portal-ng/history | latest | portal-ng/history | nexus3.onap.org:10001 | Yes |
-| onap/portal-ng/preferences | latest | portal-ng/preferences | nexus3.onap.org:10001 | Yes |
-| onap/portal-ng/ui | latest | portal-ng/ui | nexus3.onap.org:10001 | Yes |
-| onap/sdc-backend-all-plugins | 1.16.2 | sdc | nexus3.onap.org:10001 | Yes |
-| onap/sdc-cassandra | 1.16.2 | sdc | nexus3.onap.org:10001 | Yes |
-| onap/sdc-frontend | 1.16.2 | sdc | nexus3.onap.org:10001 | Yes |
-| onap/sdc-helm-validator | 1.3.3 | sdc/sdc-helm-validator | nexus3.onap.org:10001 | Yes |
-| onap/sdc-onboard-backend | 1.16.2 | sdc | nexus3.onap.org:10001 | Yes |
-| onap/sdc-workflow-backend | 1.14.1 | sdc/sdc-workflow-designer | nexus3.onap.org:10001 | Yes |
-| onap/sdc-workflow-frontend | 1.14.1 | sdc/sdc-workflow-designer | nexus3.onap.org:10001 | Yes |
-| onap/sdnc-ansible-server-image | 3.2.4 | sdnc/oam | nexus3.onap.org:10001 | Yes |
-| onap/sdnc-image | 3.2.4 | sdnc/oam | nexus3.onap.org:10001 | Yes |
-| onap/sdnc-ueb-listener-image | 3.2.4 | sdnc/oam | nexus3.onap.org:10001 | Yes |
-| onap/sdnc-web-image | 3.2.4 | sdnc/oam | nexus3.onap.org:10001 | Yes |
-| onap/so/api-handler-infra | 1.18.0 | so | nexus3.onap.org:10001 | Yes |
-| onap/so/bpmn-infra | 1.18.0 | so | nexus3.onap.org:10001 | Yes |
-| onap/so/catalog-db-adapter | 1.18.0 | so | nexus3.onap.org:10001 | Yes |
-| onap/so/openstack-adapter | 1.18.0-20260413T1353 | so | nexus3.onap.org:10001 | Yes |
-| onap/so/request-db-adapter | 1.18.0 | so | nexus3.onap.org:10001 | Yes |
-| onap/so/sdc-controller | 1.18.0 | so | nexus3.onap.org:10001 | Yes |
-| onap/so/sdnc-adapter | 1.18.0 | so | nexus3.onap.org:10001 | Yes |
-| onap/so/so-admin-cockpit | 1.10.0 | so/so-admin-cockpit | nexus3.onap.org:10001 | Yes |
-| onap/so/so-cnf-adapter | 1.14.0 | so | nexus3.onap.org:10001 | Yes |
-| onap/so/so-cnfm-as-lcm | 1.14.0 | so | nexus3.onap.org:10001 | Yes |
-| onap/so/so-etsi-nfvo-ns-lcm | 1.10.0 | so | nexus3.onap.org:10001 | Yes |
-| onap/so/so-etsi-sol003-adapter | 1.10.0 | so/adapters/so-etsi-sol003-adapter | nexus3.onap.org:10001 | Yes |
-| onap/so/so-etsi-sol005-adapter | 1.10.0 | so/adapters/so-etsi-sol005-adapter | nexus3.onap.org:10001 | Yes |
-| onap/so/so-nssmf-adapter | 1.12.0 | so/adapters/so-nssmf-adapter | nexus3.onap.org:10001 | Yes |
-| onap/so/so-oof-adapter | 1.11.0 | so/adapters/so-oof-adapter | nexus3.onap.org:10001 | Yes |
-| onap/so/ve-vnfm-adapter | 1.6.4 | so | nexus3.onap.org:10001 | Yes |
-| onap/sparky-be | 2.1.0 | aai/sparky-be | nexus3.onap.org:10001 | Yes |
-| onap/testsuite | 1.14.0 | testsuite | nexus3.onap.org:10001 | Yes |
-| onap/usecase-ui | 16.0.1 | usecase-ui | nexus3.onap.org:10001 | Yes |
-| onap/usecase-ui-intent-analysis | 16.0.1 | usecase-ui/intent-analysis | nexus3.onap.org:10001 | Yes |
-| onap/usecase-ui-llm-adaptation | 16.0.1 | usecase-ui/llm-adaptation | nexus3.onap.org:10001 | Yes |
-| onap/usecase-ui-nlp | 1.0.5 | usecase-ui/nlp | nexus3.onap.org:10001 | Yes |
-| onap/usecase-ui-server | 16.0.1 | usecase-ui/server | nexus3.onap.org:10001 | Yes |
+| Image | Tag | Gerrit Project | Registry | Validated | Attribution |
+| ----- | --- | -------------- | -------- | --------- | ----------- |
+| onap/aai-graphadmin | 1.16.0 | aai/graphadmin | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/aai-haproxy | 1.15.2 | aai/aai-common | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/aai-resources | 1.16.0 | aai/resources | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/aai-schema-service | 1.12.11 | aai/schema-service | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/aai-traversal | 1.16.0 | aai/traversal | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/babel | 1.13.5 | aai/babel | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/ccsdk-apps-ms-neng | 1.4.0 | ccsdk/apps | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/ccsdk-blueprintsprocessor | 1.10.0 | ccsdk/cds | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/ccsdk-cds-ui-server | 1.10.0 | ccsdk/cds | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/ccsdk-commandexecutor | 1.10.0 | ccsdk/cds | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/ccsdk-dgbuilder-image | 2.2.0 | ccsdk/distribution | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/ccsdk-oran-a1policymanagementservice | 2.2.0 | ccsdk/oran | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/ccsdk-py-executor | 1.10.0 | ccsdk/cds | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/ccsdk-sdclistener | 1.10.0 | ccsdk/cds | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/cps-and-ncmp | 3.7.0 | cps | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/cps-temporal | 1.2.1 | cps | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/dmaap/datarouter-prov-client | 2.1.15 | dmaap/datarouter | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/integration-java11 | 10.0.0 | integration/docker/onap-java11 | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/model-loader | 1.14.3 | aai/model-loader | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/multicloud/framework | 1.9.2 | multicloud/framework | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/multicloud/framework-artifactbroker | 1.9.3 | multicloud/framework | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/multicloud/k8s | 0.12.0 | multicloud/k8s | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/multicloud/openstack-fcaps | 1.5.7 | multicloud/openstack | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/music/prom | 1.0.5 | music/prom | nexus3.onap.org:10001 | Yes | override-stale ✗ |
+| onap/ncmp-dmi-plugin | 1.7.0 | cps/ncmp-dmi-plugin | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/oom/readiness | 7.0.1 | oom/readiness | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/org.onap.dcaegen2.collectors.hv-ves.hv-collector-main | 1.11.1 | dcaegen2/collectors/hv-ves | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/org.onap.dcaegen2.collectors.ves.vescollector | 1.12.6 | dcaegen2/collectors/ves | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/org.onap.dcaegen2.deployments.dcae-services-policy-sync | 1.0.1 | dcaegen2/deployments | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/org.onap.dcaegen2.deployments.healthcheck-container | 2.4.1 | dcaegen2/deployments | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/org.onap.dcaegen2.platform.ves-openapi-manager | 1.3.1 | dcaegen2/platform/ves-openapi-manager | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/org.onap.dcaegen2.services.datalake.exposure.service | 1.1.3 | dcaegen2/services | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/org.onap.dcaegen2.services.datalakeadminui | 1.1.3 | dcaegen2/services | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/org.onap.dcaegen2.services.datalakefeeder | 1.2.0 | dcaegen2/services | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/org.onap.dcaegen2.services.prh.prh-app-server | 1.12.0 | dcaegen2/services/prh | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/org.onap.oom.platform.cert-service.oom-certservice-api | 2.6.0 | oom/platform/cert-service | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/org.onap.oom.platform.cert-service.oom-certservice-k8s-external-provider | 2.6.0 | oom/platform/cert-service | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/policy-apex-pdp | 4.2.2 | policy/apex-pdp | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/policy-api | 4.2.2 | policy/api | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/policy-clamp-ac-a1pms-ppnt | 9.0.0 | policy/clamp | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/policy-clamp-ac-http-ppnt | 9.0.0 | policy/clamp | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/policy-clamp-ac-k8s-ppnt | 8.2.2 | policy/clamp | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/policy-clamp-ac-kserve-ppnt | 9.0.0 | policy/clamp | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/policy-clamp-ac-pf-ppnt | 9.0.0 | policy/clamp | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/policy-clamp-runtime-acm | 8.2.2 | policy/clamp | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/policy-db-migrator | 4.2.2 | policy/docker | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/policy-distribution | 4.2.2 | policy/distribution | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/policy-opa-pdp | 1.0.8 | policy/opa-pdp | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/policy-pap | 4.2.2 | policy/pap | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/policy-pdpd-cl | 3.2.2 | policy/drools-pdp | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/policy-xacml-pdp | 4.2.2 | policy/xacml-pdp | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/portal-ng/bff | latest | portal-ng/bff | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/portal-ng/history | latest | portal-ng/history | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/portal-ng/preferences | latest | portal-ng/preferences | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/portal-ng/ui | latest | portal-ng/ui | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/sdc-backend-all-plugins | 1.16.2 | sdc | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/sdc-cassandra | 1.16.2 | sdc | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/sdc-frontend | 1.16.2 | sdc | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/sdc-helm-validator | 1.3.3 | sdc/sdc-helm-validator | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/sdc-onboard-backend | 1.16.2 | sdc | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/sdc-workflow-backend | 1.14.1 | sdc/sdc-workflow-designer | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/sdc-workflow-frontend | 1.14.1 | sdc/sdc-workflow-designer | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/sdnc-ansible-server-image | 3.2.4 | sdnc/oam | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/sdnc-image | 3.2.4 | sdnc/oam | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/sdnc-ueb-listener-image | 3.2.4 | sdnc/oam | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/sdnc-web-image | 3.2.4 | sdnc/oam | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/api-handler-infra | 1.18.0 | so | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/bpmn-infra | 1.18.0 | so | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/catalog-db-adapter | 1.18.0 | so | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/openstack-adapter | 1.18.0-20260413T1353 | so | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/request-db-adapter | 1.18.0 | so | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/sdc-controller | 1.18.0 | so | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/sdnc-adapter | 1.18.0 | so | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/so-admin-cockpit | 1.10.0 | so/so-admin-cockpit | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/so-cnf-adapter | 1.14.0 | so/adapters/so-cnf-adapter | nexus3.onap.org:10001 | Yes | leaf-match-namespace ✓ |
+| onap/so/so-cnfm-as-lcm | 1.14.0 | so | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/so-etsi-nfvo-ns-lcm | 1.10.0 | so | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/so-etsi-sol003-adapter | 1.10.0 | so/adapters/so-etsi-sol003-adapter | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/so-etsi-sol005-adapter | 1.10.0 | so/adapters/so-etsi-sol005-adapter | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/so-nssmf-adapter | 1.12.0 | so/adapters/so-nssmf-adapter | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/so-oof-adapter | 1.11.0 | so/adapters/so-oof-adapter | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/so/ve-vnfm-adapter | 1.6.4 | so | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/sparky-be | 2.1.0 | aai/sparky-be | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/testsuite | 1.14.0 | testsuite | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/usecase-ui | 16.0.1 | usecase-ui | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/usecase-ui-intent-analysis | 16.0.1 | usecase-ui/intent-analysis | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/usecase-ui-llm-adaptation | 16.0.1 | usecase-ui/llm-adaptation | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/usecase-ui-nlp | 1.0.5 | usecase-ui/nlp | nexus3.onap.org:10001 | Yes | override ✓ |
+| onap/usecase-ui-server | 16.0.1 | usecase-ui/server | nexus3.onap.org:10001 | Yes | override ✓ |
 
 ## Helm Components
 
