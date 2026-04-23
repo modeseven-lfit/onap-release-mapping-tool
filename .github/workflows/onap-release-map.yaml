@@ -156,10 +156,22 @@ jobs:
           echo "::endgroup::"
 
       - name: "Clone OOM from Gerrit"
+        # Pass ``inputs.oom_branch`` through the step ``env`` map
+        # rather than interpolating it directly into the bash
+        # script. ``${{ ... }}`` expansion happens before the shell
+        # starts, so a hostile operator could otherwise inject
+        # arbitrary commands via an input containing ``$(...)`` or
+        # backticks. Reading ``$OOM_BRANCH`` treats it as data.
+        # ``GERRIT_URL`` is sourced from a repository variable, but
+        # is routed through ``env`` for the same reason: a value
+        # containing shell metacharacters would otherwise be
+        # expanded by bash even inside double quotes.
+        env:
+          OOM_BRANCH: "${{ inputs.oom_branch }}"
+          GERRIT_URL: "${{ vars.GERRIT_URL || 'https://gerrit.onap.org/r' }}"
         run: |
           # Clone OOM (sparse checkout of kubernetes/ only)
-          GERRIT_URL="${{ vars.GERRIT_URL || 'https://gerrit.onap.org/r' }}"
-          git clone --depth 1 --branch "${{ inputs.oom_branch }}" \
+          git clone --depth 1 --branch "${OOM_BRANCH}" \
             --single-branch --filter=blob:none --no-checkout \
             "${GERRIT_URL}/oom" \
             "${{ runner.temp }}/oom"
@@ -169,9 +181,13 @@ jobs:
           git checkout
 
       - name: "Clone ci-management from Gerrit"
+        # ``GERRIT_URL`` is routed through ``env`` so that any shell
+        # metacharacters in the repository variable cannot be
+        # expanded/executed by bash at runtime.
+        env:
+          GERRIT_URL: "${{ vars.GERRIT_URL || 'https://gerrit.onap.org/r' }}"
         run: |
           # Clone ci-management (sparse checkout of jjb/ only)
-          GERRIT_URL="${{ vars.GERRIT_URL || 'https://gerrit.onap.org/r' }}"
           git clone --depth 1 --branch master \
             --single-branch --filter=blob:none --no-checkout \
             "${GERRIT_URL}/ci-management" \
@@ -182,36 +198,55 @@ jobs:
           git checkout
 
       - name: "Clone relman from Gerrit"
+        # ``GERRIT_URL`` is routed through ``env`` so that any shell
+        # metacharacters in the repository variable cannot be
+        # expanded/executed by bash at runtime.
+        env:
+          GERRIT_URL: "${{ vars.GERRIT_URL || 'https://gerrit.onap.org/r' }}"
         run: |
           # Clone relman for repos/repos.yaml
-          GERRIT_URL="${{ vars.GERRIT_URL || 'https://gerrit.onap.org/r' }}"
           git clone --depth 1 --branch master \
             --single-branch --filter=blob:none \
             "${GERRIT_URL}/relman" \
             "${{ runner.temp }}/relman"
 
       - name: "Run discover"
+        # Route every ``workflow_dispatch`` input that lands in the
+        # bash script through the step ``env`` map. ``${{ ... }}``
+        # interpolation happens before the runner starts a shell,
+        # so values containing ``$(...)``/backticks would otherwise
+        # execute verbatim. The variables below are all consumed as
+        # data via ordinary shell parameter expansion.
+        env:
+          OOM_BRANCH: "${{ inputs.oom_branch }}"
+          COLLECTORS: "${{ inputs.collectors }}"
+          FILTER_REPOS: "${{ inputs.filter_repos }}"
+          EXCLUDE_READONLY: "${{ inputs.exclude_readonly }}"
+          DEBUG: "${{ inputs.debug }}"
+          GERRIT_URL: "${{ vars.GERRIT_URL || 'https://gerrit.onap.org/r' }}"
         run: |
           # Run release mapping discovery
-          GERRIT_URL="${{ vars.GERRIT_URL || 'https://gerrit.onap.org/r' }}"
-          RELEASE_NAME="$(echo '${{ inputs.oom_branch }}' \
-            | sed 's/^./\U&/')"
+          # Capitalize the first character of the branch name to
+          # form the release name (e.g. ``master`` -> ``Master``).
+          # Using bash parameter expansion avoids an unnecessary
+          # subshell and sed invocation (shellcheck SC2001).
+          RELEASE_NAME="${OOM_BRANCH^}"
           ARGS=(discover)
           ARGS+=(--oom-path "${{ runner.temp }}/oom")
           ARGS+=(--output-dir "${{ runner.temp }}/output")
           ARGS+=(--output-format all)
           ARGS+=(--release-name "${RELEASE_NAME}")
-          ARGS+=(--collectors "${{ inputs.collectors }}")
+          ARGS+=(--collectors "${COLLECTORS}")
           ARGS+=(--gerrit-url "${GERRIT_URL}")
           ARGS+=(--jjb-path "${{ runner.temp }}/ci-management/jjb")
           ARGS+=(--repos-yaml "${{ runner.temp }}/relman/repos/repos.yaml")
-          if [ -n "${{ inputs.filter_repos }}" ]; then
-            ARGS+=(--filter-repos "${{ inputs.filter_repos }}")
+          if [ -n "${FILTER_REPOS}" ]; then
+            ARGS+=(--filter-repos "${FILTER_REPOS}")
           fi
-          if [ "${{ inputs.exclude_readonly }}" = "false" ]; then
+          if [ "${EXCLUDE_READONLY}" = "false" ]; then
             ARGS+=(--no-exclude-readonly)
           fi
-          if [ "${{ inputs.debug }}" = "true" ] || \
+          if [ "${DEBUG}" = "true" ] || \
              [ "${RUNNER_DEBUG:-0}" = "1" ] || \
              [ "${ACTIONS_STEP_DEBUG:-false}" = "true" ]; then
             ARGS+=(--verbose -v)
@@ -224,6 +259,10 @@ jobs:
 
       - name: "Verify images on Nexus"
         if: inputs.skip_nexus != true
+        # See the "Resolve tool specifier" step for the rationale
+        # behind passing inputs via ``env`` rather than ``${{ }}``.
+        env:
+          NEXUS_URL: "${{ inputs.nexus_url }}"
         run: |
           # Validate Docker images exist in Nexus registry
           # Runs before export so results appear in reports
@@ -231,19 +270,24 @@ jobs:
           if [ -f "$MANIFEST" ]; then
             mapfile -t TOOL_SPEC <<< "${TOOL_SPEC}"
             uvx "${TOOL_SPEC[@]}" verify "$MANIFEST" \
-              --nexus-url "${{ inputs.nexus_url }}"
+              --nexus-url "${NEXUS_URL}"
           fi
 
       - name: "Export additional formats"
+        # See the "Resolve tool specifier" step for the rationale
+        # behind passing inputs via ``env`` rather than ``${{ }}``.
+        env:
+          FILTER_REPOS: "${{ inputs.filter_repos }}"
+          EXCLUDE_READONLY: "${{ inputs.exclude_readonly }}"
         run: |
           # Generate Markdown, CSV, and HTML from manifest
           MANIFEST="${{ runner.temp }}/output/manifest.json"
           if [ -f "$MANIFEST" ]; then
             EXPORT_ARGS=()
-            if [ -n "${{ inputs.filter_repos }}" ]; then
-              EXPORT_ARGS+=(--filter-repos "${{ inputs.filter_repos }}")
+            if [ -n "${FILTER_REPOS}" ]; then
+              EXPORT_ARGS+=(--filter-repos "${FILTER_REPOS}")
             fi
-            if [ "${{ inputs.exclude_readonly }}" = "false" ]; then
+            if [ "${EXCLUDE_READONLY}" = "false" ]; then
               EXPORT_ARGS+=(--no-exclude-readonly)
             fi
             mapfile -t TOOL_SPEC <<< "${TOOL_SPEC}"
@@ -262,23 +306,39 @@ jobs:
           fi
 
       - name: "Create metadata.json"
-        # yamllint disable rule:line-length
+        # See the "Resolve tool specifier" step for the rationale
+        # behind passing inputs via ``env`` rather than ``${{ }}``.
+        # Building the JSON document with ``jq -n --arg`` ensures
+        # every operator-supplied value is structurally escaped
+        # (quotes, backslashes, newlines, control characters), so
+        # the resulting file is always valid JSON regardless of
+        # input content and no value can inject extra fields.
+        env:
+          OOM_BRANCH: "${{ inputs.oom_branch }}"
+          COLLECTORS: "${{ inputs.collectors }}"
         run: |
           # Create run provenance metadata
           mapfile -t TOOL_SPEC <<< "${TOOL_SPEC}"
           TOOL_VERSION="$(uvx "${TOOL_SPEC[@]}" version 2>&1 | head -1)"
-          cat > "${{ runner.temp }}/output/metadata.json" <<EOF
-          {
-            "run_id": "${GITHUB_RUN_ID}",
-            "run_url": "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}",
-            "triggered_by": "${GITHUB_ACTOR}",
-            "oom_branch": "${{ inputs.oom_branch }}",
-            "collectors": "${{ inputs.collectors }}",
-            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "tool_version": "${TOOL_VERSION}"
-          }
-          EOF
-        # yamllint enable rule:line-length
+          TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          RUN_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          jq -n \
+            --arg run_id "${GITHUB_RUN_ID}" \
+            --arg run_url "${RUN_URL}" \
+            --arg triggered_by "${GITHUB_ACTOR}" \
+            --arg oom_branch "${OOM_BRANCH}" \
+            --arg collectors "${COLLECTORS}" \
+            --arg timestamp "${TIMESTAMP}" \
+            --arg tool_version "${TOOL_VERSION}" \
+            '{
+              run_id: $run_id,
+              run_url: $run_url,
+              triggered_by: $triggered_by,
+              oom_branch: $oom_branch,
+              collectors: $collectors,
+              timestamp: $timestamp,
+              tool_version: $tool_version
+            }' > "${{ runner.temp }}/output/metadata.json"
 
       - name: "Set outputs"
         id: set-outputs
