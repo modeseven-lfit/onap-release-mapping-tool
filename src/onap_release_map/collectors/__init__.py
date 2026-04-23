@@ -9,7 +9,7 @@ import abc
 import logging
 import time
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeVar
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -20,6 +20,16 @@ if TYPE_CHECKING:
         HelmComponent,
         OnapRepository,
     )
+
+
+#: Type variable used by :meth:`CollectorRegistry.register` to preserve
+#: the concrete subclass type through the decorator. Without this a
+#: static analyser sees the decorated class as ``type[BaseCollector]``
+#: and loses visibility of the subclass's ``__init__`` keyword arguments
+#: (e.g. ``nexus_url``, ``docker_images`` on :class:`NexusCollector`),
+#: which produces spurious ``No parameter named`` warnings at every
+#: call site.
+_CollectorT = TypeVar("_CollectorT", bound="BaseCollector")
 
 
 @dataclass
@@ -80,8 +90,23 @@ class CollectorRegistry:
         self._collectors: dict[str, type[BaseCollector]] = {}
         self._logger = logging.getLogger(__name__)
 
-    def register(self, collector_cls: type[BaseCollector]) -> type[BaseCollector]:
-        """Register a collector class. Can be used as a decorator."""
+    def register(self, collector_cls: type[_CollectorT]) -> type[_CollectorT]:
+        """Register a collector class. Can be used as a decorator.
+
+        The generic signature preserves the concrete subclass type
+        through the decorator so that static analysers continue to
+        see the subclass's ``__init__`` keyword arguments at every
+        call site. Returning the input class unchanged matches the
+        behaviour expected of a registration decorator.
+
+        Args:
+            collector_cls: Concrete :class:`BaseCollector` subclass
+                to register under its ``name`` attribute.
+
+        Returns:
+            The same class, unchanged, so callers can continue using
+            it as a type and constructor.
+        """
         self._collectors[collector_cls.name] = collector_cls
         return collector_cls
 
