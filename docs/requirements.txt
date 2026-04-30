@@ -1,5 +1,5 @@
 sphinx>=7.0
 sphinx-rtd-theme>=2.0
-sphinx-autodoc-typehints>=2.0
+sphinx-autodoc-typehints>=3.0.1
 sphinxcontrib-typer>=0.5.0
 myst-parser>=3.0
