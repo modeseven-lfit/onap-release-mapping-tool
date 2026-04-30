@@ -2,4 +2,4 @@ sphinx>=7.0
 sphinx-rtd-theme>=3.1.0
 sphinx-autodoc-typehints>=3.0.1
 sphinxcontrib-typer>=0.8.1
-myst-parser>=3.0
+myst-parser>=4.0.1
