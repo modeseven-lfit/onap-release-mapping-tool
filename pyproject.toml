@@ -110,8 +110,32 @@ addopts = [
 ]
 
 [tool.coverage.run]
-source = ["src"]
-omit = ["tests/*"]
+# Use the package name (not the source directory) so that coverage
+# resolves the location via import. This works regardless of whether
+# the project is installed editable (executes from src/) or as a
+# regular wheel (executes from site-packages/...). A literal
+# source = ["src"] would only match the editable case and silently
+# collect zero data when the package is installed non-editably (e.g.
+# under lfreleng-actions/python-test-action v1.1.0+, which defaults
+# to non-editable installs).
+source = ["onap_release_map"]
+# Pin the coverage data file outside the project tree so that
+# transient .coverage* files cannot be picked up by tests that walk
+# the working directory (e.g. fixture discovery, glob-based
+# assertions).
+data_file = "/tmp/.coverage-onap-release-map"
+branch = true
+omit = ["tests/*", "*/_version.py"]
+
+[tool.coverage.paths]
+# Map the two physical locations the package can execute from
+# (editable src/ vs installed site-packages/) onto a single logical
+# path so combined reports and the XML artefact stay coherent across
+# CI environments and local development.
+source = [
+    "src/onap_release_map",
+    "*/site-packages/onap_release_map",
+]
 
 [tool.coverage.report]
 fail_under = 45
