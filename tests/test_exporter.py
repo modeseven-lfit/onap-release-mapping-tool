@@ -490,11 +490,151 @@ class TestExportMarkdown:
             line for line in result.splitlines() if line.startswith("| unknown/repo ")
         ]
         assert row_lines, "expected a row for unknown/repo"
-        # The Maintained and Has CI cells (positions 5 and 6) must
-        # both render as em-dash, not as empty cells.
+        # Look up Maintained / Has CI by header name rather than
+        # positional index so the assertion survives future column
+        # re-ordering (e.g. when the Sources column was inserted).
+        header_line = next(
+            line for line in result.splitlines() if line.startswith("| Gerrit Project ")
+        )
+        headers = [c.strip() for c in header_line.split("|")]
         cells = [c.strip() for c in row_lines[0].split("|")]
-        assert cells[5] == "\u2014"
-        assert cells[6] == "\u2014"
+        assert cells[headers.index("Maintained")] == "\u2014"
+        assert cells[headers.index("Has CI")] == "\u2014"
+
+    def test_markdown_repositories_summary_block_present(self) -> None:
+        """An at-a-glance counts block sits above the Repositories table.
+
+        The block frames the table contents with totals so readers do
+        not have to scan the full table to answer questions like
+        "how many repos are read-only?" or "how many have CI jobs?".
+        """
+        result = export_markdown(_make_manifest())
+        section = result.split("## Repositories", maxsplit=1)[1].split("## ")[0]
+        assert '<div class="summary">' in section
+        assert "At a glance" in section
+        assert "Total repositories:" in section
+        assert "Has CI jobs in JJB" in section
+
+    def test_markdown_repositories_summary_lists_sources(self) -> None:
+        """Summary block lists every collector that contributed.
+
+        Builds a manifest whose repos carry concrete
+        ``discovered_by`` values and asserts they appear in the
+        "Discovered by" row of the summary block, so consumers can
+        see at a glance which collectors ran.
+        """
+        repos = [
+            OnapRepository(
+                gerrit_project="a/one",
+                top_level_project="a",
+                confidence="high",
+                category="runtime",
+                gerrit_state="ACTIVE",
+                discovered_by=["oom", "gerrit"],
+            ),
+            OnapRepository(
+                gerrit_project="b/two",
+                top_level_project="b",
+                confidence="medium",
+                category="runtime",
+                gerrit_state="ACTIVE",
+                discovered_by=["relman"],
+            ),
+        ]
+        manifest = ReleaseManifest(
+            onap_release=OnapRelease(name="Test", oom_chart_version="1.0"),
+            generated_at="2025-01-01T00:00:00Z",
+            tool_version="0.1.0",
+            schema_version="1.0.0",
+            summary=ManifestSummary(
+                total_repositories=2,
+                total_docker_images=0,
+                total_helm_components=0,
+            ),
+            repositories=repos,
+            docker_images=[],
+            helm_components=[],
+            provenance=ManifestProvenance(),
+        )
+        result = export_markdown(manifest)
+        section = result.split("## Repositories", maxsplit=1)[1].split("## ")[0]
+        assert "Discovered by" in section
+        # gerrit collector found 1 repo, oom 1, relman 1.  Counts are
+        # sorted alphabetically so the order is deterministic.
+        assert "gerrit (1)" in section
+        assert "oom (1)" in section
+        assert "relman (1)" in section
+
+    def test_markdown_sources_column_present(self) -> None:
+        """The Repositories table exposes ``discovered_by`` as a Sources column.
+
+        Surfacing the collector list is the single most useful
+        diagnostic for understanding why other columns are blank
+        (e.g. ``Maintained`` is blank for a repo only discovered by
+        OOM because relman never saw it).
+        """
+        result = export_markdown(_make_manifest())
+        section = result.split("## Repositories", maxsplit=1)[1].split("## ")[0]
+        # New column header in the table
+        assert "| Sources |" in section
+
+    def test_markdown_confidence_cell_has_tooltip(self) -> None:
+        """Confidence cell renders ``confidence_reasons`` as an ``abbr`` title.
+
+        The reasons explain *why* a confidence level was assigned.
+        Surfacing them as a hover tooltip keeps the table compact
+        while still making the rationale discoverable.
+        """
+        repos = [
+            OnapRepository(
+                gerrit_project="policy/api",
+                top_level_project="policy",
+                confidence="high",
+                confidence_reasons=[
+                    "Docker image referenced in OOM Helm charts",
+                    "Listed in relman repos.yaml",
+                ],
+                category="runtime",
+                gerrit_state="ACTIVE",
+            ),
+        ]
+        manifest = ReleaseManifest(
+            onap_release=OnapRelease(name="Test", oom_chart_version="1.0"),
+            generated_at="2025-01-01T00:00:00Z",
+            tool_version="0.1.0",
+            schema_version="1.0.0",
+            summary=ManifestSummary(
+                total_repositories=1,
+                total_docker_images=0,
+                total_helm_components=0,
+            ),
+            repositories=repos,
+            docker_images=[],
+            helm_components=[],
+            provenance=ManifestProvenance(),
+        )
+        result = export_markdown(manifest)
+        # The reasons are joined with '; ' inside the title attribute.
+        assert (
+            '<abbr title="Docker image referenced in OOM Helm charts; '
+            'Listed in relman repos.yaml">high</abbr>'
+        ) in result
+
+    def test_markdown_docker_images_summary_block_present(self) -> None:
+        """Docker Images section carries a counts block above the table."""
+        result = export_markdown(_make_manifest())
+        section = result.split("## Docker Images", maxsplit=1)[1].split("## ")[0]
+        assert '<div class="summary">' in section
+        assert "Total images:" in section
+        assert "By attribution" in section
+
+    def test_markdown_helm_components_summary_block_present(self) -> None:
+        """Helm Components section carries a counts block above the table."""
+        result = export_markdown(_make_manifest())
+        section = result.split("## Helm Components", maxsplit=1)[1]
+        assert '<div class="summary">' in section
+        assert "Total components:" in section
+        assert "Enabled by default:" in section
 
 
 class TestExportHtml:
