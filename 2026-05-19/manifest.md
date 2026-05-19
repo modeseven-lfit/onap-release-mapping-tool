@@ -1,7 +1,7 @@
 # ONAP Release Manifest: Master
 
-- **Generated:** 2026-05-19T14:32:47Z
-- **Tool version:** 0.6.0
+- **Generated:** 2026-05-19T14:41:51Z
+- **Tool version:** 0.0.1.dev1
 - **Schema version:** 1.2.0
 - **OOM chart version:** 18.0.0
 
@@ -13,225 +13,253 @@
 
 ## Repositories
 
-| Gerrit Project | Category | Confidence | State | Maintained | Has CI |
-| -------------- | -------- | ---------- | ----- | ---------- | ------ |
-| aai | runtime | medium | ☑️ | Yes |  |
-| aai/aai-common | runtime | high | ✅ | Yes | Yes |
-| aai/babel | runtime | high | ✅ | Yes | Yes |
-| aai/graphadmin | runtime | high | ✅ | Yes | Yes |
-| aai/graphgraph | runtime | medium | ❌ | Yes | Yes |
-| aai/logging-service | runtime | medium | ❌ | Yes | Yes |
-| aai/model-loader | runtime | high | ✅ | Yes | Yes |
-| aai/oom | runtime | medium | ❌ | Yes |  |
-| aai/resources | runtime | high | ✅ | Yes | Yes |
-| aai/rest-client | runtime | medium | ❌ | Yes | Yes |
-| aai/schema-service | runtime | high | ✅ | Yes | Yes |
-| aai/sparky-be | runtime | high | ✅ | Yes | Yes |
-| aai/sparky-fe | runtime | medium | ❌ | Yes | Yes |
-| aai/test-config | runtime | medium | ✅ | Yes |  |
-| aai/traversal | runtime | high | ✅ | Yes | Yes |
-| ccsdk | runtime | medium | ☑️ | Yes |  |
-| ccsdk/apps | runtime | high | ✅ | Yes | Yes |
-| ccsdk/cds | runtime | high | ✅ | Yes | Yes |
-| ccsdk/distribution | runtime | high | ✅ | Yes | Yes |
-| ccsdk/features | runtime | medium | ❌ | Yes | Yes |
-| ccsdk/oran | runtime | high | ✅ | Yes | Yes |
-| ccsdk/parent | runtime | medium | ❌ | Yes | Yes |
-| ccsdk/platform/blueprints | runtime | medium | ❌ | Yes |  |
-| ccsdk/sli | runtime | medium | ❌ | Yes | Yes |
-| ccsdk/storage/esaas | runtime | medium | ❌ | Yes |  |
-| cli | runtime | medium | ❌ | Yes |  |
-| cps | runtime | high | ☑️ | Yes | Yes |
-| cps/cps-tbdmt | runtime | medium | ❌ | Yes |  |
-| cps/cps-temporal | runtime | medium | ❌ | Yes |  |
-| cps/ncmp-dmi-plugin | runtime | high | ✅ | Yes | Yes |
-| dcaegen2 | runtime | medium | ☑️ | Yes | Yes |
-| dcaegen2/analytics/tca-gen2 | runtime | medium | ❌ | Yes | Yes |
-| dcaegen2/collectors/datafile | runtime | medium | ❌ | Yes | Yes |
-| dcaegen2/collectors/hv-ves | runtime | high | ✅ | Yes | Yes |
-| dcaegen2/collectors/restconf | runtime | medium | ❌ | Yes | Yes |
-| dcaegen2/collectors/snmptrap | runtime | medium | ❌ | Yes | Yes |
-| dcaegen2/collectors/ves | runtime | high | ✅ | Yes | Yes |
-| dcaegen2/deployments | runtime | high | ✅ | Yes | Yes |
-| dcaegen2/platform | runtime | medium | ☑️ | Yes | Yes |
-| dcaegen2/platform/blueprints | runtime | medium | ❌ | Yes |  |
-| dcaegen2/platform/ves-openapi-manager | runtime | high | ✅ | Yes | Yes |
-| dcaegen2/services | runtime | high | ☑️ | Yes | Yes |
-| dcaegen2/services/heartbeat | runtime | medium | ❌ | Yes | Yes |
-| dcaegen2/services/mapper | runtime | medium | ❌ | Yes | Yes |
-| dcaegen2/services/pm-mapper | runtime | medium | ❌ | Yes | Yes |
-| dcaegen2/services/prh | runtime | high | ✅ | Yes | Yes |
-| dcaegen2/services/sdk | runtime | medium | ❌ | Yes | Yes |
-| dcaegen2/services/son-handler | runtime | medium | ❌ | Yes | Yes |
-| dcaegen2/utils | runtime | medium | ❌ | Yes | Yes |
-| demo | runtime | medium | ✅ | Yes | Yes |
-| dmaap | runtime | medium | ☑️ | Yes |  |
-| dmaap/buscontroller | runtime | medium | ❌ | Yes |  |
-| dmaap/datarouter | runtime | high | ✅ | Yes |  |
-| dmaap/kafka11aaf | runtime | medium | ❌ | Yes |  |
-| dmaap/messagerouter/dmaapclient | runtime | medium | ❌ | Yes |  |
-| dmaap/messagerouter/messageservice | runtime | medium | ❌ | Yes |  |
-| dmaap/zookeeper | runtime | medium | ❌ | Yes |  |
-| doc | runtime | medium | ❌ | Yes |  |
-| doc/doc-best-practice | runtime | medium | ❌ |  |  |
-| holmes | runtime | medium | ☑️ | Yes |  |
-| holmes/common | runtime | medium | ❌ | Yes |  |
-| holmes/engine-management | runtime | medium | ❌ | Yes |  |
-| holmes/rule-management | runtime | medium | ❌ | Yes |  |
-| integration | runtime | medium | ☑️ | Yes | Yes |
-| integration/csit | runtime | medium | ❌ | Yes |  |
-| integration/data-provider | runtime | medium | ❌ | Yes | Yes |
-| integration/docker/onap-java11 | runtime | high | ✅ | Yes | Yes |
-| integration/docker/onap-python | runtime | medium | ❌ | Yes | Yes |
-| integration/gating | runtime | medium | ❌ |  | Yes |
-| integration/ietf-actn-tools | runtime | medium | ❌ | Yes | Yes |
-| integration/onap-component-simulators | runtime | medium | ❌ |  | Yes |
-| integration/pipelines/build-integration | runtime | medium | ❌ |  |  |
-| integration/pipelines/chained-ci | runtime | medium | ❌ |  |  |
-| integration/pipelines/oom-automatic-installation | runtime | medium | ❌ |  |  |
-| integration/pipelines/xtesting-onap | runtime | medium | ❌ |  |  |
-| integration/python-onapsdk | runtime | medium | ❌ |  | Yes |
-| integration/seccom | runtime | medium | ❌ | Yes | Yes |
-| integration/simulators/5G-core-nf-simulator | runtime | medium | ❌ | Yes | Yes |
-| integration/simulators/A1-policy-enforcement-simulator | runtime | medium | ❌ | Yes | Yes |
-| integration/simulators/core-nssmf-simulator | runtime | medium | ❌ | Yes | Yes |
-| integration/simulators/nf-simulator | runtime | medium | ❌ | Yes | Yes |
-| integration/simulators/nf-simulator/avcn-manager | runtime | medium | ❌ | Yes | Yes |
-| integration/simulators/nf-simulator/netconf-server | runtime | medium | ❌ | Yes | Yes |
-| integration/simulators/nf-simulator/pm-https-server | runtime | medium | ❌ | Yes | Yes |
-| integration/simulators/nf-simulator/ves-client | runtime | medium | ❌ | Yes | Yes |
-| integration/simulators/pnf-simulator | runtime | medium | ❌ | Yes | Yes |
-| integration/simulators/ran-app | runtime | medium | ❌ |  |  |
-| integration/simulators/ran-nssmf-simulator | runtime | medium | ❌ | Yes | Yes |
-| integration/simulators/ran-simulator | runtime | medium | ❌ | Yes | Yes |
-| integration/usecases/A1-policy-enforcement | runtime | medium | ❌ | Yes | Yes |
-| integration/usecases/A1-policy-enforcement-r-apps | runtime | medium | ❌ | Yes | Yes |
-| integration/xtesting | runtime | medium | ❌ | Yes | Yes |
-| modeling/etsicatalog | runtime | medium | ❌ | Yes |  |
-| modeling/modelspec | runtime | medium | ❌ | Yes |  |
-| modeling/toscaparsers | runtime | medium | ❌ | Yes |  |
-| msb | runtime | medium | ❌ | Yes |  |
-| msb/apigateway | runtime | medium | ❌ | Yes | Yes |
-| msb/discovery | runtime | medium | ❌ | Yes | Yes |
-| msb/java-sdk | runtime | medium | ❌ | Yes | Yes |
-| msb/service-mesh | runtime | medium | ❌ | Yes |  |
-| msb/swagger-sdk | runtime | medium | ❌ | Yes | Yes |
-| multicloud | runtime | medium | ☑️ | Yes | Yes |
-| multicloud/framework | runtime | high | ✅ | Yes | Yes |
-| multicloud/k8s | runtime | high | ✅ | Yes | Yes |
-| multicloud/openstack | runtime | high | ☑️ | Yes | Yes |
-| multicloud/openstack/vmware | runtime | medium | ❌ | Yes | Yes |
-| multicloud/openstack/windriver | runtime | medium | ❌ | Yes |  |
-| oom | infrastructure | high | ☑️ | Yes | Yes |
-| oom/consul | runtime | medium | ❌ | Yes | Yes |
-| oom/offline-installer | runtime | medium | ❌ | Yes | Yes |
-| oom/platform/cert-manager | runtime | medium | ❌ | Yes |  |
-| oom/platform/cert-service | runtime | high | ✅ | Yes | Yes |
-| oom/platform/keycloak | runtime | medium | ❌ | Yes |  |
-| oom/readiness | runtime | high | ✅ | Yes | Yes |
-| oom/registrator | runtime | medium | ❌ | Yes | Yes |
-| oom/utils | runtime | medium | ❌ | Yes |  |
-| oparent | runtime | medium | ❌ | Yes | Yes |
-| oparent/cia | runtime | medium | ❌ | Yes |  |
-| optf | runtime | medium | ❌ | Yes |  |
-| optf/has | runtime | medium | ❌ | Yes |  |
-| optf/osdf | runtime | medium | ❌ | Yes |  |
-| osa | runtime | medium | ❌ | Yes |  |
-| policy | runtime | medium | ☑️ | Yes |  |
-| policy/apex-pdp | runtime | high | ✅ | Yes | Yes |
-| policy/api | runtime | high | ✅ | Yes | Yes |
-| policy/clamp | runtime | high | ✅ | Yes | Yes |
-| policy/common | runtime | medium | ❌ | Yes | Yes |
-| policy/distribution | runtime | high | ✅ | Yes | Yes |
-| policy/docker | runtime | high | ✅ | Yes | Yes |
-| policy/drools-applications | runtime | medium | ❌ | Yes | Yes |
-| policy/drools-pdp | runtime | high | ✅ | Yes | Yes |
-| policy/gui | runtime | medium | ❌ | Yes |  |
-| policy/models | runtime | medium | ❌ | Yes | Yes |
-| policy/opa-pdp | runtime | high | ✅ |  | Yes |
-| policy/pap | runtime | high | ✅ | Yes | Yes |
-| policy/parent | runtime | medium | ❌ | Yes | Yes |
-| policy/xacml-pdp | runtime | high | ✅ | Yes | Yes |
-| portal-ng | runtime | medium | ✅ |  |  |
-| portal-ng/bff | runtime | high | ✅ |  | Yes |
-| portal-ng/e2e | runtime | medium | ❌ |  |  |
-| portal-ng/history | runtime | high | ✅ |  | Yes |
-| portal-ng/preferences | runtime | high | ✅ |  | Yes |
-| portal-ng/ui | runtime | high | ✅ |  | Yes |
-| relman | runtime | medium | ❌ | Yes |  |
-| sandbox-2 | runtime | medium | ❌ | Yes |  |
-| sandbox-3 | runtime | medium | ❌ | Yes |  |
-| sdc | runtime | high | ☑️ | Yes | Yes |
-| sdc/onap-ui-angular | runtime | medium | ❌ | Yes | Yes |
-| sdc/onap-ui-common | runtime | medium | ❌ | Yes | Yes |
-| sdc/sdc-be-common | runtime | medium | ❌ | Yes | Yes |
-| sdc/sdc-distribution-client | runtime | medium | ❌ | Yes | Yes |
-| sdc/sdc-docker-base | runtime | medium | ❌ | Yes |  |
-| sdc/sdc-helm-validator | runtime | high | ✅ | Yes | Yes |
-| sdc/sdc-pubsub | runtime | medium | ❌ | Yes | Yes |
-| sdc/sdc-tosca | runtime | medium | ❌ | Yes | Yes |
-| sdc/sdc-workflow-designer | runtime | high | ✅ | Yes | Yes |
-| sdnc | runtime | medium | ☑️ | Yes |  |
-| sdnc/apps | runtime | medium | ❌ | Yes | Yes |
-| sdnc/northbound | runtime | medium | ❌ | Yes | Yes |
-| sdnc/oam | runtime | high | ✅ | Yes | Yes |
-| so | runtime | high | ☑️ | Yes | Yes |
-| so/adapters/so-cnf-adapter | runtime | high | ✅ | Yes | Yes |
-| so/adapters/so-etsi-sol003-adapter | runtime | high | ✅ | Yes | Yes |
-| so/adapters/so-etsi-sol005-adapter | runtime | high | ✅ | Yes | Yes |
-| so/adapters/so-nssmf-adapter | runtime | high | ✅ | Yes | Yes |
-| so/adapters/so-oof-adapter | runtime | high | ✅ | Yes | Yes |
-| so/chef-repo | runtime | medium | ❌ | Yes |  |
-| so/docker-config | runtime | medium | ✅ | Yes |  |
-| so/libs | runtime | medium | ❌ | Yes | Yes |
-| so/so-admin-cockpit | runtime | high | ✅ | Yes | Yes |
-| so/so-config | runtime | medium | ❌ | Yes |  |
-| so/so-etsi-nfvo | runtime | medium | ❌ | Yes | Yes |
-| spark-model-runner | runtime | medium | ❌ | Yes |  |
-| testsuite | runtime | high | ☑️ | Yes | Yes |
-| testsuite/cds | runtime | medium | ❌ | Yes | Yes |
-| testsuite/cds-mock-odl | runtime | medium | ❌ | Yes | Yes |
-| testsuite/cds-mock-server | runtime | medium | ❌ | Yes | Yes |
-| testsuite/cds-mock-ssh | runtime | medium | ❌ | Yes | Yes |
-| testsuite/cds-modk-odl | runtime | medium | ❓ |  | Yes |
-| testsuite/oom | runtime | medium | ❌ | Yes |  |
-| testsuite/python-testing-utils | runtime | medium | ❌ | Yes | Yes |
-| testsuite/pythonsdk-tests | runtime | medium | ❌ | Yes | Yes |
-| testsuite/robot-utils | runtime | medium | ❌ | Yes |  |
-| university | runtime | medium | ❌ | Yes |  |
-| usecase-ui | runtime | high | ☑️ | Yes | Yes |
-| usecase-ui/intent-analysis | runtime | high | ✅ |  | Yes |
-| usecase-ui/llm-adaptation | runtime | high | ✅ |  | Yes |
-| usecase-ui/nlp | runtime | high | ✅ | Yes | Yes |
-| usecase-ui/server | runtime | high | ✅ | Yes | Yes |
-| vfc | runtime | medium | ❌ | Yes |  |
-| vfc/gvnfm/vnflcm | runtime | medium | ❌ | Yes |  |
-| vfc/gvnfm/vnfmgr | runtime | medium | ❌ | Yes |  |
-| vfc/gvnfm/vnfres | runtime | medium | ❌ | Yes |  |
-| vfc/nfvo/db | runtime | medium | ❌ | Yes | Yes |
-| vfc/nfvo/driver/vnfm/gvnfm | runtime | medium | ❌ | Yes |  |
-| vfc/nfvo/driver/vnfm/svnfm | runtime | medium | ❌ | Yes |  |
-| vfc/nfvo/lcm | runtime | medium | ❌ | Yes |  |
-| vnfrqts | runtime | medium | ❌ | Yes |  |
-| vnfrqts/epics | runtime | medium | ❌ | Yes |  |
-| vnfrqts/guidelines | runtime | medium | ❌ | Yes |  |
-| vnfrqts/requirements | runtime | medium | ❌ | Yes | Yes |
-| vnfrqts/testcases | runtime | medium | ❌ | Yes |  |
-| vnfrqts/usecases | runtime | medium | ❌ | Yes |  |
-| vnfsdk | runtime | medium | ☑️ | Yes |  |
-| vnfsdk/dovetail-integration | runtime | medium | ❌ | Yes |  |
-| vnfsdk/functest | runtime | medium | ❌ | Yes |  |
-| vnfsdk/lctest | runtime | medium | ❌ | Yes | Yes |
-| vnfsdk/model | runtime | medium | ❌ | Yes |  |
-| vnfsdk/pkgtools | runtime | medium | ❌ | Yes | Yes |
-| vnfsdk/refrepo | runtime | medium | ❌ | Yes |  |
-| vnfsdk/validation | runtime | medium | ❌ | Yes |  |
-| vvp | runtime | medium | ❌ | Yes |  |
-| vvp/documentation | runtime | medium | ❌ | Yes |  |
-| vvp/engagementmgr | runtime | medium | ❌ | Yes |  |
-| vvp/regression-tests | runtime | medium | ❌ | Yes |  |
-| vvp/test-engine | runtime | medium | ❌ | Yes |  |
-| vvp/validation-scripts | runtime | medium | ❌ | Yes |  |
+<div class="summary">
+  <p><strong>At a glance</strong></p>
+  <p><strong>Total repositories:</strong> 217</p>
+  <p><strong>In current ONAP release:</strong> 73 of 217</p>
+  <p><strong>Read-only / archived:</strong> 0 of 217</p>
+  <p><strong>Maintained:</strong> 198 Yes, 0 No, 19 — (not listed in relman)</p>
+  <p><strong>Has CI jobs in JJB:</strong> 134 Yes, 83 — (no JJB entry found)</p>
+  <p><strong>Discovered by:</strong> gerrit (176), jjb (134), oom (58), relman (198)</p>
+</div>
+
+<div class="legend">
+  <p><strong>How to read this table</strong></p>
+  <p><em>Category</em> — <code>runtime</code> (deployed component), <code>build-dependency</code> (read-only, archived), <code>infrastructure</code> (e.g. OOM itself), <code>test</code>, <code>documentation</code>, <code>tooling</code>.</p>
+  <p><em>Confidence</em> — <code>high</code> = image referenced in OOM Helm charts; <code>medium</code> = listed in relman <code>repos.yaml</code> or has CI jobs in JJB; <code>low</code> = heuristic discovery only.</p>
+  <p><em>State</em> — Emoji indicator — see the State Legend below.</p>
+  <p><em>Maintained</em> — From relman <code>repos.yaml</code> (<code>unmaintained: true</code> → <strong>No</strong>). <strong>Yes</strong> = explicitly listed and not flagged unmaintained; <strong>No</strong> = explicitly flagged unmaintained; <strong>—</strong> = no entry in <code>repos.yaml</code> (status unknown from this source).</p>
+  <p><em>Has CI</em> — From the JJB collector scanning <code>ci-management</code>. <strong>Yes</strong> = at least one Jenkins job targets this repository; <strong>—</strong> = no JJB job was found (the collector does not record a definite <strong>No</strong>).</p>
+</div>
+
+<div class="state-legend">
+  <p><strong>State Legend</strong></p>
+  <p>✅ In current ONAP release</p>
+  <p>☑️ Parent project (children in release)</p>
+  <p>❌ Not in current ONAP release</p>
+  <p>❓ Undetermined</p>
+  <p>📦 Read-only / archived</p>
+</div>
+
+| Gerrit Project | Sources | Category | Confidence | State | Maintained | Has CI |
+| -------------- | ------- | -------- | ---------- | ----- | ---------- | ------ |
+| aai | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ☑️ | Yes | — |
+| aai/aai-common | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| aai/babel | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| aai/graphadmin | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| aai/graphgraph | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| aai/logging-service | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| aai/model-loader | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| aai/oom | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| aai/resources | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| aai/rest-client | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| aai/schema-service | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| aai/sparky-be | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| aai/sparky-fe | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| aai/test-config | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Gerrit URL reference in OOM file aai/components/aai-sparky-be/values.yaml">medium</abbr> | ✅ | Yes | — |
+| aai/traversal | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| ccsdk | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ☑️ | Yes | — |
+| ccsdk/apps | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| ccsdk/cds | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| ccsdk/distribution | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| ccsdk/features | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| ccsdk/oran | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| ccsdk/parent | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| ccsdk/platform/blueprints | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| ccsdk/sli | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| ccsdk/storage/esaas | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| cli | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| cps | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ☑️ | Yes | Yes |
+| cps/cps-tbdmt | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| cps/cps-temporal | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| cps/ncmp-dmi-plugin | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| dcaegen2 | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ☑️ | Yes | Yes |
+| dcaegen2/analytics/tca-gen2 | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| dcaegen2/collectors/datafile | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| dcaegen2/collectors/hv-ves | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| dcaegen2/collectors/restconf | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| dcaegen2/collectors/snmptrap | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| dcaegen2/collectors/ves | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| dcaegen2/deployments | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| dcaegen2/platform | relman, jjb | runtime | <abbr title="Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ☑️ | Yes | Yes |
+| dcaegen2/platform/blueprints | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| dcaegen2/platform/ves-openapi-manager | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| dcaegen2/services | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ☑️ | Yes | Yes |
+| dcaegen2/services/heartbeat | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| dcaegen2/services/mapper | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| dcaegen2/services/pm-mapper | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| dcaegen2/services/prh | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| dcaegen2/services/sdk | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| dcaegen2/services/son-handler | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| dcaegen2/utils | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| demo | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB; Referenced in OOM file robot/values.yaml">medium</abbr> | ✅ | Yes | Yes |
+| dmaap | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ☑️ | Yes | — |
+| dmaap/buscontroller | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| dmaap/datarouter | oom, gerrit, relman | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml">high</abbr> | ✅ | Yes | — |
+| dmaap/kafka11aaf | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| dmaap/messagerouter/dmaapclient | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| dmaap/messagerouter/messageservice | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| dmaap/zookeeper | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| doc | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| doc/doc-best-practice | gerrit | runtime | <abbr title="Discovered via Gerrit REST API">medium</abbr> | ❌ | — | — |
+| holmes | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Referenced in OOM file onap/values.yaml">medium</abbr> | ☑️ | Yes | — |
+| holmes/common | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| holmes/engine-management | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| holmes/rule-management | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| integration | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ☑️ | Yes | Yes |
+| integration/csit | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| integration/data-provider | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/docker/onap-java11 | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| integration/docker/onap-python | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/gating | gerrit, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | — | Yes |
+| integration/ietf-actn-tools | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/onap-component-simulators | gerrit, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | — | Yes |
+| integration/pipelines/build-integration | gerrit | runtime | <abbr title="Discovered via Gerrit REST API">medium</abbr> | ❌ | — | — |
+| integration/pipelines/chained-ci | gerrit | runtime | <abbr title="Discovered via Gerrit REST API">medium</abbr> | ❌ | — | — |
+| integration/pipelines/oom-automatic-installation | gerrit | runtime | <abbr title="Discovered via Gerrit REST API">medium</abbr> | ❌ | — | — |
+| integration/pipelines/xtesting-onap | gerrit | runtime | <abbr title="Discovered via Gerrit REST API">medium</abbr> | ❌ | — | — |
+| integration/python-onapsdk | gerrit, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | — | Yes |
+| integration/seccom | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/simulators/5G-core-nf-simulator | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/simulators/A1-policy-enforcement-simulator | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/simulators/core-nssmf-simulator | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/simulators/nf-simulator | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/simulators/nf-simulator/avcn-manager | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/simulators/nf-simulator/netconf-server | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/simulators/nf-simulator/pm-https-server | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/simulators/nf-simulator/ves-client | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/simulators/pnf-simulator | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/simulators/ran-app | gerrit | runtime | <abbr title="Discovered via Gerrit REST API">medium</abbr> | ❌ | — | — |
+| integration/simulators/ran-nssmf-simulator | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/simulators/ran-simulator | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/usecases/A1-policy-enforcement | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/usecases/A1-policy-enforcement-r-apps | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| integration/xtesting | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| modeling/etsicatalog | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| modeling/modelspec | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| modeling/toscaparsers | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| msb | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| msb/apigateway | relman, jjb | runtime | <abbr title="Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| msb/discovery | relman, jjb | runtime | <abbr title="Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| msb/java-sdk | relman, jjb | runtime | <abbr title="Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| msb/service-mesh | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| msb/swagger-sdk | relman, jjb | runtime | <abbr title="Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| multicloud | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ☑️ | Yes | Yes |
+| multicloud/framework | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| multicloud/k8s | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| multicloud/openstack | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ☑️ | Yes | Yes |
+| multicloud/openstack/vmware | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| multicloud/openstack/windriver | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| oom | oom, gerrit, relman, jjb | infrastructure | <abbr title="OOM is the deployment repository; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ☑️ | Yes | Yes |
+| oom/consul | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| oom/offline-installer | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| oom/platform/cert-manager | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| oom/platform/cert-service | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| oom/platform/keycloak | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| oom/readiness | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| oom/registrator | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| oom/utils | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| oparent | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| oparent/cia | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| optf | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| optf/has | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| optf/osdf | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| osa | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| policy | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ☑️ | Yes | — |
+| policy/apex-pdp | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| policy/api | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| policy/clamp | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| policy/common | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| policy/distribution | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| policy/docker | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| policy/drools-applications | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| policy/drools-pdp | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| policy/gui | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| policy/models | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| policy/opa-pdp | oom, gerrit, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Has CI jobs in ci-management JJB">high</abbr> | ✅ | — | Yes |
+| policy/pap | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| policy/parent | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| policy/xacml-pdp | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| portal-ng | gerrit | runtime | <abbr title="Discovered via Gerrit REST API; Referenced in OOM file onap/values.yaml">medium</abbr> | ✅ | — | — |
+| portal-ng/bff | oom, gerrit, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Has CI jobs in ci-management JJB">high</abbr> | ✅ | — | Yes |
+| portal-ng/e2e | gerrit | runtime | <abbr title="Discovered via Gerrit REST API">medium</abbr> | ❌ | — | — |
+| portal-ng/history | oom, gerrit, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Has CI jobs in ci-management JJB">high</abbr> | ✅ | — | Yes |
+| portal-ng/preferences | oom, gerrit, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Has CI jobs in ci-management JJB">high</abbr> | ✅ | — | Yes |
+| portal-ng/ui | oom, gerrit, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Has CI jobs in ci-management JJB">high</abbr> | ✅ | — | Yes |
+| relman | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| sandbox-2 | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| sandbox-3 | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| sdc | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ☑️ | Yes | Yes |
+| sdc/onap-ui-angular | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| sdc/onap-ui-common | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| sdc/sdc-be-common | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| sdc/sdc-distribution-client | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| sdc/sdc-docker-base | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| sdc/sdc-helm-validator | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| sdc/sdc-pubsub | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| sdc/sdc-tosca | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| sdc/sdc-workflow-designer | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| sdnc | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ☑️ | Yes | — |
+| sdnc/apps | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| sdnc/northbound | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| sdnc/oam | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| so | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ☑️ | Yes | Yes |
+| so/adapters/so-cnf-adapter | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| so/adapters/so-etsi-sol003-adapter | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| so/adapters/so-etsi-sol005-adapter | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| so/adapters/so-nssmf-adapter | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| so/adapters/so-oof-adapter | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| so/chef-repo | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| so/docker-config | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Gerrit URL reference in OOM file so/components/so-mariadb/values.yaml">medium</abbr> | ✅ | Yes | — |
+| so/libs | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| so/so-admin-cockpit | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| so/so-config | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| so/so-etsi-nfvo | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| spark-model-runner | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| testsuite | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ☑️ | Yes | Yes |
+| testsuite/cds | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| testsuite/cds-mock-odl | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| testsuite/cds-mock-server | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| testsuite/cds-mock-ssh | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| testsuite/cds-modk-odl | jjb | runtime | <abbr title="Has CI jobs in ci-management JJB">medium</abbr> | ❓ | — | Yes |
+| testsuite/oom | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| testsuite/python-testing-utils | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| testsuite/pythonsdk-tests | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| testsuite/robot-utils | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| university | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| usecase-ui | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ☑️ | Yes | Yes |
+| usecase-ui/intent-analysis | oom, gerrit, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Has CI jobs in ci-management JJB">high</abbr> | ✅ | — | Yes |
+| usecase-ui/llm-adaptation | oom, gerrit, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Has CI jobs in ci-management JJB">high</abbr> | ✅ | — | Yes |
+| usecase-ui/nlp | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| usecase-ui/server | oom, gerrit, relman, jjb | runtime | <abbr title="Docker image referenced in OOM Helm charts; Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">high</abbr> | ✅ | Yes | Yes |
+| vfc | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vfc/gvnfm/vnflcm | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vfc/gvnfm/vnfmgr | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vfc/gvnfm/vnfres | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vfc/nfvo/db | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| vfc/nfvo/driver/vnfm/gvnfm | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vfc/nfvo/driver/vnfm/svnfm | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vfc/nfvo/lcm | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vnfrqts | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vnfrqts/epics | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vnfrqts/guidelines | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vnfrqts/requirements | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| vnfrqts/testcases | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vnfrqts/usecases | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vnfsdk | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Referenced in OOM file onap/values.yaml">medium</abbr> | ☑️ | Yes | — |
+| vnfsdk/dovetail-integration | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vnfsdk/functest | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vnfsdk/lctest | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| vnfsdk/model | gerrit, relman | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vnfsdk/pkgtools | gerrit, relman, jjb | runtime | <abbr title="Discovered via Gerrit REST API; Listed in relman repos.yaml; Has CI jobs in ci-management JJB">medium</abbr> | ❌ | Yes | Yes |
+| vnfsdk/refrepo | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vnfsdk/validation | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vvp | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vvp/documentation | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vvp/engagementmgr | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vvp/regression-tests | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vvp/test-engine | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
+| vvp/validation-scripts | relman | runtime | <abbr title="Listed in relman repos.yaml">medium</abbr> | ❌ | Yes | — |
 
 ### Totals
 
@@ -243,6 +271,33 @@
 | 1 | ❓ | Undetermined |
 
 ## Docker Images
+
+<div class="summary">
+  <p><strong>At a glance</strong></p>
+  <p><strong>Total images:</strong> 89</p>
+  <p><strong>By attribution:</strong> 88 override, 1 leaf-match, 0 heuristic, 0 unresolved</p>
+  <p><strong>Verified against Gerrit:</strong> 88 ✓, 1 ✗, 0 — (no ground truth)</p>
+  <p><strong>Validated in Nexus:</strong> 89 Yes, 0 No, 0 — (not probed)</p>
+</div>
+
+<div class="legend">
+  <p><strong>How to read this table</strong></p>
+  <p><em>Validated</em> — <strong>Yes</strong> = image:tag confirmed present in Nexus; <strong>No</strong> = lookup failed; <strong>—</strong> = no Nexus probe was attempted.</p>
+  <p><em>Attribution</em> — How the image was mapped to a Gerrit project. See the Attribution key below for the full list of reason codes and verification markers.</p>
+</div>
+
+<div class="legend">
+  <p><strong>Attribution key</strong></p>
+  <p><em>override</em> — Explicit entry in <code>image_repo_mapping.yaml</code>.</p>
+  <p><em>override-stale</em> — Explicit override exists but resolves to a project not in Gerrit (mapping file is out of date).</p>
+  <p><em>leaf-match-namespace</em> — Longest-match on the image's leaf segment within the same top-level namespace (best-quality automatic match).</p>
+  <p><em>leaf-match-cross-namespace</em> — Same as above but the match crossed namespaces — flagged for human review.</p>
+  <p><em>heuristic-*-verified</em> — Pattern-based guess (<code>org.onap.*</code> prefix, dash→slash, or slash passthrough) that was confirmed against the Gerrit project list.</p>
+  <p><em>heuristic-*-unverified</em> — Same heuristic, but no Gerrit confirmation — lower-confidence result.</p>
+  <p><em>unresolved</em> — Mapper found no candidate; no Gerrit project assigned.</p>
+  <p><em>✓ / ✗ / (blank)</em> — Verification marker: <strong>✓</strong> = confirmed in Gerrit ground truth; <strong>✗</strong> = could not be verified; blank = no Gerrit ground truth was loaded for this run.</p>
+  <p><em>(alt: …)</em> — Other plausible candidates the longest-match algorithm considered but did not choose.</p>
+</div>
 
 | Image | Tag | Gerrit Project | Registry | Validated | Attribution |
 | ----- | --- | -------------- | -------- | --------- | ----------- |
@@ -338,103 +393,116 @@
 
 ## Helm Components
 
-| Name | Version | Enabled | Condition Key |
-| ---- | ------- | ------- | ------------- |
-| a1policymanagement | ~13.x-0 | No | a1policymanagement.enabled |
-| aai | ~16.x-0 | No | aai.enabled |
-| aai-babel | 15.0.2 |  |  |
-| aai-graphadmin | 16.0.0 |  |  |
-| aai-modelloader | 15.0.5 |  |  |
-| aai-resources | 16.0.0 |  |  |
-| aai-schema-service | 16.0.0 |  |  |
-| aai-sparky-be | 16.0.0 |  |  |
-| aai-traversal | 16.0.0 |  |  |
-| authentication | ~15.x-0 | No | authentication.enabled |
-| cds | ~17.x-0 | No | cds.enabled |
-| cds-blueprints-processor | 13.0.1 |  |  |
-| cds-command-executor | 13.0.0 |  |  |
-| cds-py-executor | 13.0.0 |  |  |
-| cds-sdc-listener | 13.0.0 |  |  |
-| cds-ui | 13.0.0 |  |  |
-| chartmuseum | 13.0.0 |  |  |
-| cmpv2-cert-provider | 13.0.0 |  |  |
-| cps | ~13.x-0 | No | cps.enabled |
-| cps-core | 13.0.2 |  |  |
-| cps-temporal | 13.0.1 |  |  |
-| dcae-datalake-admin-ui | 13.0.1 |  |  |
-| dcae-datalake-des | 13.0.1 |  |  |
-| dcae-datalake-feeder | 13.0.1 |  |  |
-| dcae-hv-ves-collector | 13.0.0 |  |  |
-| dcae-ms-healthcheck | 13.0.0 |  |  |
-| dcae-prh | 14.0.0 |  |  |
-| dcae-ves-collector | 13.1.1 |  |  |
-| dcae-ves-openapi-manager | 13.0.0 |  |  |
-| dcaegen2-services | ~16.x-0 | No | dcaegen2-services.enabled |
-| dgbuilder | 15.1.0 |  |  |
-| multicloud | ~15.x-0 | No | multicloud.enabled |
-| multicloud-fcaps | 13.0.0 |  |  |
-| multicloud-k8s | 13.3.0 |  |  |
-| ncmp-dmi-plugin | 13.0.1 |  |  |
-| network-name-gen | 16.0.0 |  |  |
-| onap-keycloak-config-cli | 6.2.1 |  |  |
-| oom-cert-service | 13.0.0 |  |  |
-| platform | ~13.x-0 | No | platform.enabled |
-| policy | ~17.x-0 | No | policy.enabled |
-| policy-apex-pdp | 17.0.0 |  |  |
-| policy-api | 17.0.0 |  |  |
-| policy-clamp-ac-a1pms-ppnt | 17.0.1 |  |  |
-| policy-clamp-ac-http-ppnt | 17.0.1 |  |  |
-| policy-clamp-ac-k8s-ppnt | 17.0.0 |  |  |
-| policy-clamp-ac-kserve-ppnt | 17.0.1 |  |  |
-| policy-clamp-ac-pf-ppnt | 17.0.1 |  |  |
-| policy-clamp-runtime-acm | 17.0.0 |  |  |
-| policy-distribution | 17.0.0 |  |  |
-| policy-drools-pdp | 17.0.0 |  |  |
-| policy-nexus | 17.0.0 |  |  |
-| policy-opa-pdp | 17.0.0 |  |  |
-| policy-pap | 17.0.0 |  |  |
-| policy-xacml-pdp | 17.0.0 |  |  |
-| portal-ng | ~14.x-0 | No | portal-ng.enabled |
-| portal-ng-bff | 13.1.1 |  |  |
-| portal-ng-history | 14.1.1 |  |  |
-| portal-ng-preferences | 14.1.1 |  |  |
-| portal-ng-ui | 13.0.1 |  |  |
-| robot | ~13.x-0 | No | robot.enabled |
-| sdc | ~13.x-0 | No | sdc.enabled |
-| sdc-be | 13.0.5 |  |  |
-| sdc-cs | 13.0.5 |  |  |
-| sdc-fe | 13.0.4 |  |  |
-| sdc-helm-validator | 13.0.1 |  |  |
-| sdc-onboarding-be | 13.0.5 |  |  |
-| sdc-wfd-be | 13.0.5 |  |  |
-| sdc-wfd-fe | 13.0.4 |  |  |
-| sdnc | ~16.x-0 | No | sdnc.enabled |
-| sdnc-ansible-server | 15.1.0 |  |  |
-| sdnc-prom | 13.0.0 |  |  |
-| sdnc-web | 15.1.0 |  |  |
-| so | ~17.x-0 | No | so.enabled |
-| so-admin-cockpit | 15.0.0 |  |  |
-| so-bpmn-infra | 17.0.0 |  |  |
-| so-catalog-db-adapter | 17.0.0 |  |  |
-| so-cnf-adapter | 15.0.1 |  |  |
-| so-cnfm-lcm | 13.0.0 |  |  |
-| so-etsi-nfvo-ns-lcm | 13.0.0 |  |  |
-| so-etsi-sol003-adapter | 13.0.0 |  |  |
-| so-etsi-sol005-adapter | 13.0.0 |  |  |
-| so-mariadb | 16.0.0 |  |  |
-| so-nssmf-adapter | 15.0.0 |  |  |
-| so-oof-adapter | 15.0.0 |  |  |
-| so-openstack-adapter | 17.0.0 |  |  |
-| so-request-db-adapter | 17.0.0 |  |  |
-| so-sdc-controller | 17.0.0 |  |  |
-| so-sdnc-adapter | 17.0.0 |  |  |
-| so-ve-vnfm-adapter | 13.0.0 |  |  |
-| soHelpers | 13.0.1 |  |  |
-| strimzi | ~16.x-0 | No | strimzi.enabled |
-| strimzi-kafka-bridge | 13.0.3 |  |  |
-| ueb-listener | 15.1.0 |  |  |
-| uui | ~16.x-0 | No | uui.enabled |
-| uui-intent-analysis | 16.0.1 |  |  |
-| uui-llm-adaptation | 16.0.1 |  |  |
-| uui-nlp | 13.0.0 |  |  |
-| uui-server | 16.0.1 |  |  |
+<div class="summary">
+  <p><strong>At a glance</strong></p>
+  <p><strong>Total components:</strong> 98</p>
+  <p><strong>Enabled by default:</strong> 0 Yes, 16 No, 82 —</p>
+  <p><strong>With Helm condition key:</strong> 16 of 98</p>
+</div>
+
+<div class="legend">
+  <p><strong>How to read this table</strong></p>
+  <p><em>Enabled by default</em> — Whether the component is deployed when the umbrella chart is installed without overrides. <strong>Yes</strong> / <strong>No</strong> reflect the <code>&lt;component&gt;.enabled</code> default in the OOM umbrella <code>values.yaml</code>; <strong>—</strong> means no <code>enabled</code> key was present (Helm treats this as unconditional). <strong>Note:</strong> ONAP's umbrella chart is opt-in — most components default to <strong>No</strong>, and operators select the ones they want at install time.</p>
+  <p><em>(via <code>….enabled</code>)</em> — Helm <em>dependency condition</em> from the umbrella <code>Chart.yaml</code> — the values path operators set to <code>true</code> to include this subchart in a deployment.</p>
+</div>
+
+| Name | Version | Enabled by default |
+| ---- | ------- | ------------------ |
+| a1policymanagement | ~13.x-0 | No (via `a1policymanagement.enabled`) |
+| aai | ~16.x-0 | No (via `aai.enabled`) |
+| aai-babel | 15.0.2 | — |
+| aai-graphadmin | 16.0.0 | — |
+| aai-modelloader | 15.0.5 | — |
+| aai-resources | 16.0.0 | — |
+| aai-schema-service | 16.0.0 | — |
+| aai-sparky-be | 16.0.0 | — |
+| aai-traversal | 16.0.0 | — |
+| authentication | ~15.x-0 | No (via `authentication.enabled`) |
+| cds | ~17.x-0 | No (via `cds.enabled`) |
+| cds-blueprints-processor | 13.0.1 | — |
+| cds-command-executor | 13.0.0 | — |
+| cds-py-executor | 13.0.0 | — |
+| cds-sdc-listener | 13.0.0 | — |
+| cds-ui | 13.0.0 | — |
+| chartmuseum | 13.0.0 | — |
+| cmpv2-cert-provider | 13.0.0 | — |
+| cps | ~13.x-0 | No (via `cps.enabled`) |
+| cps-core | 13.0.2 | — |
+| cps-temporal | 13.0.1 | — |
+| dcae-datalake-admin-ui | 13.0.1 | — |
+| dcae-datalake-des | 13.0.1 | — |
+| dcae-datalake-feeder | 13.0.1 | — |
+| dcae-hv-ves-collector | 13.0.0 | — |
+| dcae-ms-healthcheck | 13.0.0 | — |
+| dcae-prh | 14.0.0 | — |
+| dcae-ves-collector | 13.1.1 | — |
+| dcae-ves-openapi-manager | 13.0.0 | — |
+| dcaegen2-services | ~16.x-0 | No (via `dcaegen2-services.enabled`) |
+| dgbuilder | 15.1.0 | — |
+| multicloud | ~15.x-0 | No (via `multicloud.enabled`) |
+| multicloud-fcaps | 13.0.0 | — |
+| multicloud-k8s | 13.3.0 | — |
+| ncmp-dmi-plugin | 13.0.1 | — |
+| network-name-gen | 16.0.0 | — |
+| onap-keycloak-config-cli | 6.2.1 | — |
+| oom-cert-service | 13.0.0 | — |
+| platform | ~13.x-0 | No (via `platform.enabled`) |
+| policy | ~17.x-0 | No (via `policy.enabled`) |
+| policy-apex-pdp | 17.0.0 | — |
+| policy-api | 17.0.0 | — |
+| policy-clamp-ac-a1pms-ppnt | 17.0.1 | — |
+| policy-clamp-ac-http-ppnt | 17.0.1 | — |
+| policy-clamp-ac-k8s-ppnt | 17.0.0 | — |
+| policy-clamp-ac-kserve-ppnt | 17.0.1 | — |
+| policy-clamp-ac-pf-ppnt | 17.0.1 | — |
+| policy-clamp-runtime-acm | 17.0.0 | — |
+| policy-distribution | 17.0.0 | — |
+| policy-drools-pdp | 17.0.0 | — |
+| policy-nexus | 17.0.0 | — |
+| policy-opa-pdp | 17.0.0 | — |
+| policy-pap | 17.0.0 | — |
+| policy-xacml-pdp | 17.0.0 | — |
+| portal-ng | ~14.x-0 | No (via `portal-ng.enabled`) |
+| portal-ng-bff | 13.1.1 | — |
+| portal-ng-history | 14.1.1 | — |
+| portal-ng-preferences | 14.1.1 | — |
+| portal-ng-ui | 13.0.1 | — |
+| robot | ~13.x-0 | No (via `robot.enabled`) |
+| sdc | ~13.x-0 | No (via `sdc.enabled`) |
+| sdc-be | 13.0.5 | — |
+| sdc-cs | 13.0.5 | — |
+| sdc-fe | 13.0.4 | — |
+| sdc-helm-validator | 13.0.1 | — |
+| sdc-onboarding-be | 13.0.5 | — |
+| sdc-wfd-be | 13.0.5 | — |
+| sdc-wfd-fe | 13.0.4 | — |
+| sdnc | ~16.x-0 | No (via `sdnc.enabled`) |
+| sdnc-ansible-server | 15.1.0 | — |
+| sdnc-prom | 13.0.0 | — |
+| sdnc-web | 15.1.0 | — |
+| so | ~17.x-0 | No (via `so.enabled`) |
+| so-admin-cockpit | 15.0.0 | — |
+| so-bpmn-infra | 17.0.0 | — |
+| so-catalog-db-adapter | 17.0.0 | — |
+| so-cnf-adapter | 15.0.1 | — |
+| so-cnfm-lcm | 13.0.0 | — |
+| so-etsi-nfvo-ns-lcm | 13.0.0 | — |
+| so-etsi-sol003-adapter | 13.0.0 | — |
+| so-etsi-sol005-adapter | 13.0.0 | — |
+| so-mariadb | 16.0.0 | — |
+| so-nssmf-adapter | 15.0.0 | — |
+| so-oof-adapter | 15.0.0 | — |
+| so-openstack-adapter | 17.0.0 | — |
+| so-request-db-adapter | 17.0.0 | — |
+| so-sdc-controller | 17.0.0 | — |
+| so-sdnc-adapter | 17.0.0 | — |
+| so-ve-vnfm-adapter | 13.0.0 | — |
+| soHelpers | 13.0.1 | — |
+| strimzi | ~16.x-0 | No (via `strimzi.enabled`) |
+| strimzi-kafka-bridge | 13.0.3 | — |
+| ueb-listener | 15.1.0 | — |
+| uui | ~16.x-0 | No (via `uui.enabled`) |
+| uui-intent-analysis | 16.0.1 | — |
+| uui-llm-adaptation | 16.0.1 | — |
+| uui-nlp | 13.0.0 | — |
+| uui-server | 16.0.1 | — |

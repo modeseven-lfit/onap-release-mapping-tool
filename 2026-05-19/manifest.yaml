@@ -889,7 +889,7 @@ docker_images:
   nexus_validated: null
   registry: nexus3.onap.org:10001
   tag: 16.0.1
-generated_at: '2026-05-19T14:32:47Z'
+generated_at: '2026-05-19T14:41:51Z'
 helm_components:
 - condition_key: a1policymanagement.enabled
   docker_images:
@@ -1962,19 +1962,19 @@ onap_release:
   oom_commit: ad38052ff9be60a44fe2b194ff5c8eae5a534343
 provenance:
   collectors_executed:
-  - duration_seconds: 1.152
+  - duration_seconds: 1.234
     errors: []
     items_collected: 246
     name: oom
-  - duration_seconds: 0.609
+  - duration_seconds: 0.359
     errors: []
     items_collected: 181
     name: gerrit
-  - duration_seconds: 0.097
+  - duration_seconds: 0.103
     errors: []
     items_collected: 372
     name: relman
-  - duration_seconds: 0.836
+  - duration_seconds: 0.895
     errors: []
     items_collected: 135
     name: jjb
@@ -6368,7 +6368,7 @@ summary:
   total_docker_images: 89
   total_helm_components: 98
   total_repositories: 217
-tool_version: 0.6.0
+tool_version: 0.0.1.dev1
 validation:
   counts:
     category:stale_override: 1

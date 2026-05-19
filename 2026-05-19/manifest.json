@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2.0",
-  "tool_version": "0.6.0",
-  "generated_at": "2026-05-19T14:32:47Z",
+  "tool_version": "0.0.1.dev1",
+  "generated_at": "2026-05-19T14:41:51Z",
   "onap_release": {
     "name": "Master",
     "oom_chart_version": "18.0.0",
@@ -8012,25 +8012,25 @@
     "collectors_executed": [
       {
         "name": "oom",
-        "duration_seconds": 1.152,
+        "duration_seconds": 1.234,
         "items_collected": 246,
         "errors": []
       },
       {
         "name": "gerrit",
-        "duration_seconds": 0.609,
+        "duration_seconds": 0.359,
         "items_collected": 181,
         "errors": []
       },
       {
         "name": "relman",
-        "duration_seconds": 0.097,
+        "duration_seconds": 0.103,
         "items_collected": 372,
         "errors": []
       },
       {
         "name": "jjb",
-        "duration_seconds": 0.836,
+        "duration_seconds": 0.895,
         "items_collected": 135,
         "errors": []
       }
