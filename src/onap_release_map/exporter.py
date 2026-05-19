@@ -192,6 +192,8 @@ def export_markdown(manifest: ReleaseManifest) -> str:
     # Repositories table
     lines.append("## Repositories")
     lines.append("")
+    lines.extend(_repositories_legend_block())
+    lines.extend(_state_legend_block())
     lines.append(
         "| Gerrit Project | Category | Confidence | State | Maintained | Has CI |"
     )
@@ -214,6 +216,7 @@ def export_markdown(manifest: ReleaseManifest) -> str:
     # Docker images table
     lines.append("## Docker Images")
     lines.append("")
+    lines.extend(_docker_images_legend_block())
     lines.append(
         "| Image | Tag | Gerrit Project | Registry | Validated | Attribution |"
     )
@@ -247,13 +250,13 @@ def export_markdown(manifest: ReleaseManifest) -> str:
     # Helm components table
     lines.append("## Helm Components")
     lines.append("")
-    lines.append("| Name | Version | Enabled | Condition Key |")
-    lines.append("| ---- | ------- | ------- | ------------- |")
+    lines.extend(_helm_components_legend_block())
+    lines.append("| Name | Version | Enabled by default |")
+    lines.append("| ---- | ------- | ------------------ |")
     for comp in manifest.helm_components:
         version = comp.version or ""
-        enabled = _bool_display(comp.enabled_by_default)
-        condition = comp.condition_key or ""
-        lines.append(f"| {comp.name} | {version} | {enabled} | {condition} |")
+        enabled = _helm_enabled_cell(comp.enabled_by_default, comp.condition_key)
+        lines.append(f"| {comp.name} | {version} | {enabled} |")
     lines.append("")
 
     return "\n".join(lines)
@@ -305,22 +308,6 @@ def export_html(manifest: ReleaseManifest) -> str:
             + after_tbl.replace("<table>", '<table class="dt-enabled">')
         )
     body_html = _TOTALS_MARKER.join(parts)
-
-    # Inject state legend between the Repositories heading and its table
-    legend_lines = [
-        '<div class="state-legend">\n',
-        "    <p><strong>State Legend</strong></p>\n",
-    ]
-    for emoji in _STATE_ORDER:
-        desc = _STATE_DESCRIPTIONS[emoji]
-        legend_lines.append(f"    <p>{emoji} {desc}</p>\n")
-    legend_lines.append("  </div>\n")
-    legend_html = "".join(legend_lines)
-    repos_heading = "<h2>Repositories</h2>"
-    idx = body_html.find(repos_heading)
-    if idx != -1:
-        insert_at = idx + len(repos_heading)
-        body_html = body_html[:insert_at] + "\n  " + legend_html + body_html[insert_at:]
 
     title = f"ONAP Release Manifest: {manifest.onap_release.name}"
     return _html_wrapper(body_html, title)
@@ -509,7 +496,8 @@ def _html_wrapper(body_html: str, title: str) -> str:
         "      display: none !important;\n"
         "    }\n"
         "    /* State emoji legend */\n"
-        "    .state-legend {\n"
+        "    .state-legend,\n"
+        "    .legend {\n"
         "      margin: 0.5rem 0 1rem 0;\n"
         "      padding: 1rem;\n"
         "      background: var(--card-bg);\n"
@@ -517,8 +505,15 @@ def _html_wrapper(body_html: str, title: str) -> str:
         "      border-radius: 6px;\n"
         "      font-size: 0.9rem;\n"
         "    }\n"
-        "    .state-legend p {\n"
+        "    .state-legend p,\n"
+        "    .legend p {\n"
         "      margin: 0.3rem 0;\n"
+        "    }\n"
+        "    .legend code {\n"
+        "      background: rgba(110,118,129,0.15);\n"
+        "      padding: 0.1rem 0.35rem;\n"
+        "      border-radius: 3px;\n"
+        "      font-size: 0.85em;\n"
         "    }\n"
         "    /* Print: hide DataTables controls */\n"
         "    @media print {\n"
@@ -830,13 +825,26 @@ def _bool_str(value: bool | None) -> str:
     return str(value).lower()
 
 
+_UNKNOWN_DISPLAY = "—"
+"""Em-dash used to render tri-state ``None`` values in human output.
+
+A visible placeholder makes "value not determined from any data
+source" clearly distinct from a definite ``No``.  Without it,
+blank cells in the Markdown/HTML reports were easily misread as
+"the answer is No" (see PR description / Fiete's feedback).
+"""
+
+
 def _bool_display(value: bool | None) -> str:
     """Convert an optional boolean to a human-friendly string.
 
-    Returns ``"Yes"``, ``"No"``, or empty string for ``None``.
+    Returns ``"Yes"``, ``"No"``, or :data:`_UNKNOWN_DISPLAY`
+    (an em-dash) for ``None``.  The em-dash placeholder makes
+    ``None`` visually distinct from a definite ``False`` in the
+    Markdown and HTML reports.
     """
     if value is None:
-        return ""
+        return _UNKNOWN_DISPLAY
     return "Yes" if value else "No"
 
 
@@ -897,6 +905,299 @@ _STATE_DESCRIPTIONS: dict[str, str] = {
     "\u2753": "Undetermined",
     "\U0001f4e6": "Read-only / archived",
 }
+
+
+# ---------------------------------------------------------------
+# Legend blocks
+# ---------------------------------------------------------------
+#
+# These helpers emit short explanatory blocks that sit directly
+# beneath each table heading in the Markdown export.  Because the
+# HTML report is generated by running the Markdown through
+# ``markdown.markdown``, the same blocks appear in both outputs
+# without any post-conversion injection.
+#
+# The blocks are wrapped in ``<div class="legend">`` so the CSS in
+# :func:`_html_wrapper` can give them the same bordered "card"
+# treatment as the existing state-emoji legend.  Markdown passes
+# raw HTML block elements through unchanged when they begin at
+# column zero with a blank line either side, which is exactly the
+# shape these helpers produce.
+
+
+def _state_legend_block() -> list[str]:
+    """Render the State emoji legend as a Markdown HTML block.
+
+    Emits the legend inline in the Markdown stream (rather than
+    injecting it post-conversion in :func:`export_html`) so the
+    same content reaches every output format that goes through
+    :func:`export_markdown`.  The ``state-legend`` class name is
+    preserved for backwards compatibility with consumers that
+    style or scrape the existing markup.
+    """
+    lines: list[str] = ['<div class="state-legend">']
+    lines.append("  <p><strong>State Legend</strong></p>")
+    for emoji in _STATE_ORDER:
+        desc = _STATE_DESCRIPTIONS[emoji]
+        lines.append(f"  <p>{emoji} {desc}</p>")
+    lines.append("</div>")
+    lines.append("")
+    return lines
+
+
+def _legend_block(
+    title: str,
+    rows: Sequence[tuple[str, str]],
+) -> list[str]:
+    """Render an HTML ``<div class="legend">`` block as Markdown lines.
+
+    The block contains a bold title followed by a series of
+    ``<em>label</em> — description`` paragraphs.  Both label and
+    description are passed through verbatim, so callers must
+    pre-escape any untrusted content (the legend text in this
+    module is fully static and safe).
+
+    Parameters
+    ----------
+    title:
+        Title shown in bold at the top of the legend.
+    rows:
+        Ordered sequence of ``(label, description)`` tuples.
+
+    Returns
+    -------
+    list[str]
+        Markdown lines (including the trailing blank line).
+    """
+    lines: list[str] = ['<div class="legend">']
+    lines.append(f"  <p><strong>{title}</strong></p>")
+    for label, description in rows:
+        lines.append(f"  <p><em>{label}</em> \u2014 {description}</p>")
+    lines.append("</div>")
+    lines.append("")
+    return lines
+
+
+def _repositories_legend_block() -> list[str]:
+    """Legend describing the Repositories table columns.
+
+    Explains the meaning of every column whose value can be
+    ambiguous on inspection, in particular the tri-state
+    ``Maintained`` and ``Has CI`` columns whose blank cells were
+    being misread as a definite "No".
+    """
+    rows: list[tuple[str, str]] = [
+        (
+            "Category",
+            (
+                "<code>runtime</code> (deployed component), "
+                "<code>build-dependency</code> (read-only, archived), "
+                "<code>infrastructure</code> (e.g. OOM itself), "
+                "<code>test</code>, <code>documentation</code>, "
+                "<code>tooling</code>."
+            ),
+        ),
+        (
+            "Confidence",
+            (
+                "<code>high</code> = image referenced in OOM Helm "
+                "charts; <code>medium</code> = listed in relman "
+                "<code>repos.yaml</code> or has CI jobs in JJB; "
+                "<code>low</code> = heuristic discovery only."
+            ),
+        ),
+        (
+            "State",
+            ("Emoji indicator \u2014 see the State Legend below."),
+        ),
+        (
+            "Maintained",
+            (
+                "From relman <code>repos.yaml</code> "
+                "(<code>unmaintained: true</code> → <strong>No</strong>). "
+                "<strong>Yes</strong> = explicitly listed and not flagged "
+                "unmaintained; <strong>No</strong> = explicitly flagged "
+                "unmaintained; <strong>\u2014</strong> = no entry in "
+                "<code>repos.yaml</code> (status unknown from this source)."
+            ),
+        ),
+        (
+            "Has CI",
+            (
+                "From the JJB collector scanning <code>ci-management</code>. "
+                "<strong>Yes</strong> = at least one Jenkins job targets "
+                "this repository; <strong>\u2014</strong> = no JJB job was "
+                "found (the collector does not record a definite "
+                "<strong>No</strong>)."
+            ),
+        ),
+    ]
+    return _legend_block("How to read this table", rows)
+
+
+def _docker_images_legend_block() -> list[str]:
+    """Legend describing the Docker Images table columns.
+
+    The Attribution column is by far the most opaque: it serialises
+    the :class:`MappingReason` enum from the image mapper together
+    with a verification marker derived from the Gerrit ground-truth
+    set.  This helper unpacks both into plain English.
+    """
+    rows: list[tuple[str, str]] = [
+        (
+            "Validated",
+            (
+                "<strong>Yes</strong> = image:tag confirmed present in "
+                "Nexus; <strong>No</strong> = lookup failed; "
+                "<strong>\u2014</strong> = no Nexus probe was attempted."
+            ),
+        ),
+        (
+            "Attribution",
+            (
+                "How the image was mapped to a Gerrit project. "
+                "See the Attribution key below for the full list of "
+                "reason codes and verification markers."
+            ),
+        ),
+    ]
+    lines = _legend_block("How to read this table", rows)
+
+    # A second legend block specifically for the Attribution column,
+    # which has its own vocabulary of reason codes and markers.
+    attribution_rows: list[tuple[str, str]] = [
+        (
+            "override",
+            "Explicit entry in <code>image_repo_mapping.yaml</code>.",
+        ),
+        (
+            "override-stale",
+            (
+                "Explicit override exists but resolves to a project "
+                "not in Gerrit (mapping file is out of date)."
+            ),
+        ),
+        (
+            "leaf-match-namespace",
+            (
+                "Longest-match on the image's leaf segment within the "
+                "same top-level namespace (best-quality automatic match)."
+            ),
+        ),
+        (
+            "leaf-match-cross-namespace",
+            (
+                "Same as above but the match crossed namespaces \u2014 "
+                "flagged for human review."
+            ),
+        ),
+        (
+            "heuristic-*-verified",
+            (
+                "Pattern-based guess (<code>org.onap.*</code> prefix, "
+                "dash\u2192slash, or slash passthrough) that was "
+                "confirmed against the Gerrit project list."
+            ),
+        ),
+        (
+            "heuristic-*-unverified",
+            (
+                "Same heuristic, but no Gerrit confirmation \u2014 "
+                "lower-confidence result."
+            ),
+        ),
+        (
+            "unresolved",
+            "Mapper found no candidate; no Gerrit project assigned.",
+        ),
+        (
+            "\u2713 / \u2717 / (blank)",
+            (
+                "Verification marker: <strong>\u2713</strong> = "
+                "confirmed in Gerrit ground truth; "
+                "<strong>\u2717</strong> = could not be verified; "
+                "blank = no Gerrit ground truth was loaded for this run."
+            ),
+        ),
+        (
+            "(alt: …)",
+            (
+                "Other plausible candidates the longest-match "
+                "algorithm considered but did not choose."
+            ),
+        ),
+    ]
+    lines.extend(_legend_block("Attribution key", attribution_rows))
+    return lines
+
+
+def _helm_components_legend_block() -> list[str]:
+    """Legend describing the Helm Components table.
+
+    The combined ``Enabled by default`` column is the single biggest
+    point of confusion because ONAP's umbrella chart uses an
+    opt-in pattern: almost every component defaults to disabled,
+    so the column reads as predominantly "No".  This block calls
+    that pattern out explicitly and explains the parenthesised
+    Helm dependency condition key shown alongside each value.
+    """
+    rows: list[tuple[str, str]] = [
+        (
+            "Enabled by default",
+            (
+                "Whether the component is deployed when the umbrella "
+                "chart is installed without overrides. "
+                "<strong>Yes</strong> / <strong>No</strong> reflect the "
+                "<code>&lt;component&gt;.enabled</code> default in the OOM "
+                "umbrella <code>values.yaml</code>; <strong>\u2014</strong> "
+                "means no <code>enabled</code> key was present "
+                "(Helm treats this as unconditional). "
+                "<strong>Note:</strong> ONAP's umbrella chart is opt-in "
+                "\u2014 most components default to <strong>No</strong>, "
+                "and operators select the ones they want at install time."
+            ),
+        ),
+        (
+            "(via <code>….enabled</code>)",
+            (
+                "Helm <em>dependency condition</em> from the umbrella "
+                "<code>Chart.yaml</code> \u2014 the values path "
+                "operators set to <code>true</code> to include this "
+                "subchart in a deployment."
+            ),
+        ),
+    ]
+    return _legend_block("How to read this table", rows)
+
+
+def _helm_enabled_cell(
+    enabled_by_default: bool | None,
+    condition_key: str | None,
+) -> str:
+    """Render the folded ``Enabled by default`` cell.
+
+    Combines the umbrella default (Yes / No / em-dash) with the
+    Helm dependency condition key, e.g. ``"No (via
+    `policy.enabled`)"``.  Falls back to just the value when the
+    component has no condition key.
+
+    Parameters
+    ----------
+    enabled_by_default:
+        Tri-state default for the component's umbrella entry.
+    condition_key:
+        Helm values path that gates inclusion (e.g.
+        ``"policy.enabled"``), or ``None``.
+
+    Returns
+    -------
+    str
+        Single Markdown cell value.
+    """
+    value = _bool_display(enabled_by_default)
+    if condition_key:
+        return f"{value} (via `{condition_key}`)"
+    return value
 
 
 def _totals_section(repositories: Sequence[object]) -> list[str]:
