@@ -376,6 +376,126 @@ class TestExportMarkdown:
         result = export_markdown(_make_manifest())
         assert "policy/api" in result
 
+    def test_markdown_repositories_legend_present(self) -> None:
+        """A column legend sits between the heading and the table.
+
+        The legend documents what each column means and what the
+        em-dash placeholder signifies, addressing the ambiguity that
+        previously made the report's blank cells read as a definite
+        "No".
+        """
+        result = export_markdown(_make_manifest())
+        section = result.split("## Repositories", maxsplit=1)[1].split("## ")[0]
+        assert '<div class="legend">' in section
+        assert "How to read this table" in section
+        assert "Maintained" in section
+        assert "Has CI" in section
+        # The em-dash placeholder explanation must mention that
+        # blank means "unknown from this source", not "No".
+        assert "\u2014" in section
+
+    def test_markdown_state_legend_in_repositories_section(self) -> None:
+        """The state-emoji legend is emitted inside the Markdown stream.
+
+        Previously the state legend was only added during HTML
+        post-processing; emitting it via Markdown means every output
+        format that runs through :func:`export_markdown` gets it.
+        """
+        result = export_markdown(_make_manifest())
+        section = result.split("## Repositories", maxsplit=1)[1].split("## ")[0]
+        assert '<div class="state-legend">' in section
+        assert "State Legend" in section
+        assert "In current ONAP release" in section
+
+    def test_markdown_docker_images_legend_present(self) -> None:
+        """Docker Images section carries both column and Attribution legends."""
+        result = export_markdown(_make_manifest())
+        section = result.split("## Docker Images", maxsplit=1)[1].split("## ")[0]
+        assert "How to read this table" in section
+        assert "Attribution key" in section
+        # Every MappingReason that the exporter explains must be
+        # named in the Attribution key so readers can decode any
+        # value they encounter in the table.
+        for reason in (
+            "override",
+            "override-stale",
+            "leaf-match-namespace",
+            "leaf-match-cross-namespace",
+            "heuristic-*-verified",
+            "heuristic-*-unverified",
+            "unresolved",
+        ):
+            assert reason in section, reason
+
+    def test_markdown_helm_components_folded_column(self) -> None:
+        """Enabled + Condition Key are rendered as a single column.
+
+        The two pieces of information are tightly coupled \u2014 the
+        Enabled column is the *default* of the values key that
+        Condition Key names \u2014 so they are now folded into a
+        single ``Enabled by default`` cell of the form
+        ``Yes (via `policy.enabled`)``.
+        """
+        result = export_markdown(_make_manifest())
+        section = result.split("## Helm Components", maxsplit=1)[1]
+        # New column header
+        assert "| Enabled by default |" in section
+        # The legacy split headers must not survive
+        assert "| Enabled | Condition Key |" not in section
+        # The folded cell renders both pieces inline
+        assert "Yes (via `policy.enabled`)" in section
+
+    def test_markdown_helm_components_legend_present(self) -> None:
+        """Helm Components section explains the opt-in default pattern."""
+        result = export_markdown(_make_manifest())
+        section = result.split("## Helm Components", maxsplit=1)[1]
+        assert '<div class="legend">' in section
+        assert "opt-in" in section
+
+    def test_markdown_unknown_value_renders_as_em_dash(self) -> None:
+        """Tri-state ``None`` values render as ``\u2014`` (em-dash).
+
+        A visible placeholder distinguishes ``unknown`` from a
+        definite ``No``, which was the core of the original feedback
+        on the published report.
+        """
+        repos = [
+            OnapRepository(
+                gerrit_project="unknown/repo",
+                top_level_project="unknown",
+                confidence="medium",
+                category="runtime",
+                gerrit_state="ACTIVE",
+                # Both flags deliberately left unset \u2192 None
+            ),
+        ]
+        manifest = ReleaseManifest(
+            onap_release=OnapRelease(name="Test", oom_chart_version="1.0"),
+            generated_at="2025-01-01T00:00:00Z",
+            tool_version="0.1.0",
+            schema_version="1.0.0",
+            summary=ManifestSummary(
+                total_repositories=1,
+                total_docker_images=0,
+                total_helm_components=0,
+            ),
+            repositories=repos,
+            docker_images=[],
+            helm_components=[],
+            provenance=ManifestProvenance(),
+        )
+        result = export_markdown(manifest)
+        # Isolate the table row so we don't match legend prose.
+        row_lines = [
+            line for line in result.splitlines() if line.startswith("| unknown/repo ")
+        ]
+        assert row_lines, "expected a row for unknown/repo"
+        # The Maintained and Has CI cells (positions 5 and 6) must
+        # both render as em-dash, not as empty cells.
+        cells = [c.strip() for c in row_lines[0].split("|")]
+        assert cells[5] == "\u2014"
+        assert cells[6] == "\u2014"
+
 
 class TestExportHtml:
     """Tests for export_html."""
@@ -995,7 +1115,14 @@ class TestFilterRepositories:
         assert "policy/api" in result
 
     def test_filtered_totals_exclude_readonly(self) -> None:
-        """Totals section after filtering omits read-only row."""
+        """Totals section after filtering omits read-only row.
+
+        Scopes the assertion to the ``### Totals`` subsection because
+        the State Legend (emitted by :func:`export_markdown` above
+        every Repositories table) intentionally lists every possible
+        state, including ``Read-only / archived``, regardless of
+        whether any repository currently has that state.
+        """
         manifest = _make_stateful_manifest()
         filtered = filter_repositories(
             manifest,
@@ -1003,4 +1130,9 @@ class TestFilterRepositories:
         )
         result = export_markdown(filtered)
         assert "### Totals" in result
-        assert "Read-only / archived" not in result
+        # The Totals section runs from its heading up to the start
+        # of the next ``##`` block (Docker Images).
+        totals_start = result.index("### Totals")
+        totals_end = result.index("## Docker Images", totals_start)
+        totals_section = result[totals_start:totals_end]
+        assert "Read-only / archived" not in totals_section
