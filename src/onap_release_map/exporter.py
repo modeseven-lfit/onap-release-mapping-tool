@@ -192,21 +192,26 @@ def export_markdown(manifest: ReleaseManifest) -> str:
     # Repositories table
     lines.append("## Repositories")
     lines.append("")
+    lines.extend(_repositories_summary_block(manifest.repositories))
     lines.extend(_repositories_legend_block())
     lines.extend(_state_legend_block())
     lines.append(
-        "| Gerrit Project | Category | Confidence | State | Maintained | Has CI |"
+        "| Gerrit Project | Sources | Category | Confidence | State "
+        "| Maintained | Has CI |"
     )
     lines.append(
-        "| -------------- | -------- | ---------- | ----- | ---------- | ------ |"
+        "| -------------- | ------- | -------- | ---------- | ----- "
+        "| ---------- | ------ |"
     )
     for repo in manifest.repositories:
         state = _state_emoji(repo)
         maintained = _bool_display(repo.maintained)
         has_ci = _bool_display(repo.has_ci)
+        sources = ", ".join(repo.discovered_by) if repo.discovered_by else "\u2014"
+        confidence_cell = _confidence_cell(repo.confidence, repo.confidence_reasons)
         lines.append(
-            f"| {repo.gerrit_project} | {repo.category} "
-            f"| {repo.confidence} | {state} "
+            f"| {repo.gerrit_project} | {sources} | {repo.category} "
+            f"| {confidence_cell} | {state} "
             f"| {maintained} | {has_ci} |"
         )
     lines.append("")
@@ -216,6 +221,7 @@ def export_markdown(manifest: ReleaseManifest) -> str:
     # Docker images table
     lines.append("## Docker Images")
     lines.append("")
+    lines.extend(_docker_images_summary_block(manifest.docker_images))
     lines.extend(_docker_images_legend_block())
     lines.append(
         "| Image | Tag | Gerrit Project | Registry | Validated | Attribution |"
@@ -250,6 +256,7 @@ def export_markdown(manifest: ReleaseManifest) -> str:
     # Helm components table
     lines.append("## Helm Components")
     lines.append("")
+    lines.extend(_helm_components_summary_block(manifest.helm_components))
     lines.extend(_helm_components_legend_block())
     lines.append("| Name | Version | Enabled by default |")
     lines.append("| ---- | ------- | ------------------ |")
@@ -497,7 +504,8 @@ def _html_wrapper(body_html: str, title: str) -> str:
         "    }\n"
         "    /* State emoji legend */\n"
         "    .state-legend,\n"
-        "    .legend {\n"
+        "    .legend,\n"
+        "    .summary {\n"
         "      margin: 0.5rem 0 1rem 0;\n"
         "      padding: 1rem;\n"
         "      background: var(--card-bg);\n"
@@ -506,14 +514,24 @@ def _html_wrapper(body_html: str, title: str) -> str:
         "      font-size: 0.9rem;\n"
         "    }\n"
         "    .state-legend p,\n"
-        "    .legend p {\n"
+        "    .legend p,\n"
+        "    .summary p {\n"
         "      margin: 0.3rem 0;\n"
         "    }\n"
-        "    .legend code {\n"
+        "    .legend code,\n"
+        "    .summary code {\n"
         "      background: rgba(110,118,129,0.15);\n"
         "      padding: 0.1rem 0.35rem;\n"
         "      border-radius: 3px;\n"
         "      font-size: 0.85em;\n"
+        "    }\n"
+        "    .summary {\n"
+        "      border-left: 3px solid var(--accent);\n"
+        "    }\n"
+        "    /* Tooltip indicator on the Confidence cell */\n"
+        "    td abbr[title] {\n"
+        "      text-decoration: underline dotted;\n"
+        "      cursor: help;\n"
         "    }\n"
         "    /* Print: hide DataTables controls */\n"
         "    @media print {\n"
@@ -762,6 +780,8 @@ def _sanitise_manifest(manifest: ReleaseManifest) -> ReleaseManifest:
                 repo[key] = _esc(repo[key])
         if "discovered_by" in repo:
             repo["discovered_by"] = [_esc(v) for v in repo["discovered_by"]]
+        if "confidence_reasons" in repo:
+            repo["confidence_reasons"] = [_esc(v) for v in repo["confidence_reasons"]]
 
     # Escape Docker image fields
     for img in data.get("docker_images", []):
@@ -1198,6 +1218,259 @@ def _helm_enabled_cell(
     if condition_key:
         return f"{value} (via `{condition_key}`)"
     return value
+
+
+def _confidence_cell(
+    confidence: str,
+    confidence_reasons: Sequence[str],
+) -> str:
+    """Render the Confidence cell with reasons as an HTML tooltip.
+
+    Wraps the confidence level in an ``<abbr title="…">`` element so
+    that hovering the cell in the HTML report reveals the reasoning
+    the collectors recorded (for example *Listed in relman
+    repos.yaml; Has CI jobs in ci-management JJB*).  Markdown
+    passes inline HTML through table cells unchanged, so the same
+    markup works in both export formats.
+
+    Parameters
+    ----------
+    confidence:
+        Confidence level string (``low`` / ``medium`` / ``high``).
+    confidence_reasons:
+        Ordered sequence of human-readable rationale strings.
+
+    Returns
+    -------
+    str
+        Markdown cell value.
+    """
+    if not confidence_reasons:
+        return confidence
+    # Join reasons with '; ' so the tooltip stays on a single line.
+    # The reasons are produced by collectors and may contain HTML
+    # metacharacters; the manifest sanitiser HTML-escapes them in
+    # the HTML output path, so the title attribute value here is
+    # safe to render verbatim in both formats.
+    title = "; ".join(confidence_reasons)
+    return f'<abbr title="{title}">{confidence}</abbr>'
+
+
+# ---------------------------------------------------------------
+# Summary blocks
+# ---------------------------------------------------------------
+#
+# These helpers compute a small set of counts derived from the
+# manifest and emit them as a bullet list directly under each
+# section heading.  The intent is to give readers an at-a-glance
+# answer to questions like "how many repos have CI jobs?" without
+# having to scroll through the full table or interpret the
+# tri-state columns.  Counts are particularly useful for framing
+# the report data when the underlying tri-state values can be
+# blank for structural reasons (the relevant collector didn't
+# run, or didn't record a value for that row).
+
+
+def _repositories_summary_block(
+    repositories: Sequence[object],
+) -> list[str]:
+    """Render a Markdown summary block for the Repositories table.
+
+    Counts coverage by each collector (``discovered_by``) and the
+    tri-state Maintained / Has CI columns.  Renders an empty list
+    of lines when the manifest contains no repositories.
+    """
+    if not repositories:
+        return []
+
+    total = len(repositories)
+    by_source: dict[str, int] = {}
+    maintained_yes = maintained_no = maintained_unknown = 0
+    has_ci_yes = has_ci_unknown = 0
+    readonly = 0
+    in_release = 0
+    for repo in repositories:
+        for src in getattr(repo, "discovered_by", []) or []:
+            by_source[src] = by_source.get(src, 0) + 1
+        maintained = getattr(repo, "maintained", None)
+        if maintained is True:
+            maintained_yes += 1
+        elif maintained is False:
+            maintained_no += 1
+        else:
+            maintained_unknown += 1
+        has_ci = getattr(repo, "has_ci", None)
+        if has_ci is True:
+            has_ci_yes += 1
+        else:
+            has_ci_unknown += 1
+        if getattr(repo, "gerrit_state", None) == "READ_ONLY":
+            readonly += 1
+        if getattr(repo, "in_current_release", None) is True:
+            in_release += 1
+
+    rows: list[tuple[str, str]] = [
+        ("Total repositories", str(total)),
+        (
+            "In current ONAP release",
+            f"{in_release} of {total}",
+        ),
+        (
+            "Read-only / archived",
+            f"{readonly} of {total}",
+        ),
+        (
+            "Maintained",
+            (
+                f"{maintained_yes} Yes, {maintained_no} No, "
+                f"{maintained_unknown} \u2014 (not listed in relman)"
+            ),
+        ),
+        (
+            "Has CI jobs in JJB",
+            (f"{has_ci_yes} Yes, {has_ci_unknown} \u2014 (no JJB entry found)"),
+        ),
+    ]
+    # Sort sources to keep output stable across runs.
+    if by_source:
+        sources_text = ", ".join(
+            f"{name} ({count})" for name, count in sorted(by_source.items())
+        )
+        rows.append(("Discovered by", sources_text))
+
+    return _summary_block("At a glance", rows)
+
+
+def _docker_images_summary_block(
+    images: Sequence[object],
+) -> list[str]:
+    """Render a Markdown summary block for the Docker Images table.
+
+    Counts coverage by attribution category and verification status
+    so readers can quickly gauge how many images were mapped
+    confidently versus heuristically.
+    """
+    if not images:
+        return []
+
+    total = len(images)
+    by_category: dict[str, int] = {
+        "override": 0,
+        "leaf-match": 0,
+        "heuristic": 0,
+        "unresolved": 0,
+        "other": 0,
+    }
+    verified = unverified = unknown_verify = 0
+    nexus_yes = nexus_no = nexus_unknown = 0
+    for img in images:
+        reason = getattr(img, "attribution_reason", None) or ""
+        if reason.startswith("override"):
+            by_category["override"] += 1
+        elif reason.startswith("leaf-match"):
+            by_category["leaf-match"] += 1
+        elif reason.startswith("heuristic"):
+            by_category["heuristic"] += 1
+        elif reason == "unresolved":
+            by_category["unresolved"] += 1
+        else:
+            by_category["other"] += 1
+        verify = getattr(img, "attribution_verified", None)
+        if verify is True:
+            verified += 1
+        elif verify is False:
+            unverified += 1
+        else:
+            unknown_verify += 1
+        nexus = getattr(img, "nexus_validated", None)
+        if nexus is True:
+            nexus_yes += 1
+        elif nexus is False:
+            nexus_no += 1
+        else:
+            nexus_unknown += 1
+
+    rows: list[tuple[str, str]] = [
+        ("Total images", str(total)),
+        (
+            "By attribution",
+            (
+                f"{by_category['override']} override, "
+                f"{by_category['leaf-match']} leaf-match, "
+                f"{by_category['heuristic']} heuristic, "
+                f"{by_category['unresolved']} unresolved"
+                + (f", {by_category['other']} other" if by_category["other"] else "")
+            ),
+        ),
+        (
+            "Verified against Gerrit",
+            (
+                f"{verified} \u2713, {unverified} \u2717, "
+                f"{unknown_verify} \u2014 (no ground truth)"
+            ),
+        ),
+        (
+            "Validated in Nexus",
+            (f"{nexus_yes} Yes, {nexus_no} No, {nexus_unknown} \u2014 (not probed)"),
+        ),
+    ]
+    return _summary_block("At a glance", rows)
+
+
+def _helm_components_summary_block(
+    components: Sequence[object],
+) -> list[str]:
+    """Render a Markdown summary block for the Helm Components table."""
+    if not components:
+        return []
+
+    total = len(components)
+    yes = no = unknown = 0
+    with_condition = 0
+    for comp in components:
+        flag = getattr(comp, "enabled_by_default", None)
+        if flag is True:
+            yes += 1
+        elif flag is False:
+            no += 1
+        else:
+            unknown += 1
+        if getattr(comp, "condition_key", None):
+            with_condition += 1
+
+    rows: list[tuple[str, str]] = [
+        ("Total components", str(total)),
+        (
+            "Enabled by default",
+            f"{yes} Yes, {no} No, {unknown} \u2014",
+        ),
+        (
+            "With Helm condition key",
+            f"{with_condition} of {total}",
+        ),
+    ]
+    return _summary_block("At a glance", rows)
+
+
+def _summary_block(
+    title: str,
+    rows: Sequence[tuple[str, str]],
+) -> list[str]:
+    """Render an HTML ``<div class="summary">`` block as Markdown lines.
+
+    Shares its structural conventions with :func:`_legend_block`
+    but uses a distinct CSS class so the two can be styled
+    differently if desired.  Each row is rendered as a single
+    paragraph with a bold label and a plain-text count, keeping
+    the block compact above each table.
+    """
+    lines: list[str] = ['<div class="summary">']
+    lines.append(f"  <p><strong>{title}</strong></p>")
+    for label, value in rows:
+        lines.append(f"  <p><strong>{label}:</strong> {value}</p>")
+    lines.append("</div>")
+    lines.append("")
+    return lines
 
 
 def _totals_section(repositories: Sequence[object]) -> list[str]:
